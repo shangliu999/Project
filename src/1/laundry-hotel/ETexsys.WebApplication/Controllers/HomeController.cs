@@ -39,6 +39,7 @@ namespace ETexsys.WebApplication.Controllers
         /// <returns></returns>
         public ActionResult LogoutLogin()
         {
+            //DateTime.Now;
             FormsAuthentication.SignOut();
             return RedirectToAction("index", "login", new { area = "" });
         }

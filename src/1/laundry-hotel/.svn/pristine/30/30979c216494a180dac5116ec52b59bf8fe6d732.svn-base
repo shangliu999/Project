@@ -1,0 +1,687 @@
+﻿
+@{
+    Layout = null;
+}
+
+<link href="@Url.Content("~/Content/ReportStyle.css")" rel="stylesheet" />
+<link media="print" href="@Url.Content("~/Content/ReportStyle.css")" rel="stylesheet" />
+<link href="@Url.Content("~/Content/plugins/daterangepicker/daterangepicker.css")" rel="stylesheet" />
+<style>
+   
+    #dataReport tr,td {
+       border:1px solid #ccc;
+       
+       
+
+    }
+    
+    
+</style>
+
+<div style="top:130px;margin-left:-15px; padding-left:0;padding-right:0;width:100%; position:fixed;z-index:2030;">
+    <div style="width:100%;padding: 2px;background: #f7f7f7;z-index: 1;border: 1px solid #dadada;display: table;clear: both;content:''">
+        <div onclick="conditonChange()" style="float: left;border-left: 1px solid #dedcdc;margin-right: 8px;margin-left: 8px;">
+            <div role="button" title="过滤" style="border-color:#ccc;border-radius:2px;cursor:pointer;line-height:36px;margin:0 1px;min-width:30px;padding:0 6px;position:relative;user-select:none;text-align:center;">
+                <span class="fa fa-filter" style="font-size:16px;margin-top:1px;opacity:0.8;"></span>
+            </div>
+        </div>
+        <div style="float: left;border-left: 1px solid #dedcdc;margin-right: 8px;margin-left: 8px;">
+            <div role="button" onclick="myPrint()" title="打印" data-state="" style="border-color:#ccc;border-radius:2px;display:inline-block;cursor:pointer;line-height:36px;margin:0 1px;min-width:30px;padding:0 6px;position:relative;user-select:none;text-align:center;">
+                <span class="fa fa-print" style="font-size:16px;margin-top:1px;opacity:0.8;"></span>
+            </div>
+            <div style="display:inline-block;position:relative;">
+                <form id="formExport" action="@Url.Action("Receive_SendExportExcel","ParseTable")" method="post">
+                    <div disabled="disabled" id="btnExportExcel" title="导出" data-state="" style="border-color:#ccc;border-radius:2px;display:inline-block;cursor:pointer;line-height:36px;margin:0 1px;min-width:30px;padding:0 6px;position:relative;user-select:none;text-align:center;">
+                        <span class="fa fa-floppy-o" style="font-size:16px;margin-top:1px;opacity:0.8;"></span>
+                    </div>
+                    <input type="hidden" id="hddTitle" name="hddTitle" value="" />
+                    <input type="hidden" id="hddData" name="hddData" value="" />
+                    <input type="hidden" id="hddCondition" name="hddCondition" value="" />
+                    <input type="hidden" id="hddpx" name="hddpx" value="2" />
+                </form>
+            </div>
+            <div role="button" title="分享" data-state="" style="border-color:#ccc;border-radius:2px;display:inline-block;cursor:pointer;line-height:36px;margin:0 1px;min-width:30px;padding:0 6px;position:relative;user-select:none;text-align:center;">
+                <span class="fa fa-share-alt"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="conditonPanel" style="position: fixed;top: 172px;float:left;width:250px;background-color:#F1F1F1;height:100%;margin-left:-15px;">
+    <div style="padding:20px 10px;">
+
+        <div class="form-group">
+            <span class="conditionTitle">流通品牌：</span>
+        </div>
+        <div class="form-group">
+            <select class="form-control" id="brandId">
+                @{
+                    var brandList = ViewData["BrandList"] as List<ETexsys.Model.brandtype>;
+                    if (brandList.Count > 0)
+                    {
+                        <option value="0">所有</option>
+                    }
+                    foreach (var item in brandList)
+                    {
+                        <option value="@item.ID">@item.BrandName</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <span class="conditionTitle">时间：</span>
+        </div>
+        <div class="form-group">
+            <div class="input-group" style="width: 230px;">
+                <input type="text" class="form-control date-picker" id="dateTimeRange" value="" />
+                <span class="input-group-addon">
+                    <i class="fa fa-calendar bigger-110"></i>
+                </span>
+                <input type="hidden" name="beginTime" id="beginTime" />
+                <input type="hidden" name="endTime" id="endTime" />
+            </div>
+        </div>
+        <div class="form-group">
+            <button id="btnSearch" type="button" class="btn btn-success" style="width:230px;height:35px;"><i class="fa fa-search"></i>查询</button>
+        </div>
+    </div>
+</div>
+<div id="dc" class="row wrapper animated fadeInRight" style="overflow-x:auto; background: #FFF;padding-left:0;padding-right:0;height:100%;width:calc(100% - 220px);float:right;margin-top:110px;">
+    <div id="print" style="width:1300px">
+        <span id="title" style="font-size:24px;font-family:'Microsoft YaHei';font-weight:bold;margin:20px 0px 0 0; display:inline-block;">布草返洗率分析表</span>
+        <div id="condition" style="margin-left:20px;">
+            <div id="leftConditon" style="float:left;"></div>
+            <div id="rightConditon" style="float:right;"></div>
+        </div>
+        <table id="dataReport" style="border-collapse: collapse;font-size:14px;font-family:'Microsoft YaHei';color:#333;margin:20px;" cellpadding="0" cellspacing="0"></table>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/plugins/daterangepicker/moment.js")"></script>
+<script src="@Url.Content("~/Scripts/plugins/daterangepicker/daterangepicker.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery-migrate-1.2.1.min.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery.jqprint-0.3.js")"></script>
+<script>
+    $("#dc").height(document.body.clientHeight - 180);
+    $(document.body).css({
+        "overflow-y": "hidden"
+    });
+
+    window.onresize = function () {
+        $("#dc").height(document.body.clientHeight - 180);
+
+        $(document.body).css({
+            "overflow-y": "hidden"
+        });
+    }
+    function conditonChange() {
+        if ($("#conditonPanel").is(":hidden")) {
+            $("#dc").css("width", "calc(100% - 220px)");
+            $("#conditonPanel").show();
+        } else {
+            $("#dc").css("width", "100%");
+            $("#conditonPanel").hide();
+        }
+    }
+
+    $(document).ready(function () {
+
+        $('#dateTimeRange').daterangepicker({
+            applyClass: 'btn-sm btn-success',
+            cancelClass: 'btn-sm btn-default',
+            locale: {
+                applyLabel: '确认',
+                cancelLabel: '取消',
+                fromLabel: '起始时间',
+                toLabel: '结束时间',
+                customRangeLabel: '自定义',
+                firstDay: 1
+            },
+            ranges: {
+                '今日': [moment().startOf('day'), moment()],
+                '昨日': [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')],
+                '最近7日': [moment().subtract('days', 6), moment()],
+                '最近30日': [moment().subtract('days', 29), moment()],
+                '本月': [moment().startOf("month"), moment().endOf("month")],
+                '上个月': [moment().subtract(1, "month").startOf("month"), moment().subtract(1, "month").endOf("month")]
+            },
+            startDate: moment().startOf("month"),
+            endDate: moment().endOf("month"),
+            opens: 'right',    // 日期选择框的弹出位置
+            separator: ' 至 ',
+            showWeekNumbers: false,     // 是否显示第几周
+            locale: {
+                applyLabel: '确定',
+                cancelLabel: '取消',
+                fromLabel: '起始时间',
+                toLabel: '结束时间',
+                customRangeLabel: '自定义',
+                daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+                        '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                firstDay: 1
+            },
+
+            format: 'YYYY/MM/DD'
+
+        }, function (start, end, label) { // 格式化日期显示框
+            $('#beginTime').val(start.format('YYYY-MM-DD'));
+            $('#endTime').val(end.format('YYYY-MM-DD'));
+        })
+       .next().on('click', function () {
+           $(this).prev().focus();
+       });
+    });
+    function MyShows(id) {
+        $("#brandId").val(id);
+        $("#btnSearch").click();
+    }
+
+    function numFormat(num) {
+        num = num.toString().split(".");  // 分隔小数点
+        var arr = num[0].split("").reverse();  // 转换成字符数组并且倒序排列
+        var res = [];
+        for (var i = 0, len = arr.length; i < len; i++) {
+            if (i % 3 === 0 && i !== 0) {
+                res.push(",");   // 添加分隔符
+            }
+            res.push(arr[i]);
+        }
+        res.reverse(); // 再次倒序成为正确的顺序
+        if (num[1]) {  // 如果有小数的话添加小数部分
+            res = res.join("").concat("." + num[1]);
+        } else {
+            res = res.join("");
+        }
+        return res;
+    }
+
+    var ary = new Array();
+    $("#btnSearch").on("click", function () {
+        var _url = "@Url.Action("RegQuery", "ParseTable")";
+        $.ajax({
+            type: "post",
+            data: {
+                brandId: $("#brandId").val(), startDate: $("#beginTime").val(), endDate: $("#endTime").val()
+            },
+            url: _url,
+            success: function (result) {
+                var bodyHtml = "<tbody>";
+                var headerHtml = '<thead><tr style="background-color:#E8F7FE;color:#0294DD;">';
+                var datatable="[";
+                var harys = "";
+                $.each(result[0], function (i, item) {
+                    if (i == 0) {
+                        $.each(item, function (j, val) {
+                            if (j=="id") {
+
+                            }
+                           else if (j == "品牌") {
+                               headerHtml += '<td  class="lefttxt" style="height:35px;width:140px">' + j + '</td><td class="lefttxt" style="height:35px;width:80px">统计</td>';
+                               harys += j+",统计,";
+                            } else {
+                               headerHtml += '<td  class="righttxt" style="height:35px;width:80px">' + j + '</td>';
+                               harys += j + ",";
+                            }
+                        });
+                        harys =  harys.substring(0, harys.length - 1);
+                    }
+                   
+                    bodyHtml += "<tr>";
+                    datatable += "{";
+                    var aid = 99;
+                    var warys = "";
+                    var names = "";
+                    $.each(item, function (k, val) {
+                        
+                        if (val==0||val == null) {
+                            val = "";
+                        }
+                        if (k=="id") {
+                            aid=val;
+                        }
+                        else if (k == "品牌") {
+                            names = val;
+                            if ($("#brandId").val()==0) {
+                                bodyHtml += "<td rowspan='3' class='lefttxt' style='height:35px;'><a href='javascript:MyShows(" + aid + ")'>" + val + "</a></td><td class='lefttxt' style='height:35px;width:80px'>正常</td>";
+
+                            }
+                            else {
+                                bodyHtml += "<td rowspan='3' class='lefttxt' style='height:35px;'>" + val + "</td><td class='lefttxt' style='height:35px;width:80px'>正常</td>";
+
+                            }
+                            } else if (k == "合计") {
+                            bodyHtml += "<td class='righttxt' style='height:35px;font-weight:bold;'>" + numFormat(val) + "</td>";
+                            warys += val + ",";
+                        } else {
+                           
+                            bodyHtml += "<td class='righttxt' style='height:35px;'>" + numFormat(val) + "</td>";
+                            warys += val + ",";
+                           
+                        }
+
+                       
+                        if (k=="id") {
+                            
+                        } else if (k == "品牌") {
+                            datatable += "\"" + k + "\":\"" + val + "\",";
+                            datatable += "\"统计\":\"正常\",";
+                            
+                        } else {
+                            datatable += "\"" + k + "\":\"" + val + "\",";
+                        }
+                       
+                    });
+                    
+                    warys = warys.substring(0, warys.length - 1);
+                   
+                    datatable = datatable.substring(0, datatable.length - 1);
+                    datatable += "},"
+                    bodyHtml += "</tr>";
+                    var bid = 99; 
+                    
+                   
+                   var bodyHtml2 = "";
+                  var  datatable2 = "";
+                    
+                    $.each(result[1], function (i2, item2) {
+                        
+                        var warys2 = "";
+                        bodyHtml2 = "";
+                        datatable2 = "";
+                        var isfa = false;
+                        if (item2.id == aid) {
+                           
+                            bodyHtml2 += "<tr>";
+
+                            datatable2 += "{";
+                            $.each(item2, function (k2, val2) {
+
+                                
+                                if (val2 == 0|| val2 == null) {
+                                    val2 = "";
+                                }
+                                if (k2 == "id") {
+
+                                }
+                                else if (k2 == "品牌") {
+                                    bodyHtml2 += "<td class='lefttxt' style='height:35px;'>反洗</td>";
+                                } else if (k2 == "合计") {
+                                    bodyHtml2 += "<td class='righttxt' style='height:35px;font-weight:bold;'>" + numFormat(val2) + "</td>";
+                                    warys2 += val2 + ",";
+                                } else {
+
+                                    bodyHtml2 += "<td class='righttxt' style='height:35px;'>" + numFormat(val2) + "</td>";
+                                    warys2 += val2 + ",";
+                                }
+                                if (k2 == "id") {
+                                    
+                                } else if (k2 == "品牌") {
+                                    datatable2 += "\"" + k2 + "\":\"" + val2 + "\"," + "\"统计\":\"反洗\",";
+                                } else {
+                                    datatable2 += "\"" + k2 + "\":\"" + val2 + "\",";
+                                }
+                                
+
+                            });
+
+                            isfa = true;
+                            warys2 = warys2.substring(0, warys2.length - 1);
+                            datatable2 = datatable2.substring(0, datatable2.length - 1);
+                            datatable2 += "},"
+                            bodyHtml2 += "</tr>";
+                           
+                        }
+                        else {
+                            
+                            isfa = false;
+                            if (i2 + 1 == result[1].length) {
+                                datatable2 += "{";
+                                var bodyHtml4 = "<tr><td class='lefttxt' style='height:35px;'>反洗</td>";
+                                
+                                for (var i = 0; i < warys.split(',').length; i++) {
+                                    for (var j = 0; j < harys.split(',').length; j++) {
+                                        if (j == 0 && i == 0) {
+                                            datatable2 += "\"" + harys.split(',')[j] + "\":\""+names+"\",";
+                                        } else if (j == 1 && i == 0) {
+                                            datatable2 += "\"" + harys.split(',')[j] + "\":\"反洗\",";
+                                        } 
+                                        if (i == j-2) {
+                                           
+                                            if (warys.split(',')[i] == 0 || warys.split(',')[j] == 0) {
+                                                if (j == 2) {
+                                                    bodyHtml4 += "<td class='righttxt' style='height:35px;font-weight:bold;'></td>";
+                                                } else {
+                                                    bodyHtml4 += "<td class='righttxt' style='height:35px;'></td>";
+                                                }
+                                                
+                                                datatable2 += "\"" + harys.split(',')[j] + "\":\"0\",";
+                                               
+                                            } else {
+                                                if (j == 2) {
+                                                    bodyHtml4 += "<td class='righttxt' style='height:35px;font-weight:bold;'></td>";
+                                                } else {
+                                                    bodyHtml4 += "<td class='righttxt' style='height:35px;'></td>";
+                                                }
+                                               
+                                                datatable2 += "\"" + harys.split(',')[j] + "\":\"0\",";
+                                            }
+
+                                        }
+                                    }
+                                    
+                                }
+                                bodyHtml4 += "</tr>";
+                                bodyHtml += bodyHtml4;
+                                datatable2 = datatable2.substring(0, datatable2.length - 1);
+                                datatable2 += "},";
+                                var bodyHtml3 = "<tr><td  class='lefttxt' style='height:35px;'>反洗率</td>";
+                                datatable2 += "{";
+                                for (var i = 0; i < warys.split(',').length; i++) {
+                                    for (var j = 0; j < harys.split(',').length; j++) {
+                                        if (j == 0 && i==0) {
+                                            datatable2 += "\"" + harys.split(',')[j] + "\":\""+names+"\",";
+                                        } else if (j == 1 && i == 0) {
+                                            datatable2 += "\"" + harys.split(',')[j] + "\":\"反洗率\",";
+                                        }
+                                        if (i == j - 2) {
+                                            if (warys.split(',')[i] == 0) {
+                                                if (j==2) {
+                                                    bodyHtml3 += "<td class='righttxt' style='height:35px;font-weight:bold;'></td>";
+                                                } else {
+                                                    bodyHtml3 += "<td class='righttxt' style='height:35px;'></td>";
+                                                }
+                                                
+                                                datatable2 += "\"" + harys.split(',')[j] + "\":\"0\",";
+                                            } else {
+                                                if (j == 2) {
+                                                    bodyHtml3 += "<td class='righttxt' style='height:35px;font-weight:bold;'></td>";
+                                                } else {
+                                                    bodyHtml3 += "<td class='righttxt' style='height:35px;'></td>";
+                                                }
+                                               
+                                                datatable2 += "\"" + harys.split(',')[j] + "\":\"0\",";
+                                            }
+                                        }
+                                    }
+                                    
+                                }
+                                bodyHtml3 += "</tr>";
+                                bodyHtml += bodyHtml3;
+                                datatable2 = datatable2.substring(0, datatable2.length - 1);
+                               
+                                datatable2 += "},"
+                                bodyHtml2 += "</tr>";
+                                bodyHtml += bodyHtml2;
+                                datatable += datatable2;
+                            }
+                            //bodyHtml2 += "<tr>";
+                            //datatable2 += "{";
+                            //$.each(item2, function (k2, val2) {
+                            //    if (val2 == null) {
+                            //        val2 = 0;
+                            //    }
+                            //    if (k2 == "id") {
+                            //    }
+                            //    else if (k2 == "品牌") {
+                            //        bodyHtml2 += "<td class='lefttxt' style='height:35px;'></td><td class='lefttxt' style='height:35px;'>反洗</td>";
+                            //    } else if (k2 == "合计") {
+                            //        bodyHtml2 += "<td class='righttxt' style='height:35px;font-weight:bold;'>0</td>";
+                            //        warys2 += "0,";
+                            //    } else {
+                            //        bodyHtml2 += "<td class='righttxt' style='height:35px;'>0</td>";
+                            //        warys2 += "0,";
+                            //    }
+                            //    if (k2 != "id") {
+                            //        datatable2 += "\"" + k2 + "\":\"0\",";
+                            //    }
+                            //});
+                            //return true;
+                        }
+                       
+                        
+                        
+
+                       
+
+                        if (isfa) {
+                            bodyHtml += bodyHtml2;
+                            datatable += datatable2;
+      
+                            var bodyHtml3 = "<tr><td>反洗率</td>";
+                            datatable += "{\"品牌\":\"" + names + "\",\"统计\":\"反洗率\",";
+                            for (var i = 0; i < warys.split(',').length; i++) {
+                                for (var j = 0; j < warys2.split(',').length; j++) {
+                                    if (i==j) {
+                                        if (warys.split(',')[i] == 0 || warys2.split(',')[j] == 0) {
+                                            if (j==0) {
+                                                bodyHtml3 += "<td class='righttxt' style='height:35px;font-weight:bold;'>0%</td>";
+                                            } else {
+                                                bodyHtml3 += "<td class='righttxt' style='height:35px;'>0%</td>";
+                                            }
+                                           
+                                            datatable += "\""+harys.split(',')[j+2]+"\":\"0\",";
+                                        } else {
+                                            if (j == 0) {
+                                               
+                                                bodyHtml3 += "<td class='righttxt' style='height:35px;font-weight:bold;'>" + (parseFloat(warys2.split(',')[j]) / (parseFloat(warys.split(',')[i]) + parseFloat(warys2.split(',')[j]))).toFixed(2) + "%</td>";
+
+                                            } else {
+                                                bodyHtml3 += "<td class='righttxt' style='height:35px;'>" + (parseFloat(warys2.split(',')[j]) / (parseFloat(warys.split(',')[i]) + parseFloat(warys2.split(',')[j]))).toFixed(2) + "%</td>";
+
+                                            }
+                                           
+                                            datatable += "\"" + harys.split(',')[j + 2] + "\":\"" + (parseFloat(warys2.split(',')[j]) / (parseFloat(warys.split(',')[i]) + parseFloat(warys2.split(',')[j]))).toFixed(2) + "%\",";
+                                        }
+
+                                    }
+
+                                }
+                            }
+                            datatable = datatable.substring(0, datatable.length - 1);
+
+                            datatable += "},"
+                            bodyHtml3 += "</tr>";
+                            bodyHtml += bodyHtml3;
+                            
+                            return false;
+                        }
+                        
+
+                        
+                        //else {
+                        //    //if (inums== result[1].length) {
+                        //        bodyHtml += bodyHtml2;
+                        //        datatable += datatable2;
+                        //        if (!isfa) {
+                        //            var bodyHtml4 = "<tr><td></td><td>反洗</td>";
+                        //            for (var i = 0; i < warys.split(',').length; i++) {
+                        //                for (var j = 0; j < warys.split(',').length; j++) {
+                        //                    if (i == j) {
+                        //                        if (warys.split(',')[i] == 0 || warys.split(',')[j] == 0) {
+                        //                            bodyHtml4 += "<td class='righttxt' style='height:35px;'>0</td>";                        
+                        //                        } else {
+                        //                            bodyHtml4 += "<td class='righttxt' style='height:35px;'>0</td>";                    
+                        //                        }
+                        //                    }
+                        //                }
+                        //            }
+                        //            bodyHtml4 += "</tr>";
+                        //            bodyHtml += bodyHtml4;
+                        //            var bodyHtml3 = "<tr><td></td><td>反洗率</td>";
+                        //            for (var i = 0; i < warys.split(',').length; i++) {
+                        //                for (var j = 0; j < warys.split(',').length; j++) {
+                        //                    if (i == j) {
+                        //                        if (warys.split(',')[i] == 0 || warys.split(',')[j] == 0) {
+                        //                            bodyHtml3 += "<td class='righttxt' style='height:35px;'>0</td>";
+                        //                        } else {
+                        //                            bodyHtml3 += "<td class='righttxt' style='height:35px;'>0</td>";
+                        //                        }
+                        //                    }
+                        //                }
+                        //            }
+                        //            bodyHtml3 += "</tr>";
+                        //            bodyHtml += bodyHtml3;
+                        //        }  
+                        //        return false;
+                        //    //} else {
+                        //    //    bodyHtml2 = "";
+                        //    //    datatable2 = "";  
+                        //    //}
+                        //}
+                       
+                    });
+
+                });
+               
+                datatable = datatable.substring(0, datatable.length - 1);
+                datatable += "]";
+                headerHtml += '</tr></thead>';
+                
+
+                bodyHtml += "</tbody>";
+                
+                /*
+                //var data2 = "";
+                //var data2_body = "";
+                //var data3_body = "";
+                //var bodyHtml = "<tbody>";
+                //var headerHtml = '<thead id="thid"><tr style="height:34px;background-color:#E8F7FE;color:#0294DD;">';
+                //if ($("#brandId").val()==0) {
+                //    headerHtml += "<td  class='lefttxt' style='width:100px;'>流通品牌</td><td class='lefttxt' style='width:80px;'>统计</td>";
+                   
+                //} else {
+                //    headerHtml += "<td class='lefttxt'  style='width:180px;'>酒店</td><td class='lefttxt'  style='width:80px;'>统计</td>";
+                    
+                //}
+                
+                //$.each(result, function (i, item) {
+                    
+                //    if (i==0) {
+                //        $.each(item.Index4, function (j, item2) {
+                //            headerHtml += "<td  class='righttxt'  style='width:80px;'>" + item2.Cname4 + "</td>";
+                           
+                //            ary[j] = item2.Cname4;
+                //        });
+                //    }
+                //    //var nus = 0;
+                //    //$.each(result, function (i2, items) {
+                //    //    nus += $(items).length;
+                //    //});
+                //    //alert(nus);
+
+
+                //    //brandid=0的情况需调整
+                //    if ($("#brandId").val()==0) {
+                   
+                      
+                //        var tb1 = "<tr  class='eventr'><td rowspan='3'  class='lefttxt'  style='width:100px;'><a href='javascript:MyShows(" + item.BrandID + ");'>" + item.BrandName + "</a></td><td  class='lefttxt'  style='width:80px;'>正常</td>";
+
+                //        data3_body = '{"流通品牌":"' + item.BrandName + '",';
+
+                //    } else {
+                //        var tb1 = "<tr  class='eventr'><td rowspan='3'  class='lefttxt' style='width:180px;'>" + item.BrandName + "</td><td  class='lefttxt'  style='width:80px;'>正常</td>";
+
+
+                //        data3_body = '{"酒店":"' + item.BrandName + '",';
+                //    }
+                        
+                //    var tb2 = "<tr  class='oddtr'><td  class='lefttxt'  style='width:80px;'>返洗</td>";
+                //    var tb3 = "<tr  class='eventr'><td   class='lefttxt' style='width:80px;'>返洗率</td>";
+                //        var tbnum1 = 0;
+                //        var tbnum2 = 0;
+                        
+                //        $.each(item.Index2, function (q, item22) {
+                //            tb1 += "<td  class='righttxt' style='width:80px;'>" + numFormat(item22.Cnum2) + "</td>";
+                //            tbnum1 = tbnum1 + item22.Cnum2;
+                //            if (q==0) {
+                //                data2_body +=data3_body+ '"统计":"正常","' + ary[q] + '":"' + item22.Cnum2 + '",';
+                //            }
+                //            else {
+                //                data2_body += '"' + ary[q] + '":"' + item22.Cnum2 + '",';
+                //            }
+
+                           
+                //        });
+                //        tb1 += "<td  class='righttxt' style='width:80px;'><b>" + numFormat(tbnum1) + "</b></td></tr>";
+                //        data2_body += '"合计":"' + tbnum1 + '"},';
+
+                //        $.each(item.Index3, function (w, item33) {
+                //            tb2 += "<td  class='righttxt' style='width:80px;'>" + numFormat(item33.Cnum3) + "</td>";
+                //            tbnum2 = tbnum2 + item33.Cnum3;
+                //            if (w== 0) {
+                //                data2_body +=data3_body+ '"统计":"返洗","' + ary[w] + '":"' + item33.Cnum3 + '",';
+                //            }
+                //            else {
+                //                data2_body += '"' + ary[w] + '":"' + item33.Cnum3 + '",';
+                //            }
+                //        });
+                //        tb2 += "<td  class='righttxt' style='width:80px;'><b>" + numFormat(tbnum2) + "</b></td></tr>";
+                //        data2_body += '"合计":"' + tbnum2 + '"},';
+
+                //        $.each(item.Index2, function (q1, item221) {
+                //            $.each(item.Index3, function (w1, item331) {
+                //                var wq1;
+                //                if (w1 == q1) {
+                                   
+                //                    if (item331.Cnum3 == 0 || item221.Cnum2==0) {
+                //                        wq1 = "0.00";
+                //                    } else {
+                //                        wq1 = isNaN(item331.Cnum3 / item221.Cnum2) ? (Math.ceil((parseFloat(item331.Cnum3) / parseFloat(item221.Cnum2)).toFixed(3) * 100) / 100).toString() : "0.00";
+                                        
+                //                    }
+                                      
+                //                    tb3 += "<td  class='righttxt' style='width:80px;'>" + wq1 + "%</td>";
+                //                    if (w1 == 0) {
+                //                        data2_body +=data3_body+ '"统计":"返洗率","' + ary[w1] + '":"' + wq1 + '%",';
+                //                    }
+                //                    else {
+                //                        data2_body += '"' + ary[w1] + '":"' + wq1 + '%",';
+                //                    }
+                                     
+                                    
+                //                }
+                //            });
+                //        });
+                //        tb3 += "<td  class='righttxt' style='width:80px;'><b>" + (Math.ceil(parseFloat((parseFloat(tbnum2) / parseFloat(tbnum1))) * 100) / 100).toString() + "%</b></td></tr>";
+                //        data2_body += '"合计":"' + (Math.ceil(parseFloat((parseFloat(tbnum2) / parseFloat(tbnum1))) * 100) / 100).toString() + '"},';
+                //        bodyHtml += (tb1 + tb2 + tb3);
+                //});
+                //bodyHtml += "</tbody>";
+                //headerHtml += "<td  class='righttxt' style='width:80px;'>合计</td></tr></thead>";
+                //data2_body = (data2_body.substring(data2_body.length - 1) == ',') ? data2_body.substring(0, data2_body.length - 1) : data2_body;
+
+                //data2 = "[" + data2_body + "]";
+               */
+                $("#dataReport").children().remove();
+                $("#dataReport").append(headerHtml + bodyHtml);
+                
+                var totalwidth = $("#dataReport").width();
+                var dtWidth =totalwidth < 500 ? 500 : totalwidth;
+                
+                $("#title").css("margin-left", ((dtWidth - 130) / 2).toString() + "px");
+                $("#dataReport").css("width", dtWidth);
+                $("#condition").css("width", dtWidth);
+                $("#leftConditon").html("流通品牌：" + $("#brandId").find("option:selected").text());
+                $("#rightConditon").html("时间：" + $("#dateTimeRange").val());
+
+                $("#hddCondition").val($("#leftConditon").text() + "|" + $("#rightConditon").text());
+                $("#hddTitle").val("布草返洗率分析表");
+                $("#hddData").val(datatable);
+
+                $("#btnExportExcel").removeAttr("disabled");
+            }
+        })
+    });
+
+    $("#btnSearch").click();
+
+    $("#btnExportExcel").on("click", function () {
+        document.getElementById("formExport").submit();
+    });
+
+    function myPrint(obj) {
+        $("#print").jqprint({
+        });
+    }
+</script>
+

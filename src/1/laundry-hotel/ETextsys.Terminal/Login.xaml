@@ -1,0 +1,101 @@
+﻿<Window x:Class="ETextsys.Terminal.Login"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lw="clr-namespace:ETextsys.Terminal.View.Choose"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:local="clr-namespace:ETextsys.Terminal"
+        mc:Ignorable="d" ResizeMode="CanMinimize"
+        WindowStyle="None" WindowStartupLocation="CenterScreen"
+        Title="登录" Height="768" Width="1024" Icon="icon.ico">
+    <Grid Background="{StaticResource bgShouye}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="23*"></ColumnDefinition>
+            <ColumnDefinition Width="208*"></ColumnDefinition>
+            <ColumnDefinition Width="23*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="103*"></RowDefinition>
+            <RowDefinition Height="507*"></RowDefinition>
+            <RowDefinition Height="128*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Column="1" Grid.Row="1" Background="{StaticResource bgLogin}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25*"></RowDefinition>
+                <RowDefinition Height="126*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Column="1" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="99*"></ColumnDefinition>
+                    <ColumnDefinition Width="317*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="123*"></RowDefinition>
+                        <RowDefinition Height="74*"></RowDefinition>
+                        <RowDefinition Height="226*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Content="用户名" Height="40" Width="80" Style="{StaticResource lbpwd}" Margin="2,38,17,45" ></Label>
+                    <Label Grid.Row="1" Content="密  码" Height="40" Width="80" Style="{StaticResource lbpwd}" Margin="2,15,17,19" ></Label>
+                </Grid>
+                <Grid Grid.Column="1" Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="90*"></RowDefinition>
+                        <RowDefinition Height="90*"></RowDefinition>
+                        <RowDefinition Height="82*"></RowDefinition>
+                        <RowDefinition Height="161*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBox Style="{StaticResource txtid}" Text="{Binding Model.LoginName}" Margin="5,34,0,6" Grid.Column="0" Grid.Row="0" Width="263">
+                        <TextBox.Template>
+                            <ControlTemplate>
+                                <Border BorderBrush="#C6C6C6" BorderThickness="1" CornerRadius="10" Background="#FFFFFF">
+                                    <StackPanel Background="Transparent" VerticalAlignment="Center" Orientation="Horizontal">
+                                        <Image Width="32" Height="32" Source="{StaticResource iconname}" HorizontalAlignment="Left" Margin="8,0,0,0"></Image>
+                                        <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center" Padding="5,0,0,0" Background="#FFFFFF" Width="180" HorizontalAlignment="Left"  />
+                                        <Image Width="32" Height="32" HorizontalAlignment="Right" Margin="0,0,20,0" Source="{StaticResource iconxiala}"></Image>
+                                    </StackPanel>
+                                </Border>
+                            </ControlTemplate>
+                        </TextBox.Template>
+                    </TextBox>
+                    <Button Width="30"  Height="30" HorizontalAlignment="Center" Margin="226,44,64,20" Opacity="0" Command="{Binding ShowUser}" CommandParameter="{Binding ElementName=password}" Cursor="Hand" />
+                    <PasswordBox Name="password" Grid.Row="1" Grid.Column="0" Style="{StaticResource txtpwd}"  Margin="5,40,0,0" Height="Auto" GotFocus="password_GotFocus" >
+                        <PasswordBox.Template>
+                            <ControlTemplate>
+                                <Border BorderBrush="#C6C6C6" BorderThickness="1" CornerRadius="10" Background="#FFFFFF">
+                                    <StackPanel Background="Transparent" VerticalAlignment="Center" Orientation="Horizontal">
+                                        <Image Width="32" Height="32" HorizontalAlignment="Right" Margin="8,0,0,0" Source="{StaticResource iconlogin}"></Image>
+                                        <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center" Padding="5,0,0,0" Background="#FFFFFF" Width="221" HorizontalAlignment="Left"   />
+                                    </StackPanel>
+                                </Border>
+                            </ControlTemplate>
+                        </PasswordBox.Template>
+                    </PasswordBox>
+                    <Grid Grid.Row="2" Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="5*"></ColumnDefinition>
+                            <ColumnDefinition Width="24*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <CheckBox IsChecked="{Binding Model.Checkbox}"  Grid.Column="0"  Grid.Row="0" Width="1" Height="1" Style="{StaticResource check}" Margin="12,25,3,-5" Opacity="0.0" />
+                        <Button Width="40" Margin="0,40,0,0" Height="40" Style="{DynamicResource iconchoicebut}" Opacity="{Binding Model.Checkboximage}"></Button>
+                        <Button Name="but" Margin="0,40,0,0" Height="40" Width="40"  Style="{DynamicResource iconselectedbut}" Command="{Binding CheckBoxstate}" Opacity="{Binding Model.UnCheckboximage}"></Button>
+
+                        <Label Grid.Row="0" Grid.Column="1" Content="记住密码" Style="{StaticResource lbRememberPWD}"  Margin="10,40,0,0" Height="40" Width="106"></Label>
+                        <Label Grid.Row="0" Grid.Column="1" Content="{Binding Model.Prompt}" Style="{StaticResource promptingmessage}"  Margin="0,0,0,0" Height="41" Width="181" Visibility="{Binding Model.LableVisibility}"></Label>
+                    </Grid>
+                    <Button  Grid.Row="3" Grid.Column="0" Style="{StaticResource denglubut}" Height="50"  HorizontalAlignment="Left" Width="100" Margin="5,11,0,49"  CommandParameter="{Binding ElementName=password}" Command="{Binding Login}" IsDefault="True">
+                    </Button>
+                    <Button Style="{StaticResource quxiaobut}"  Grid.Row="3" Grid.Column="0" Width="100" Height="50" Margin="70,11,0,49" Command="{Binding Close}" />
+                </Grid>
+            </Grid>
+            <Image Grid.Row="0" Grid.Column="0" Width="106" Height="62" Source="{StaticResource logo}" Canvas.Left="90" Canvas.Top="10" HorizontalAlignment="Left" Margin="70,5,0,0" ></Image>
+            <Image Grid.Row="1" Grid.Column="0" Width="230" Height="320" Source="{StaticResource imgkatong}" Canvas.Left="116" Canvas.Top="104" HorizontalAlignment="Center"></Image>
+        </Grid>
+        <lw:LoadingWait Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding Model.WaitVisibled}" Tag="{Binding Model.WaitContent}" Margin="0,0,0,0"></lw:LoadingWait>
+    </Grid >
+</Window>

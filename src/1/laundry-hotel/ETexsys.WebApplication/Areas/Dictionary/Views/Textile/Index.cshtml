@@ -1,0 +1,342 @@
+﻿@{
+    Layout = null;
+}
+<link href="@Url.Content("~/Content/plugins/daterangepicker/daterangepicker.css")" rel="stylesheet" />
+<div class="row wrapper wrapper-content animated fadeInRight" style="padding-top:75px;">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-lg-1 control-label" style="font-weight: bold; font-family: 微软雅黑;">登记时间</label>
+                <div class="col-lg-2">
+                    <div class="input-group" style="width: 230px;">
+                        <input type="text" class="form-control date-picker" id="dateTimeRange" value="" />
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar bigger-110"></i>
+                        </span>
+                        <input type="hidden" name="beginTime" id="beginTime" />
+                        <input type="hidden" name="endTime" id="endTime" />
+                    </div>
+                </div>
+                <label class="col-lg-1 control-label" style="font-weight:bold; font-family:'Microsoft YaHei';">纺织品名称</label>
+                <div class="col-lg-2">
+                    <select class="form-control" id="classId">
+                        <option value="0">全部</option>
+                        @{
+                            var classList = ViewData["ClassList"] as List<ETexsys.Model.textileclass>;
+                            foreach (var item in classList)
+                            {
+                        <option value="@item.ID">@item.ClassName</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <label class="col-lg-1 control-label" style="font-weight:bold; font-family:'Microsoft YaHei';">尺寸</label>
+                <div class="col-lg-2">
+                    <select class="form-control" id="sizeId">
+                        <option value="0">全部</option>
+                    </select>
+                </div>
+                <button class="btn btn-success" onclick="Search()"><i class="fa fa-search"></i>查询</button>
+            </div>
+        </div>
+    </div>
+    <div class="ibox-content" style="margin-top:5px;">
+        <div style="margin-bottom:20px;">
+            <button class="btn btn-warning " type="button" onclick="UpdateTextile()" style="margin-right:2px;"><i class="fa fa-pencil"></i>&nbsp;修改</button>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover dataTables-example">
+                <thead>
+                    <tr>
+                        <th>品牌</th>
+                        <th>流通</th>
+                        <th>名称</th>
+                        <th>尺寸</th>
+                        <th>面料</th>
+                        <th>颜色</th>
+                        <th>数量</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">纺织品属性维护</h4>
+                </div>
+                <form class="form-horizontal" id="TextileForm">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">品牌</label>
+                            <div class="col-lg-10">
+                                <select class="form-control" id="textileBrand">
+                                    <option value="-1">请选择</option>
+                                    @{ var textileBrandList = ViewData["TextileBrandList"] as List<ETexsys.Model.textilebrandarea>; }
+                                    @foreach (var item in textileBrandList)
+                                    {
+                                        <option value="@item.ID">@item.BrandAreaName</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">面料</label>
+                            <div class="col-lg-10">
+                                <select class="form-control" id="fabric">
+                                    <option value="-1">请选择</option>
+                                    @{ var fabricList = ViewData["FabricList"] as List<ETexsys.Model.fabric>; }
+                                    @foreach (var item in fabricList)
+                                    {
+                                        <option value="@item.ID">@item.FabricName</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">颜色</label>
+                            <div class="col-lg-10">
+                                <select class="form-control" id="color">
+                                    <option value="-1">请选择</option>
+                                    @{ var colorList = ViewData["ColorList"] as List<ETexsys.Model.color>; }
+                                    @foreach (var item in colorList)
+                                    {
+                                        <option value="@item.ID">@item.ColorName</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary">修改</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Scripts/plugins/daterangepicker/moment.js")"></script>
+<script src="@Url.Content("~/Scripts/plugins/daterangepicker/daterangepicker.js")"></script>
+<script>
+    $(document).ready(function () {
+
+        $('#dateTimeRange').daterangepicker({
+            applyClass: 'btn-sm btn-success',
+            cancelClass: 'btn-sm btn-default',
+            locale: {
+                applyLabel: '确认',
+                cancelLabel: '取消',
+                fromLabel: '起始时间',
+                toLabel: '结束时间',
+                customRangeLabel: '自定义',
+                firstDay: 1
+            },
+            ranges: {
+                '今日': [moment().startOf('day'), moment()],
+                '昨日': [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')],
+                '最近7日': [moment().subtract('days', 6), moment()],
+                '最近30日': [moment().subtract('days', 29), moment()],
+                '本月': [moment().startOf("month"), moment().endOf("month")],
+                '上个月': [moment().subtract(1, "month").startOf("month"), moment().subtract(1, "month").endOf("month")]
+            },
+            startDate: moment().startOf("month"),
+            endDate: moment().endOf("month"),
+            opens: 'right',    // 日期选择框的弹出位置
+            separator: ' 至 ',
+            showWeekNumbers: false,     // 是否显示第几周
+            showDropdowns: true,
+            locale: {
+                applyLabel: '确定',
+                cancelLabel: '取消',
+                fromLabel: '起始时间',
+                toLabel: '结束时间',
+                customRangeLabel: '自定义',
+                daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+                        '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                firstDay: 1
+            },
+            format: 'YYYY/MM/DD'
+
+        }, function (start, end, label) { // 格式化日期显示框
+            $('#beginTime').val(start.format('YYYY-MM-DD'));
+            $('#endTime').val(end.format('YYYY-MM-DD'));
+        })
+       .next().on('click', function () {
+           $(this).prev().focus();
+       });
+
+    });
+
+    var Searched = false;
+    var isData = false;
+    var classId = 0;
+    var sizeId = 0;
+    var sdate = "";
+    var edate = "";
+    function Search() {
+        classId = $("#classId").val();
+        sizeId = $("#sizeId").val();
+        sdate = $("#beginTime").val();
+        edate = $("#endTime").val();
+        isData = false;
+        if (Searched) {
+            $('.dataTables-example').dataTable().fnDraw();//点查询重新绘制table。
+        } else {
+            Searched = true;
+            var url = "@Url.Action("GetTextileList", "Textile")";
+            $('.dataTables-example').DataTable({
+                bAutoWidth: false,
+                aoColumns: [
+                    { "sClass": "center", "mDataProp": "BrandAreaName", "bSortable": false },
+                    { "sClass": "center", "mDataProp": "BrandName", "bSortable": false },
+                    { "sClass": "center", "mDataProp": "ClassName", "bSortable": false },
+                    { "sClass": "center", "mDataProp": "SizeName", "bSortable": false },
+                    { "sClass": "center", "mDataProp": "FabricName", "bSortable": false },
+                    { "sClass": "center", "mDataProp": "ColorName", "bSortable": false },
+                    { "sClass": "center", "mDataProp": "TextileCount", "bSortable": false }
+                ],
+                "bServerSide": true,//分页，取数据等等的都放到服务端去
+                "bProcessing": true,//载入数据的时候是否显示“载入中”
+                "aLengthMenu": [30, 50, 100],
+                "bLengthChange": false, //改变每页显示数据数量
+                "bFilter": false, //过滤功能
+                "iDisplayStart": 0,
+                "iDisplayLength": 30,//首次加载的数据条数
+                "bStorable": true,//排序操作在服务端进行，所以可以关了。
+                "sAjaxSource": url,
+                "fnServerData": function (sSource, aoData, fnCallback, bStorable) {
+                    var paramList = {
+                        "sEcho": 0,
+                        "iDisplayLength": 0,
+                        "iDisplayStart": 0,
+                        "sSortDir_0": bStorable.aaSorting[0][1],
+                        "iSortCol_0": bStorable.aaSorting[0][0],
+                        "qCondition1": $("#classId").val(),
+                        "qCondition2": $("#sizeId").val(),
+                        "qCondition3": $("#beginTime").val(),
+                        "qCondition4": $("#endTime").val()
+                    };
+                    if (bStorable.aaSorting[0][0] == 0) {
+                        paramList.isDesc = true;
+                    }
+                    for (var i = 0; i < aoData.length; i++) {
+                        if (aoData[i].name == "iDisplayStart") {
+                            paramList.iDisplayStart = aoData[i].value;
+                        } else if (aoData[i].name == "iDisplayLength") {
+                            paramList.iDisplayLength = aoData[i].value;
+                        } else
+                            if (aoData[i].name == "sEcho") {
+                                paramList.sEcho = aoData[i].value;
+                            }
+                    }
+                    $.ajax({
+                        "dataType": 'json',
+                        "type": "POST",
+                        "url": sSource,
+                        "data": paramList,
+                        "success": function (resp) {
+                            fnCallback(resp); //服务器端返回的对象的returnObject部分是要求的格式
+                        }
+                    });
+                },
+                "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+                    isData = true;
+                },
+                dom: '<"html5buttons"B>lTfgitp',
+                buttons: [
+                    { extend: 'copy' },
+                    { extend: 'csv' },
+                    { extend: 'excel', title: 'ExampleFile' },
+                    { extend: 'pdf', title: 'ExampleFile' },
+                    {
+                        extend: 'print',
+                        customize: function (win) {
+                            $(win.document.body).addClass('white-bg');
+                            $(win.document.body).css('font-size', '10px');
+
+                            $(win.document.body).find('table')
+                                    .addClass('compact')
+                                    .css('font-size', 'inherit');
+                        }
+                    }
+                ],
+                "oLanguage": {
+                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+                    "sZeroRecords": "抱歉， 没有找到",
+                    "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                    "sInfoEmpty": "没有数据",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "前一页",
+                        "sNext": "后一页",
+                        "sLast": "尾页"
+                    },
+                    "sZeroRecords": "没有检索到数据",
+                    "sProcessing": "<img src='./loading.gif' />"
+                }
+            });
+        }
+    }
+
+    $("#classId").change(function () {
+        var val = $("#classId option:selected").val();
+        $.ajax({
+            type: "post",
+            data: { classId: val },
+            url: "/Dictionary/Textile/GetSizeListByClass",
+            success: function (data) {
+                $("#sizeId").html("");
+                $.each(data, function (i) {
+                    if (i == 0) {
+                        $("#sizeId").append("<option value=0>全部</option>");
+                    }
+                    var content = "<option value=" + data[i].ID + ">" + data[i].SizeName + "</option>"
+                    $("#sizeId").append(content);
+                })
+            }
+        })
+    });
+
+    function UpdateTextile() {
+        if (isData) {
+            document.getElementById("TextileForm").reset();
+            $('#myModal').modal('show');
+        } else {
+            swal({ title: "提示", text: "暂时没有记录可以修改" });
+        }
+    }
+
+    $("#TextileForm").submit(function () {
+        var _url = "@Url.Action("UpdateTextile", "Textile")";
+        $.ajax({
+            type: "post",
+            data: {
+                beginTime: $("#beginTime").val(), endTime: $("#endTime").val(), classId: $("#classId").val(), sizeId: $("#sizeId").val(),
+                textileBrandId: $("#textileBrand").val(), colorId: $("#color").val(), fabricId: $("#fabric").val()
+            },
+            url: _url,
+            async: false,
+            success: function (result) {
+                if (result.ResultCode == "0") {
+                    $('#myModal').modal('hide');//关闭模态框
+                    document.getElementById("TextileForm").reset();//清空表单
+                    $(".dataTables-example").dataTable().fnDraw();//点搜索重新绘制table。
+                } else {
+                    swal({
+                        title: "提示",
+                        text: "更改失败"
+                    });
+                }
+            }
+        });
+        return false;
+    });
+</script>

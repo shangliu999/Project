@@ -1,0 +1,306 @@
+﻿@{
+    Layout = null;
+}
+@model ETexsys.Model.region_setting
+<link href="@Url.Content("~/Content/plugins/daterangepicker/daterangepicker.css")" rel="stylesheet" />
+<link href="@Url.Content("~/Content/plugins/datetimepicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+
+<form class="form-horizontal" id="hotel_settingForm">
+    <div class="modal-body">
+        <div class="form-group">
+            @Html.HiddenFor(m => m.RegionID)
+            <label class="col-lg-2 control-label">洗涤价格模板</label>
+            <div class="col-lg-4">
+                @{var tempalteList = ViewData["TemplateList"] as List<ETexsys.Model.pricetemplate>;
+                    var wpList = tempalteList.Where(v => v.TemplateType == 2).ToList();}
+                <select class="form-control" id="WashID">
+                    <option value="0"></option>
+                    @foreach (var item in wpList)
+                    {
+                        if (Model != null && Model.WashID == item.ID)
+                        {
+                            <option value="@item.ID" selected="selected">@item.TemplateName</option>
+                        }
+                        else
+                        {
+                            <option value="@item.ID">@item.TemplateName</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-2 control-label">租赁价格模板</label>
+            <div class="col-lg-4">
+                @{ var rpList = tempalteList.Where(v => v.TemplateType == 1).ToList();}
+                <select class="form-control" id="RentID">
+                    <option value="0"></option>
+                    @foreach (var item in rpList)
+                    {
+                        if (Model != null && Model.RentID == item.ID)
+                        {
+                            <option value="@item.ID" selected="selected">@item.TemplateName</option>
+                        }
+                        else
+                        {
+                            <option value="@item.ID">@item.TemplateName</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label">洗涤支付方式</label>
+            <div class="col-lg-4">
+                <div class="col-lg-6" id="PayMentMode">
+                    <div class="i-checks" style="float:left;">
+                        <label>
+                            @if (Model != null && Model.PaymentMode == 1)
+                            {
+                                <input type="radio" checked="" value="1" name="a"> <i></i><text>线上支付</text>
+                            }
+                            else
+                            { <input type="radio" value="1" name="a"> <i></i><text>线上支付</text>
+                            }
+                        </label>
+                    </div>
+                    <div class="i-checks" style="float:left; margin-left:5px;">
+                        <label>
+                            @if (Model != null && Model.PaymentMode == 2)
+                            {
+                                <input type="radio" checked="" value="2" name="a"> <i></i><text>线下支付</text>
+                            }
+                            else
+                            { <input type="radio" value="2" name="a"> <i></i><text>线下支付</text>
+                            }
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-2 control-label">洗涤执行时间：</label>
+            <div class="col-lg-3">
+                <div class='input-group date' id='datetimepicker1'>
+                    @Html.TextBoxFor(m => m.WashingTime, new { @class = "form-control", @style = "width:150px;" })
+                    <span class="input-group-addon" style="float: right; width: 50px; height: 33px;">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-2 control-label">租赁支付方式</label>
+            <div class="col-lg-4">
+                <div class="col-lg-6" id="RentPaymentMode">
+                    <div class="i-checks" style="float:left;">
+                        <label>
+                            @if (Model != null && Model.RentPaymentMode == 1)
+                            {
+                                <input type="radio" checked="" value="1" name="b"> <i></i><text>线上支付</text>
+                            }
+                            else
+                            { <input type="radio" value="1" name="b"> <i></i><text>线上支付</text>
+                            }
+                        </label>
+                    </div>
+                    <div class="i-checks" style="float:left; margin-left:5px;">
+                        <label>
+                            @if (Model != null && Model.RentPaymentMode == 2)
+                            {
+                                <input type="radio" checked="" value="2" name="b"> <i></i><text>线下支付</text>
+                            }
+                            else
+                            { <input type="radio" value="2" name="b"> <i></i><text>线下支付</text>
+                            }
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-2 control-label">租赁执行时间：</label>
+            <div class="col-lg-3">
+                <div class='input-group date' id='datetimepicker2'>
+                    @Html.TextBoxFor(m => m.RentTime, new { @class = "form-control", @style = "width:150px;" })
+                    <span class="input-group-addon" style="float: right; width: 50px; height: 33px;">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-2 control-label">押金</label>
+            <div class="col-lg-4">
+                <div class="input-group">
+                    @Html.TextBoxFor(m => m.Deposit, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-2 control-label">积分</label>
+            <div class="col-lg-4">
+                <div class="input-group">
+                    @Html.TextBoxFor(m => m.Integral, new { @class = "form-control", @disabled = "disabled" })
+                    <span onclick="rechargeClick()" class="input-group-addon" style="background-color:#1ab394;color:#FFF; border-color:#1ab394;cursor:pointer;">
+                        <i class="fa fa-cny bigger-110"></i>充值
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-2 control-label">租赁配比数</label>
+            <div class="col-lg-4">
+                @Html.TextBoxFor(m => m.MatchNumber, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-2 control-label">下单限制数</label>
+            <div class="col-lg-4">
+                @Html.TextBoxFor(m => m.LimitNumber, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer" style="text-align:left;">
+        <button type="submit" class="btn btn-primary">保存</button>
+    </div>
+</form>
+<div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">充值</h4>
+            </div>
+            <form class="form-horizontal" id="rechargeFrom">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">积分</label>
+                        <div class="col-lg-10">
+                            <input id="txtPoint" class="form-control" type="number" onkeyup="value=value.replace(/[^\d]/g,'')" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/Scripts/plugins/daterangepicker/moment.js")"></script>
+<script src="@Url.Content("~/Scripts/plugins/daterangepicker/daterangepicker.js")"></script>
+<script src="@Url.Content("~/Scripts/plugins/datetimepicker/bootstrap-datetimepicker.min.js")"></script>
+<script src="@Url.Content("~/Scripts/plugins/datetimepicker/bootstrap-datetimepicker.zh-CN.js")"></script>
+<script src="@Url.Content("~/Scripts/plugins/datetimepicker/moment-with-locales(1).js")"></script>
+<script>
+    $(document).ready(function () {
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+    });
+    $('#datetimepicker1').datetimepicker({
+        language: 'zh-CN',//显示中文
+        format: 'yyyy-mm-dd',//显示格式
+        minView: "month",//设置只显示到月份
+        initialDate: new Date(),
+        autoclose: true,//选中自动关闭
+        todayBtn: true,//显示今日按钮
+        locale: moment.locale('zh-cn')
+    });
+
+    $('#datetimepicker2').datetimepicker({
+        language: 'zh-CN',//显示中文
+        format: 'yyyy-mm-dd',//显示格式
+        minView: "month",//设置只显示到月份
+        initialDate: new Date(),
+        autoclose: true,//选中自动关闭
+        todayBtn: true,//显示今日按钮
+        locale: moment.locale('zh-cn')
+    });
+
+    if ($("#WashingTime").val() != "") {
+        var d = new Date($("#WashingTime").val());
+        $("#WashingTime").val(d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDay());
+    }
+    if ($("#RentTime").val() != "") {
+        var d = new Date($("#RentTime").val());
+        $("#RentTime").val(d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDay());
+    }
+    function rechargeClick() {
+        $("#txtPoint").val('');
+        $('#myModal').modal('show');
+    }
+
+
+    $("#hotel_settingForm").submit(function () {
+        var url = "@Url.Action("AddHotelSetting", "HighSetting")";
+
+        if ($("#hotel_settingForm #RegionID").val() != "" && $("#hotel_settingForm #RegionID").val() != "0") {
+            url = "@Url.Action("UpdateHotelSetting", "HighSetting")";
+        }
+        $.ajax({
+            type: "post",
+            data: {
+                RegionID: $("#HotelID").val(),
+                PaymentMode: $("#hotel_settingForm #PayMentMode").find("[type='radio']:checked").val(),
+                RentPaymentMode: $("#hotel_settingForm #RentPaymentMode").find("[type='radio']:checked").val(),
+                WashID: $("#hotel_settingForm #WashID").val(),
+                RentID: $("#hotel_settingForm #RentID").val(),
+                MatchNumber: $("#hotel_settingForm #MatchNumber").val(),
+                LimitNumber: $("#hotel_settingForm #LimitNumber").val(),
+                WashingTime: $("#hotel_settingForm #WashingTime").val(),
+                RentTime: $("#hotel_settingForm #RentTime").val(),
+                Deposit: $("#hotel_settingForm #Deposit").val()
+            },
+            url: url,
+            async: false,
+            success: function (result) {
+                if (result.ResultCode == "0") {
+                    swal({
+                        title: "提示",
+                        text: "设置成功"
+                    });
+                } else {
+                    swal({
+                        title: "提示",
+                        text: "添加失败"
+                    });
+                }
+            }
+
+        })
+        return false;
+    });
+
+
+    $("#rechargeFrom").submit(function () {
+        var url = "@Url.Action("Recharge", "HighSetting")";
+        $.ajax({
+            type: "post",
+            data: {
+                hotelId: $("#HotelID").val(),
+                point: $("#rechargeFrom #txtPoint").val(),
+            },
+            url: url,
+            async: false,
+            success: function (result) {
+                if (result.ResultCode == "0") {
+                    $('#myModal').modal('hide');//关闭模态框
+                    var t = $("#hotel_settingForm #Integral").val() == "" ? parseFloat($("#rechargeFrom #txtPoint").val()) : parseFloat($("#rechargeFrom #txtPoint").val()) + parseFloat($("#hotel_settingForm #Integral").val());
+                    $("#hotel_settingForm #Integral").val(t);
+                } else {
+                    swal({
+                        title: "提示",
+                        text: "添加失败"
+                    });
+                }
+            }
+
+        })
+        return false;
+    });
+</script>

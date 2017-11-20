@@ -1,0 +1,176 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>单据详情</title>
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/modernizr-2.6.2.js")"></script>
+    <script src="@Url.Content("~/Scripts/ConfigureJs.js")"></script>
+</head>
+@model  WeChatAPI.Models.InvoiceModel
+<body>
+
+    @if (Model != null)
+    {
+        <div id="panel" class="container body-content" style="margin:auto 0;text-align:center; position:relative;">
+            <p style="text-align: center; width: 100%; font-weight: bold; font-size: 22px;">@Model.InvTypeName</p>
+            <div style="margin: 5px;text-align:left;">
+                <input id="hidInvId" value="@Model.InvID" type="hidden" />
+                <input id="hidCode" value="@Model.Code" type="hidden" />
+                <input id="hidInvNo" value="@Model.InvNo" type="hidden" />
+                <input id="hidInvType" value="@Model.InvType" type="hidden" />
+                <div id="lblCusName" style="margin-top: 10px;">酒店：@Model.HotelName<text>/</text>@Model.RegionName</div>
+                <div id="lblNo">单据编号：@Model.InvNo</div>
+                <div id="lblTime">制单时间：@Model.CreateTime</div>
+                <div id="lblCreateInvName">制单人：@Model.CreateUserName</div>
+                @if (Model.Comfirmed == 1)
+                {
+                    <div>确认时间：@Model.ConfirmTime</div>
+                    <div>确认人：@Model.ConfirmUserName</div>
+                }
+            </div>
+            @if (Model.Comfirmed == 1)
+            {
+                <img src="@Url.Content("../../images/zhang.png")" style="position:absolute;top:60px;width: 150px;height: 150px;right: 10px" />
+            }
+            else
+            {
+                <img id="imgzhang" src="@Url.Content("../../images/zhang.png")" style="position:absolute;top:60px;width: 150px;height: 150px;right: 10px;display:none;" />
+            }
+
+            <div style="height: 2px; background-color: #000;"></div>
+            <div style="margin-top: 20px;">
+                <div class="row" style="font-weight: bold;text-align:left;padding:0 10px;">
+                    <div class="col-xs-5 col-md-5">名称</div>
+                    <div class="col-xs-4 col-md-4">尺寸</div>
+                    <div class="col-xs-3 col-md-3" style="text-align: right;">数量</div>
+                </div>
+
+                <div style="height: 2px; background-color: #000;"></div>
+                @if (Model.Detail != null)
+                {
+                    foreach (var item in Model.Detail)
+                    {
+                        <div class="row" style="text-align:left;padding:0 10px;">
+                            <div class="col-xs-5 col-md-5">@item.ClassName</div>
+                            <div class="col-xs-4 col-md-4">@item.SizeName</div>
+                            <div class="col-xs-3 col-md-3" style="text-align: right;">@item.TextileCount</div>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="row" style="margin: 10px;">
+                <div id="lblTotal" class="col-100" style="text-align: right; font-size: 22px; font-weight: bold;">合计：@Model.Total</div>
+            </div>
+            @if (Model.Comfirmed != 1)
+            {
+                <div style="margin-top:20px;">
+                    <button type="button" id="btnComfirmedSubmit" class="btn btn-success btn-lg btn-block">数据无误，我已确认</button>
+                    <button type="button" id="btnABModal" class="btn btn-warning btn-lg btn-block" data-toggle="modal" data-target="#myModal">数据存在异常？</button>
+                </div>
+            }
+        </div>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">意见反馈</h4>
+                    </div>
+                    <div class="modal-body">
+                        <textarea class="form-control" rows="5" id="txtContext"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" id="btnABSubmit" class="btn btn-primary">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <script src="@Url.Content("~/Scripts/jquery-1.10.2.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+    <script>
+        function GetQueryString(name) {
+            var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) {
+                return unescape(r[2]);
+            }
+            return null;
+        }
+
+        $(function () {
+            var access_code = GetQueryString('code');
+            if (access_code == null || access_code == "") {
+                var fromurl = location.href;
+                var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + '@ViewData["AppId"]' + '&redirect_uri=' + encodeURIComponent(fromurl) + '&response_type=code&scope=snsapi_base&state=etexsys&connect_redirect=1#wechat_redirect';
+                location.href = url;
+            }
+        });
+        $("#btnComfirmedSubmit").on("click", function () {
+            var access_code = GetQueryString('code');
+            var url = "@Url.Action("Comfirme", "Invoice")";
+            $.ajax({
+                url: url,
+                data: { id: $("#hidInvId").val(), code: $("#hidCode").val(), access_code: access_code, invType: $("#hidInvType").val() },
+                beforeSend: function (request) {
+                },
+                dataType: 'JSON',
+                async: false,//请求是否异步，默认为异步
+                type: 'post',
+                success: function (data) {
+                    if (data.ResultCode == 0) {
+                        $("#btnComfirmedSubmit").attr("disabled", "disabled");
+                        $("#btnABModal").attr("disabled", "disabled");
+                        $("#btnComfirmedSubmit").hide();
+                        $("#btnABModal").hide();
+                        $("#imgzhang").show();
+                    } else {
+                        alert(data.ResultMsg);
+                    }
+                },
+                error: function () {
+                }
+            });
+        });
+
+        $("#btnABSubmit").on("click", function () {
+            if ($("#txtContext").val().trim() == "") {
+                alert("请输入异常信息。");
+                return false;
+            }
+            var access_code = GetQueryString('code');
+            var url = "@Url.Action("ABComfirme", "Invoice")";
+            $.ajax({
+                url: url,
+                data: { context: $("#txtContext").val(), code: $("#hidCode").val(), no: $("#hidInvNo").val(), access_code: access_code },
+                beforeSend: function (request) {
+                },
+                dataType: 'JSON',
+                async: false,//请求是否异步，默认为异步
+                type: 'post',
+                success: function (data) {
+                    if (data.ResultCode == 0) {
+                        alert("谢谢您的反馈，我们将尽快处理。");
+                        $('#myModal').modal('hide');
+                    } else {
+                        alert(data.ResultMsg);
+                    }
+                    $("#btnComfirmedSubmit").attr("disabled", "disabled");
+                    $("#btnABModal").attr("disabled", "disabled");
+                    $("#btnComfirmedSubmit").hide();
+                    $("#btnABModal").hide();
+                },
+                error: function () {
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>

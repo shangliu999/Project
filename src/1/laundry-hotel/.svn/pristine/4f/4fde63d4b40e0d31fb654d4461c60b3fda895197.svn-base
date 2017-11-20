@@ -1,0 +1,47 @@
+﻿@model ETexsys.Model.car
+
+<div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">车辆</h4>
+            </div>
+            <form class="form-horizontal" id="addCarForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        @Html.HiddenFor(m => m.ID)
+                        <label class="col-lg-3 control-label">车牌号</label>
+                        <div class="col-lg-9">
+                            @Html.TextBoxFor(m => m.CarNo, new { @class = "form-control", @required = "", @maxlength = "10", @onblur = "CheckCarName(this)" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">司机名</label>
+                        <div class="col-lg-9">
+                            @Html.TextBoxFor(m => m.UseName, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">电话</label>
+                        <div class="col-lg-9">
+                            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">初始公里数</label>
+                        <div class="col-lg-9">
+                            @Html.TextBoxFor(m => m.OldValue, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+

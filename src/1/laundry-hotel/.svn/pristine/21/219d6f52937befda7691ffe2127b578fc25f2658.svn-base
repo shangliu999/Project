@@ -1,0 +1,356 @@
+﻿
+@{
+    Layout = null;
+}
+<link href="@Url.Content("~/Content/ReportStyle.css")" rel="stylesheet" />
+<link media="print" href="@Url.Content("~/Content/ReportStyle.css")" rel="stylesheet" />
+<link href="@Url.Content("~/Content/plugins/daterangepicker/daterangepicker.css")" rel="stylesheet" />
+
+<div style="top:130px;margin-left:-15px; padding-left:0;padding-right:0;width:100%; position:fixed;z-index:2030;">
+    <div style="width:100%;padding: 2px;background: #f7f7f7;z-index: 1;border: 1px solid #dadada;display: table;clear: both;content:''">
+        <div onclick="conditonChange()" style="float: left;border-left: 1px solid #dedcdc;margin-right: 8px;margin-left: 8px;">
+            <div role="button" title="过滤" style="border-color:#ccc;border-radius:2px;cursor:pointer;line-height:36px;margin:0 1px;min-width:30px;padding:0 6px;position:relative;user-select:none;text-align:center;">
+                <span class="fa fa-filter" style="font-size:16px;margin-top:1px;opacity:0.8;"></span>
+            </div>
+        </div>
+        <div style="float: left;border-left: 1px solid #dedcdc;margin-right: 8px;margin-left: 8px;">
+            <div role="button" onclick="myPrint()" title="打印" data-state="" style="border-color:#ccc;border-radius:2px;display:inline-block;cursor:pointer;line-height:36px;margin:0 1px;min-width:30px;padding:0 6px;position:relative;user-select:none;text-align:center;">
+                <span class="fa fa-print" style="font-size:16px;margin-top:1px;opacity:0.8;"></span>
+            </div>
+            <div style="display:inline-block;position:relative;">
+                <form id="formExport" action="@Url.Action("SingleExportExcel","Textile")" method="post">
+                    <div disabled="disabled" id="btnExportExcel" title="导出" data-state="" style="border-color:#ccc;border-radius:2px;display:inline-block;cursor:pointer;line-height:36px;margin:0 1px;min-width:30px;padding:0 6px;position:relative;user-select:none;text-align:center;">
+                        <span class="fa fa-floppy-o" style="font-size:16px;margin-top:1px;opacity:0.8;"></span>
+                    </div>
+                    <input type="hidden" id="hddTitle" name="hddTitle" value="" />
+                    <input type="hidden" id="hddData" name="hddData" value="" />
+                    <input type="hidden" id="hddCondition" name="hddCondition" value="" />
+                    <input type="hidden" id="hddpx" name="hddpx" value="2" />
+                </form>
+            </div>
+            <div role="button" title="分享" data-state="" style="border-color:#ccc;border-radius:2px;display:inline-block;cursor:pointer;line-height:36px;margin:0 1px;min-width:30px;padding:0 6px;position:relative;user-select:none;text-align:center;">
+                <span class="fa fa-share-alt"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dc" class="row wrapper animated fadeInRight" style="background: #FFF;padding-left:0;padding-right:0;height:100%;width:102%;float:right;margin-top:110px;">
+    <div id="print">
+        <span id="title" style="font-size:24px;font-family:'Microsoft YaHei';font-weight:bold;margin:20px 0px 0px 400px; display:inline-block;">布草分布表</span>
+        <div id="condition" style="margin-left:60px;">
+            <div id="leftConditon" style="float:left;display:none;"></div>
+            <div id="rightConditon" style="float:right;"></div>
+        </div>
+        <table id="dataReport" style="border-collapse: collapse;font-size:14px;font-family:'Microsoft YaHei';color:#333;margin-left:60px; width:950px;" cellpadding="0" cellspacing="0"></table>
+        <div id="back" style="display:none;padding-left: 82%;">
+            <a href="javascript:t_load();" style="text-decoration:underline">返回</a>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/plugins/daterangepicker/moment.js")"></script>
+<script src="@Url.Content("~/Scripts/plugins/daterangepicker/daterangepicker.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery-migrate-1.2.1.min.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery.jqprint-0.3.js")"></script>
+<script>
+    function conditonChange() {
+        if ($("#conditonPanel").is(":hidden")) {
+            $("#dc").css("width", "calc(100% - 220px)");
+            $("#conditonPanel").show();
+        } else {
+            $("#dc").css("width", "100%");
+            $("#conditonPanel").hide();
+        }
+    }
+    $(function () {
+        t_load();
+    })
+    function t_load() {
+        $("#back").css("display", "none");
+        $("#leftConditon").css("display", "none");
+        var _url = "@Url.Action("TextileQuery", "Textile")";
+        var bid = "@ViewBag.Bid";
+        if (bid == 0) {
+            $.ajax({
+                type: "post",
+                url: _url,
+                data: {
+                    brandId: bid,
+                },
+                success: function (result) {
+                    var bodyHtml = "<tbody>";
+                    var headerHtml = '<thead class="lefttxt" style="width:150px;border:1px solid #CCC;"><tr style="background-color:#E8F7FE;color:#0294DD;">';
+                    var id = 0;
+                    var datatable = "[";
+                    $.each(result, function (i, item) {
+                        if (i == 0) {
+                            $.each(item, function (j, val) {
+                                if (j != "Id") {
+                                    if(j=="流通品牌"){
+                                        headerHtml += '<td  class="lefttxt" style="height:35px;">' + j + '</td>';
+                                    } else {
+                                        headerHtml += '<td  class="righttxt" style="height:35px;">' + j + '</td>';
+                                    }
+                                }
+                            });
+                        }
+
+                        bodyHtml += '<tr>';
+                        $.each(item, function (k, val) {
+                            if (k == "Id") {
+                                id = val;
+                            }
+                            if (val == 0 || val == null) {
+                                val = "";
+                            }
+                            if (k == "流通品牌" && val != "合计") {
+                                bodyHtml += "<td class='lefttxt' style='height:35px;' ><a id=\"a" + id + "\" href=\"javascript:SelectDetail('" + id + "');\">" + val + "</a></td>";
+                            } else {
+                                if (k == "合计") {
+                                    bodyHtml += "<td class='righttxt' style='height:35px;font-weight:bold;'>" + numFormat(val) + "</td>";
+                                } else {
+                                    if (k != "Id") {
+                                        if (item.流通品牌 == "合计") {
+                                            if(val=="合计"){
+                                                bodyHtml += "<td class='lefttxt' style='height:35px;font-weight:bold;'>" + numFormat(val) + "</td>";
+                                            } else {
+                                                bodyHtml += "<td class='righttxt' style='height:35px;font-weight:bold;'>" + numFormat(val) + "</td>";
+                                            }
+                                        } else {
+                                            bodyHtml += "<td class='righttxt' style='height:35px;'>" + numFormat(val) + "</td>";
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                        datatable += "{";
+                        $.each(item, function (k, val) {
+                            if (k != "Id") {
+                                datatable += "\"" + k + "\":\"" + val + "\",";
+                            }
+                        });
+                        datatable = datatable.substring(0, datatable.length - 1);
+                        datatable += "},"
+                        bodyHtml += "</tr>";
+                    });
+
+                    headerHtml += '</tr></thead>';
+                    var isAppendHeader = false;
+
+                    bodyHtml += "</tbody>";
+                    headerHtml += "</tr></thead>";
+                    datatable = datatable.substring(0, datatable.length - 1);
+                    datatable += "]";
+                    $("#dataReport").children().remove();
+                    $("#dataReport").append(headerHtml + bodyHtml);
+
+                    var totalwidth = $("#dataReport").width();
+                    var dtWidth = totalwidth < 500 ? 500 : totalwidth;
+                    $("#title").css("margin-left", ((dtWidth - 130) / 2).toString() + "px");
+                    $("#dataReport tbody tr:odd").css("background-color", "#f1f1f1");
+                    $("#dataReport").css("width", dtWidth);
+                    $("#condition").css("width", dtWidth);
+                    $("#rightConditon").html("截止时间：" + "@ViewBag.time");
+
+                    $("#hddCondition").val($("#leftConditon").text() + "|" + $("#rightConditon").text());
+                    $("#hddTitle").val("布草分布表");
+                    $("#hddData").val(datatable);
+                    $("#btnExportExcel").removeAttr("disabled");
+                }
+            })
+        } else {
+            SelectDetail(bid);
+        }
+
+    }
+    $(document).ready(function () {
+    });
+
+
+    $("#btnExportExcel").on("click", function () {
+        document.getElementById("formExport").submit();
+    });
+
+    function SelectDetail(bid) {
+        var brandname="";
+        $("#leftConditon").css("display", "block");
+        var _url = "@Url.Action("TextileQuery", "Textile")";
+        var datatable = "[";
+        $.ajax({
+            type: "post",
+            url: _url,
+            data: {
+                brandId: bid,
+            },
+            success: function (result) {
+                var bodyHtml = "<tbody>";
+                var headerHtml = '<thead><tr style="background-color:#E8F7FE;color:#0294DD;">';
+                var isAppendHeader = false;
+                $.each(result[0], function (i, item) {
+                    if (i == 0) {
+                        $.each(item, function (j, val) {
+                            if (j == "位置") {
+                                headerHtml += '<td  class="lefttxt" style="height:35px;">' + j + '</td>';
+                            } else {
+                                headerHtml += '<td  class="righttxt" style="height:35px;">' + j + '</td>';
+                            }
+                        });
+                    }
+                    bodyHtml += "<tr>";
+                    datatable += "{";
+                    $.each(item, function (k, val) {
+                        if (val == 0 || val == null) {
+                            val = "";
+                        }
+                        if(k=="位置"){
+                            bodyHtml += "<td class='lefttxt' style='height:35px;'>" + val + "</td>";
+                        }else if (k == "合计") {
+                            bodyHtml += "<td class='righttxt' style='height:35px;font-weight:bold;'>" + numFormat(val) + "</td>";
+                        } else {
+                            if (item.位置 == "合计") {
+                                bodyHtml += "<td class='righttxt' style='height:35px;font-weight:bold;'>" + numFormat(val) + "</td>";
+                            } else {
+                                bodyHtml += "<td class='righttxt' style='height:35px;'>" + numFormat(val) + "</td>";
+                            }
+                        }
+                        datatable += "\"" + k + "\":\"" + val + "\",";
+                    });
+                    datatable = datatable.substring(0, datatable.length - 1);
+                    datatable += "},"
+                    bodyHtml += "</tr>";
+                });
+                $.each(result[1], function (i, item) {
+                    bodyHtml += "<tr>";
+                  
+                    datatable += "{";
+                    $.each(item, function (k, val) {
+
+                        if (val == 0 || val == null) {
+                            val = "";
+                        }
+                        if (k == "位置") {
+                            bodyHtml += "<td class='lefttxt' style='height:35px;'>" + val + "</td>";
+                        } else if (k == "合计") {
+                            bodyHtml += "<td class='righttxt' style='height:35px;font-weight:bold;'>" + numFormat(val) + "</td>";
+                        } else {
+                            if (item.位置 == "合计") {
+                                bodyHtml += "<td class='righttxt' style='height:35px;font-weight:bold;'>" + numFormat(val) + "</td>";
+                            } else {
+                                bodyHtml += "<td class='righttxt' style='height:35px;'>" + numFormat(val) + "</td>";
+                            }
+                        }
+                        datatable += "\"" + k + "\":\"" + val + "\",";
+                    });
+                   datatable = datatable.substring(0, datatable.length - 1);
+                    datatable += "},"
+                    bodyHtml += "</tr>";
+                });
+                $.each(result[2], function (i, item) {
+                     bodyHtml += "<tr>";
+                   
+                    datatable += "{";
+                    $.each(item, function (k, val) {
+                        if (val == 0 || val == null) {
+                            val = "";
+                        }
+                        if (k == "位置") {
+                            bodyHtml += "<td class='lefttxt' style='height:35px;'>" + val + "</td>";
+                        } else if (k == "合计") {
+                            bodyHtml += "<td class='righttxt' style='height:35px;font-weight:bold;'>" + numFormat(val) + "</td>";
+                        } else {
+                            if (item.位置 == "合计") {
+                                bodyHtml += "<td class='righttxt' style='height:35px;font-weight:bold;'>" + numFormat(val) + "</td>";
+                            } else {
+                                bodyHtml += "<td class='righttxt' style='height:35px;'>" + numFormat(val) + "</td>";
+                            }
+                        }
+                       datatable += "\"" + k + "\":\"" + val + "\",";
+                    });
+                    datatable = datatable.substring(0, datatable.length - 1);
+                    datatable += "},"
+                    bodyHtml += "</tr>";
+                });
+                datatable = datatable.substring(0, datatable.length - 2);
+                $.each(result[3], function (i, item) {
+                    if(i==0){
+                        bodyHtml += "<tr>";
+                    }
+                    datatable += "{";
+                    $.each(item, function (k, val) {
+                        if (val == 0 || val == null) {
+                            val = "";
+                        }
+                        if (item.位置 == "合计") {
+                            if(k=="位置"){
+                                bodyHtml += "<td class='lefttxt' style='height:35px;font-weight:bold;'>" + val+ "</td>";
+                            } else {
+                                bodyHtml += "<td class='righttxt' style='height:35px;font-weight:bold;'>" + numFormat(val) + "</td>";
+                            }
+                           datatable += "\"" + k + "\":\"" + val + "\",";
+                        } else {
+                            brandname = item.位置;
+                        }
+                    });
+                   datatable = datatable.substring(0, datatable.length - 1);
+                   datatable += "},"
+                });
+                datatable = datatable.substring(0, datatable.length - 1);
+                datatable += "]";
+                headerHtml += '</tr></thead>';
+                var isAppendHeader = false;
+
+                bodyHtml += "</tr></tbody>";
+                headerHtml += "</tr></thead>";
+                
+                $("#dataReport").children().remove();
+                $("#dataReport").append(headerHtml + bodyHtml);
+
+                $("#dataReport tbody  tr").each(function (index, ele) {
+                    if (index % 2 == 0) {
+                        $(ele).addClass("eventr");
+                    } else {
+                        $(ele).addClass("oddtr")
+                    }
+                });
+                var totalwidth = $("#dataReport").width();
+                var dtWidth = totalwidth < 500 ? 500 : totalwidth;
+                $("#title").css("margin-left", ((dtWidth - 130) / 2).toString() + "px");
+                $("#dataReport").css("width", dtWidth);
+                $("#condition").css("width", dtWidth);
+                $("#leftConditon").html("流通品牌：" + brandname);
+                $("#rightConditon").html("截止时间：" + "@ViewBag.time");
+                $("#hddCondition").val($("#leftConditon").text() + "|" + $("#rightConditon").text());
+                $("#hddTitle").val("布草分布表");
+                $("#hddData").val(datatable);
+                $("#btnExportExcel").removeAttr("disabled");
+            }
+        })
+    }
+    function myPrint(obj) {
+        $("#print").jqprint({
+        });
+    }
+    //格式数字
+    function numFormat(num) {
+        if (!isNaN(num)) {
+            num = num.toString().split(".");  // 分隔小数点
+            var arr = num[0].split("").reverse();  // 转换成字符数组并且倒序排列
+            var res = [];
+            for (var i = 0, len = arr.length; i < len; i++) {
+                if (i % 3 === 0 && i !== 0) {
+                    res.push(",");   // 添加分隔符
+                }
+                res.push(arr[i]);
+            }
+            res.reverse(); // 再次倒序成为正确的顺序
+            if (num[1]) {  // 如果有小数的话添加小数部分
+                res = res.join("").concat("." + num[1]);
+            } else {
+                res = res.join("");
+            }
+            return res;
+        } else {
+            return num;
+        }
+    }
+</script>

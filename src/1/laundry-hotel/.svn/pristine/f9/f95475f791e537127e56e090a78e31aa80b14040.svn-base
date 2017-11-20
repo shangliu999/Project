@@ -1,0 +1,47 @@
+﻿@model ETexsys.Model.pricetemplate
+<div class="modal inmodal" id="updatamodal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">洗涤价格修改</h4>
+            </div>
+            <form class="form-horizontal" id="updataBrandForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        @Html.HiddenFor(m => m.ID)
+                        <label class="col-lg-2 control-label">酒店名称</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" required="required" id="hotelname" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">数据来源</label>
+                        <div class="col-lg-7">
+                            <select class="form-control" id="udatasources">
+                                <option value="1">污物送洗</option>
+                                <option value="2">净物配送</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">结算方式</label><div class="col-lg-7">
+                            <select class="form-control" id="usettlementMode">
+                                <option value="1">按次</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="updataContent">
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

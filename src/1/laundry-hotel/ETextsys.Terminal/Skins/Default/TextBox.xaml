@@ -1,0 +1,45 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="txtstyle1" TargetType="TextBox">
+        <Setter Property="FontFamily" Value="微软雅黑"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Width" Value="220"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+    
+    <Style x:Key="borderstyle1" TargetType="Border">
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Width" Value="220"/>
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="CornerRadius" Value="5"/>
+        <Setter Property="Background" Value="#FFF"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="#288dff"/>
+    </Style>
+    <Style x:Key="txtid" TargetType="TextBox">
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Margin" Value="0,44,0,4"/>
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontFamily" Value="微软雅黑"/>
+        <Setter Property="Foreground" Value="#333333"/>
+    </Style>
+    <Style x:Key="txtpwd" TargetType="PasswordBox">
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="FontSize" Value="25"/>
+        <Setter Property="FontFamily" Value="微软雅黑"/>
+        <Setter Property="Foreground" Value="#CCCCCC"/>
+        <Setter Property="Height" Value="50"/>
+    </Style>
+    <Style x:Key="txthotel" TargetType="TextBox">
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="25"/>
+        <Setter Property="FontFamily" Value="微软雅黑"/>
+    </Style>
+</ResourceDictionary>

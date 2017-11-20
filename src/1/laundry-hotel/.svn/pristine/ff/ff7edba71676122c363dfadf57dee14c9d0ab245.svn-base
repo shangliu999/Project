@@ -1,0 +1,436 @@
+﻿@{
+    Layout = null;
+}
+<script src="@Url.Content("~/Scripts/echarts.min.js")"></script>
+<div class="row wrapper wrapper-content animated fadeInRight" style="padding-top:100px;padding-left:20px;">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title" style="border-width:0;border-radius:4px 4px 0 0 ;">
+                            <img style="float:left;" src="@Url.Content("~/Images/icon-jiudian.png")" />
+                            <h5 style="padding-top:5px; margin-left:5px;font-weight:normal;font-size:16px; color:#666;">服务酒店（家）</h5>
+                        </div>
+                        <div class="ibox-content" style="text-align:center;border-width: 0 0;border-radius:0 0 4px 4px ;">
+                            <h1 class="no-margins" style="font-size:30px; color:#333;">50</h1>
+                            <div style="margin-top:10px;padding:5px 0; background-color:#F3F3F4;color:#FA8305; border-radius:15px;font-size:14px;">本月新增2家</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title" style="border-width:0;border-radius:4px 4px 0 0 ;">
+                            <img style="float:left;" src="@Url.Content("~/Images/icon-shouru.png")" />
+                            <h5 style="padding-top:5px; margin-left:5px;color:#828282;font-family:'Microsoft YaHei UI';font-weight:normal;font-size:16px; color:#666;">本月收入（元）</h5>
+                        </div>
+                        <div class="ibox-content" style="text-align:center;border-width: 0 0;border-radius:0 0 4px 4px ;">
+                            <h1 class="no-margins" style="font-size:30px; color:#333;">￥386,200</h1>
+                            <div style="margin-top:10px;padding:5px 0; background-color:#F3F3F4;color:#FF6F9F; border-radius:15px;">上月收入：￥400,120</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title" style="border-width:0;border-radius:4px 4px 0 0 ;">
+                            <img style="float:left;" src="@Url.Content("~/Images/icon-bucao.png")" />
+                            <h5 style="padding-top:5px; margin-left:5px;color:#828282;font-family:'Microsoft YaHei UI';font-weight:normal;font-size:16px; color:#666;">布草数量（件）</h5>
+                        </div>
+                        <div class="ibox-content" style="text-align:center;border-width: 0 0;border-radius:0 0 4px 4px ;">
+                            <h1 class="no-margins" style="font-size:30px; color:#333;">360,020</h1>
+                            <div style="margin-top:10px;padding:5px 0; background-color:#F3F3F4;color:#21AF37;font-size:14px; border-radius:15px;">60天未使用：120</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title" style="border-width:0;border-radius:4px 4px 0 0 ;">
+                            <img style="float:left;" src="@Url.Content("~/Images/icon-jaiziche.png")" />
+                            <h5 style="padding-top:5px; margin-left:5px;color:#828282;font-family:'Microsoft YaHei UI';font-weight:normal;font-size:16px; color:#666;">架子车（辆）</h5>
+                        </div>
+                        <div class="ibox-content" style="text-align:center;border-width: 0 0;border-radius:0 0 4px 4px ;">
+                            <h1 class="no-margins" style="font-size:30px; color:#333;">120</h1>
+                            <div style="margin-top:10px;padding:5px 0; background-color:#fff;color:#43BB43; border-radius:15px;">&nbsp;</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title" style="border-width:0;border-radius:4px 4px 0 0 ;">
+                            <img style="float:left;" src="@Url.Content("~/Images/icon-bao.png")" />
+                            <h5 style="padding-top:5px; margin-left:5px;color:#828282;font-family:'Microsoft YaHei UI';font-weight:normal;font-size:16px; color:#666;">包（个）</h5>
+                        </div>
+                        <div class="ibox-content" style="text-align:center;border-width: 0 0;border-radius:0 0 4px 4px ;">
+                            <h1 class="no-margins" style="font-size:30px; color:#333;">220</h1>
+                            <div style="margin-top:10px;padding:5px 0; background-color:#fff;color:#43BB43; border-radius:15px;">&nbsp;</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title" style="border-width:0;border-radius:4px 4px 0 0 ;">
+                        <h5 style="padding-top:5px; margin-left:5px;color:#828282;font-family:'Microsoft YaHei UI';font-weight:normal;">芯片报废统计</h5>
+
+                        <span class="label label-primary pull-right">本年</span>
+                        <span class="label label-primary pull-right">本月</span>
+                    </div>
+                    <div class="ibox-content" style="text-align:center;border-radius:0 0 4px 4px ; height:285px;">
+                        <div id="scrapMChart" style="width:100%;height:280px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-5">
+            <div class="ibox float-e-margins">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title" style="border-width:0;border-radius:4px 4px 0 0 ;">
+                        <h5 style="padding-top:5px; margin-left:5px;color:#828282;font-family:'Microsoft YaHei UI';font-weight:normal;">布草分布统计</h5>
+                    </div>
+                    <div class="ibox-content" style="text-align:center;border-radius:0 0 4px 4px ; height:285px;">
+                        <div id="cDisChart" style="width:50%;height:280px;float:left;"></div>
+                        <div id="jDisChart" style="width:50%;height:280px;float:left;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-7">
+            <div class="ibox float-e-margins">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title" style="border-width:0;border-radius:4px 4px 0 0 ;">
+                        <h5 style="padding-top:5px; margin-left:5px;color:#828282;font-family:'Microsoft YaHei UI';font-weight:normal;">布草洗涤统计</h5>
+
+                        <span class="label label-primary pull-right" style="background-color:#0294DD;">本年</span>
+                        <span class="label label-primary pull-right">本月</span>
+                    </div>
+                    <div class="ibox-content" style="text-align:center;border-radius:0 0 4px 4px ; height:285px;">
+                        <div id="washingMChart" style="width:100%;height:280px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var scrapm_dom = document.getElementById("scrapMChart");
+    var scrapMChart = echarts.init(scrapm_dom);
+    scrapm_option = {
+
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: ['报废总数', '异常报废'],
+        },
+        toolbox: {
+            show: false,
+            feature: {
+                mark: { show: true },
+                dataView: { show: true, readOnly: false },
+                magicType: { show: true, type: ['line', 'bar'] },
+                restore: { show: true },
+                saveAsImage: { show: true }
+            }
+        },
+        calculable: true,
+        xAxis: [
+            {
+                type: 'category',
+                data: ['床单', '被套', '枕套', '浴巾', '地巾', '面巾']
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                show: true
+            }
+        ],
+        series: [
+            {
+                name: '报废总数',
+                type: 'bar',
+                data: [76, 176, 50, 1, 54, 300],
+                itemStyle: {
+                    normal: {
+                        color: function (params) {
+                            // build a color map as your need.
+                            var colorList = [
+                              '#2497FB'
+                            ];
+                            return colorList[params.dataIndex]
+                        }
+                    }
+                }
+            },
+            {
+                name: '异常报废',
+                type: 'bar',
+                data: [26, 76, 24, 0, 4, 30],
+                itemStyle: {
+                    normal: {
+                        color: function (params) {
+                            // build a color map as your need.
+                            var colorList = [
+                              '#FF492D'
+                            ];
+                            return colorList[params.dataIndex]
+                        }
+                    }
+                }
+            }
+        ]
+    };
+    scrapMChart.setOption(scrapm_option, true);
+
+    var cDisChart_dom = document.getElementById("cDisChart");
+    var cDisChart = echarts.init(cDisChart_dom);
+
+    cDisChart_option = {
+        title: {
+            text: '床上用品',
+            x: 'center',
+            y: 'center',
+            itemGap: 20,
+            textStyle: {
+                color: 'rgba(30,144,255,0.8)',
+                fontFamily: '微软雅黑',
+                fontSize: 25,
+                fontWeight: 'bolder'
+            }
+        },
+        color: ['#21AF37', '#FF6B9D', '#FAB305','#2497FB'],
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            x: 'left',
+            data: ['成品仓库', '租赁仓库', '酒店中', '洗涤厂']
+        },
+        toolbox: {
+            show: false,
+            feature: {
+                mark: { show: true },
+                dataView: { show: true, readOnly: false },
+                magicType: {
+                    show: true,
+                    type: ['pie', 'funnel'],
+                    option: {
+                        funnel: {
+                            x: '25%',
+                            width: '50%',
+                            funnelAlign: 'center'
+                        }
+                    }
+                },
+                restore: { show: true },
+                saveAsImage: { show: true }
+            }
+        },
+        calculable: true,
+        series: [
+            {
+                name: '床上用品',
+                type: 'pie',
+                radius: ['50%', '70%'],
+                itemStyle: {
+                    normal: {
+                        label: {
+                            show: false
+                        },
+                        labelLine: {
+                            show: false
+                        }
+                    }
+                },
+                data: [
+                    { value: 335, name: '成品仓库' },
+                    { value: 310, name: '租赁仓库' },
+                    { value: 234, name: '酒店中' },
+                    { value: 135, name: '洗涤厂' }
+                ]
+            }
+        ]
+    };
+
+    cDisChart.setOption(cDisChart_option, true);
+
+    var jDisChart_dom = document.getElementById("jDisChart");
+    var jDisChart = echarts.init(jDisChart_dom);
+
+    jDisChart_option = {
+        title: {
+            text: '巾类',
+            x: 'center',
+            y: 'center',
+            itemGap: 20,
+            textStyle: {
+                color: 'rgba(30,144,255,0.8)',
+                fontFamily: '微软雅黑',
+                fontSize: 25,
+                fontWeight: 'bolder'
+            }
+        },
+        color: ['#21AF37', '#FF6B9D', '#FAB305', '#2497FB'],
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            show: false,
+            x: 'left',
+            data: ['成品仓库', '租赁仓库', '酒店中', '洗涤厂']
+        },
+        toolbox: {
+            show: false,
+            feature: {
+                mark: { show: true },
+                dataView: { show: true, readOnly: false },
+                magicType: {
+                    show: true,
+                    type: ['pie', 'funnel'],
+                    option: {
+                        funnel: {
+                            x: '25%',
+                            width: '50%',
+                            funnelAlign: 'center'
+                        }
+                    }
+                },
+                restore: { show: true },
+                saveAsImage: { show: true }
+            }
+        },
+        calculable: true,
+        series: [
+            {
+                name: '巾类',
+                type: 'pie',
+                radius: ['50%', '70%'],
+                itemStyle: {
+                    normal: {
+                        label: {
+                            show: false
+                        },
+                        labelLine: {
+                            show: false
+                        }
+                    }
+                },
+                data: [
+                    { value: 335, name: '成品仓库' },
+                    { value: 310, name: '租赁仓库' },
+                    { value: 234, name: '酒店中' },
+                    { value: 135, name: '洗涤厂' }
+                ]
+            }
+        ]
+    };
+
+    jDisChart.setOption(jDisChart_option, true);
+
+    var washingMChart_dom = document.getElementById("washingMChart");
+    var washingMChart = echarts.init(washingMChart_dom);
+
+    washingMChart_option = {
+        tooltip: {
+            trigger: 'axis'
+        },
+        toolbox: {
+            show: false,
+            feature: {
+                mark: { show: true },
+                dataView: { show: true, readOnly: false },
+                magicType: { show: true, type: ['line', 'bar'] },
+                restore: { show: true },
+                saveAsImage: { show: true }
+            }
+        },
+        calculable: true,
+        legend: {
+            data: ['床上用品', '巾类', '返洗率'],
+        },
+        xAxis: [
+            {
+                type: 'category',
+                data: ['1', '2', '3', '4', '5', '6', '7']
+            }
+        ],
+
+        yAxis: [
+            {
+                type: 'value',
+                name: '洗涤数'
+            },
+            {
+                type: 'value',
+                name: '返洗率',
+                axisLabel: {
+                    show: true,
+                    interval: 'auto',
+                    formatter: '{value} %'
+                },
+            }
+        ],
+        series: [
+
+            {
+                name: '床上用品',
+                type: 'bar',
+                barWidth: 25,//固定柱子宽度
+                data: [500, 536, 963, 548, 1152, 2100, 800],
+                itemStyle: {
+                    normal: {
+                        color: function (params) {
+                            // build a color map as your need.
+                            var colorList = [
+                              '#0294DD'
+                            ];
+                            return colorList[params.dataIndex]
+                        }
+                    }
+                }
+            }, {
+                name: '巾类',
+                type: 'bar',
+                barWidth: 25,//固定柱子宽度
+                data: [300, 236, 563, 448, 752, 900, 500],
+                itemStyle: {
+                    normal: {
+                        color: function (params) {
+                            // build a color map as your need.
+                            var colorList = [
+                              '#21AF37'
+                            ];
+                            return colorList[params.dataIndex]
+                        }
+                    }
+                }
+            },
+            {
+                name: '返洗率',
+                type: 'line',
+                yAxisIndex: 1,
+                data: [5, 6.2, 0, 0.3, 0.9, 0.5, 10],
+                lineWidth: 15,
+                itemStyle: {
+                    normal: {
+                        lineStyle: {
+                            color: '#FAB305'
+                        }
+                    }
+                },
+            }
+        ]
+    };
+
+    washingMChart.setOption(washingMChart_option, true);
+</script>

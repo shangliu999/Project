@@ -1,0 +1,141 @@
+﻿<Window x:Class="ETextsys.Terminal.View.Choose.ExecutedModal"
+       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+        xmlns:local="clr-namespace:ETextsys.Terminal.View.Choose" WindowStartupLocation="CenterScreen" Background="Transparent"
+        mc:Ignorable="d" Style="{DynamicResource FuncWindow}" AllowsTransparency="True" ShowInTaskbar="False">
+    <Grid>
+        <StackPanel Width="1024" Height="768" Background="#000" Opacity="0.5"></StackPanel>
+
+        <Button Style="{DynamicResource ModalCloseBtn}" Panel.ZIndex="1000" HorizontalAlignment="Right" Margin="0,88,125,0" VerticalAlignment="Top" Command="{Binding CloseModal}"></Button>
+
+        <Border CornerRadius="30" Background="#FFF" Margin="10,0,10,0" Opacity="0.85" Height="530" Width="950" VerticalAlignment="Center">
+            <StackPanel Margin="20,0,20,0">
+                <StackPanel Height="50" VerticalAlignment="Center" Orientation="Vertical">
+                    <TextBlock Text="{Binding Model.Title}" Foreground="Red" Style="{DynamicResource ModalTitle}" HorizontalAlignment="Center" Margin="0,10,0,0"></TextBlock>
+                </StackPanel>
+                <Line X1="0" X2="900" Height="1" Stroke="#CCC" StrokeThickness="1"></Line>
+                <Border Margin="0,10" BorderBrush="#A3CEFF" CornerRadius="6" BorderThickness="6">
+                    <DataGrid Style="{DynamicResource DefaultGrid}" Height="415" ItemsSource="{Binding}" DataContext="{Binding Model.ExecutedTable}">
+                        <DataGrid.RowStyle>
+                            <Style TargetType="{x:Type DataGridRow}">
+                                <Style.Triggers>
+                                    <Trigger Property="ItemsControl.AlternationIndex"  Value="0">
+                                        <Setter Property="Background" Value="#FFF" />
+                                    </Trigger>
+                                    <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                        <Setter Property="Background" Value="#F0F7FF" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="Background" Value="#D4E8FF"/>
+                                <Setter Property="Foreground" Value="#0069F9" />
+                                <Setter Property="Height" Value="34" />
+                                <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+                                <Setter Property="FontSize" Value="16"></Setter>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn   Width="230">
+                                <DataGridTemplateColumn.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{DynamicResource IconRFID_Blue}" Width="26" Height="26" Margin="5,0,5,0"></Image>
+                                        <TextBlock Text="芯片码"></TextBlock>
+                                    </StackPanel>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock  Text="{Binding Path=RFID}" Margin="5,0,0,0" FontFamily="微软雅黑" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn   Width="*">
+                                <DataGridTemplateColumn.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{DynamicResource IconBrand}" Width="26" Height="26" Margin="0,0,5,0"></Image>
+                                        <TextBlock Text="流通类型"></TextBlock>
+                                    </StackPanel>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock  Text="{Binding Path=BrandName}" Margin="5,0,0,0" FontFamily="微软雅黑" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn   Width="*">
+                                <DataGridTemplateColumn.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{DynamicResource IconClass}" Width="26" Height="26" Margin="0,0,5,0"></Image>
+                                        <TextBlock Text="纺织品名称"></TextBlock>
+                                    </StackPanel>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock  Text="{Binding Path=ClassName}" Margin="5,0,0,0" FontFamily="微软雅黑" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn   Width="*">
+                                <DataGridTemplateColumn.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{DynamicResource IconSize}" Width="26" Height="26" Margin="0,0,5,0"></Image>
+                                        <TextBlock Text="尺寸"></TextBlock>
+                                    </StackPanel>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock  Text="{Binding Path=SizeName}" Margin="5,0,0,0" FontFamily="微软雅黑" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn   Width="*">
+                                <DataGridTemplateColumn.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{DynamicResource IconRegion}" Width="26" Height="26" Margin="0,0,5,0"></Image>
+                                        <TextBlock Text="位置"></TextBlock>
+                                    </StackPanel>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock  Text="{Binding Path=RegionName}" Margin="5,0,0,0" FontFamily="微软雅黑" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="150">
+                                <DataGridTemplateColumn.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{DynamicResource IconTime}" Width="26" Height="26" Margin="0,0,5,0"></Image>
+                                        <TextBlock Text="上次操作时间"></TextBlock>
+                                    </StackPanel>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=UpdateTime}" FontFamily="微软雅黑" FontSize="16"  HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                        </DataGrid.Columns>
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="LightBlue"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.CellStyle>
+                    </DataGrid>
+                </Border>
+
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

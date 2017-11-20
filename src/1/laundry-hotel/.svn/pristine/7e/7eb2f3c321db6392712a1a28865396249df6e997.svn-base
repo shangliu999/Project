@@ -1,0 +1,269 @@
+﻿@{
+    Layout = null;
+}
+<div class="row wrapper wrapper-content animated fadeInRight" style="padding-top:75px;">
+    <div class="ibox-content">
+        <div style="margin-bottom:20px;">
+            @Html.ToolButton(ViewData["BtnList"] as List<ETexsys.Model.sys_right_button>)
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover dataTables-example">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>名称</th>
+                        <th>排序</th>
+                        <th>工作职责</th>
+                        <th>创建时间</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+    </div>
+    @RenderPage("Detail.cshtml")
+</div>
+<script>
+
+    $(document).ready(function () {
+        var _url = "@Url.Action("GetPersonnelPlaceList", "PersonnelPlace")";
+        $('.dataTables-example').DataTable({
+            bAutoWidth: false,
+            aoColumns: [
+               {
+                   "sClass": "text-center",
+                   "data": "ID",
+                   "render": function (data, type, full, meta) {
+                       return '<input type="radio" name="a"  class="checkchild"  value="' + data + '" />';
+                   },
+                   "bSortable": false
+               },
+                { "sClass": "center", "mDataProp": "PersonnelName", "bSortable": false },
+                { "sClass": "center", "mDataProp": "Sort", "bSortable": false },
+                { "sClass": "center", "mDataProp": "Responsibility", "bSortable": false },
+                {
+                    "sClass": "text-center",
+                    "data": "CreateTime",
+                    "render": function (data, type, full, meta) {
+                        return data_string(data);//date的格
+                    },
+                    "bSortable": false
+                }
+            ],
+            "bServerSide": true,//分页，取数据等等的都放到服务端去
+            "bProcessing": true,//载入数据的时候是否显示“载入中”
+            "aLengthMenu": [30, 50, 100],
+            "bLengthChange": false, //改变每页显示数据数量
+            "bFilter": false, //过滤功能
+            "iDisplayStart": 0,
+            "iDisplayLength": 30,//首次加载的数据条数
+            "bStorable": true,//排序操作在服务端进行，所以可以关了。
+            "sAjaxSource": _url,
+            "fnServerData": function (sSource, aoData, fnCallback, bStorable) {
+                var paramList = {
+                    "sEcho": 0,
+                    "iDisplayLength": 0,
+                    "iDisplayStart": 0,
+                    "sSortDir_0": bStorable.aaSorting[0][1],
+                    "iSortCol_0": bStorable.aaSorting[0][0],
+                };
+                if (bStorable.aaSorting[0][0] == 0) {
+                    paramList.isDesc = true;
+                }
+                for (var i = 0; i < aoData.length; i++) {
+                    if (aoData[i].name == "iDisplayStart") {
+                        paramList.iDisplayStart = aoData[i].value;
+                    } else if (aoData[i].name == "iDisplayLength") {
+                        paramList.iDisplayLength = aoData[i].value;
+                    } else
+                        if (aoData[i].name == "sEcho") {
+                            paramList.sEcho = aoData[i].value;
+                        }
+                }
+                $.ajax({
+                    "dataType": 'json',
+                    "type": "POST",
+                    "url": sSource,
+                    "data": paramList,
+                    "success": function (resp) {
+                        fnCallback(resp); //服务器端返回的对象的returnObject部分是要求的格式
+                    }
+                });
+            },
+            "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+
+            },
+            dom: '<"html5buttons"B>lTfgitp',
+            buttons: [
+                { extend: 'copy' },
+                { extend: 'csv' },
+                { extend: 'excel', title: 'ExampleFile' },
+                { extend: 'pdf', title: 'ExampleFile' },
+
+                {
+                    extend: 'print',
+                    customize: function (win) {
+                        $(win.document.body).addClass('white-bg');
+                        $(win.document.body).css('font-size', '10px');
+
+                        $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                    }
+                }
+            ],
+            "oLanguage": {
+                "sLengthMenu": "每页显示 _MENU_ 条记录",
+                "sZeroRecords": "抱歉， 没有找到",
+                "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                "sInfoEmpty": "没有数据",
+                "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "前一页",
+                    "sNext": "后一页",
+                    "sLast": "尾页"
+                },
+                "sZeroRecords": "没有检索到数据",
+                "sProcessing": "<img src='./loading.gif' />"
+            }
+        });
+
+    });
+
+    function AddModule() {
+        $("#PersonnelName").nextAll().remove();
+        $("#ID").val("0");
+        document.getElementById("addPersonnelPlaceForm").reset();
+        $(".modal-title").html("职位添加");
+        $('#myModal').modal('show');
+    }
+
+    function UpdateModule() {
+        $("#PersonnelName").nextAll().remove();
+        var val = $(".dataTables-example input[type='radio']:checked").val();
+        if (val == null) {
+            swal("提示", "请先选择记录.");
+
+            return false;
+        }
+        var url = "@Url.Action("GetPersonnelPlace", "PersonnelPlace")";
+        document.getElementById("addPersonnelPlaceForm").reset();//清空表单
+        $.ajax({
+            type: "post",
+            data: { perId: val },
+            url: url,
+            async: false,
+            success: function (result) {
+                if (result.ResultCode == "0") {
+                    $(".modal-title").html("职位修改");
+                    $("#ID").val(result.Result.ID);
+                    $("#PersonnelName").val(result.Result.PersonnelName);
+                    $("#Sort").val(result.Result.Sort);
+                    $("#Responsibility").val(result.Result.Responsibility);
+
+                    $('#myModal').modal('show');
+                } else {
+                    swal({ title: "提示", text: "获取信息失败", type: "error" });
+                }
+            }
+        });
+    }
+
+    function DeleteModule() {
+        var val = $(".dataTables-example input[type='radio']:checked").val();
+        if (val == null) {
+            swal("提示", "请先选择记录.");
+
+            return false;
+        }
+        swal({
+            title: "您确定要删除吗？",
+            text: "您确定要删除这条数据？",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            closeOnConfirm: false
+        }, function () {
+            var url = "@Url.Action("DelPersonnelPlace", "PersonnelPlace")";
+            $.ajax({
+                type: "post",
+                data: { perId: val },
+                url: url,
+                async: false,
+                success: function (result) {
+                    if (result.ResultCode == "0") {
+                        swal("Good!", "删除成功", "success");
+                        $(".dataTables-example").dataTable().fnDraw();//点搜索重新绘制table。
+                    } else {
+                        swal({ title: "提示", text: "删除失败", type: "error" });
+                    }
+                }
+            });
+        });
+    }
+
+    function CheckBagName(obj) {
+        var url = "@Url.Action("CheckPersonnelPlaceName", "PersonnelPlace")";
+        $.ajax({
+            type: "post",
+            data: { PerID: $("#ID").val(), PerName: $("#PersonnelName").val() },
+            url: url,
+            async: false,
+            success: function (result) {
+                if (result) {
+                    $(obj).nextAll().remove();
+                } else {
+                    $(obj).nextAll().remove();
+                    $(obj).after('<p class="help-block"  style="color:red">名称已存在</p>');
+                }
+            }
+        });
+    }
+
+    $("#addPersonnelPlaceForm").submit(function () {
+        var _url = "@Url.Action("CheckPersonnelPlaceName", "PersonnelPlace")";
+        $.ajax({
+            type: "post",
+            data: { PerID: $("#ID").val(), PerName: $("#PersonnelName").val() },
+            url: _url,
+            success: function (result) {
+                if (result) {
+                    $("#PersonnelName").nextAll().remove();
+                    var url = "@Url.Action("AddPersonnelPlace", "PersonnelPlace")";
+                    if ($("#ID").val() != "0") {
+                        url = "@Url.Action("UpdatePersonnelPlace", "PersonnelPlace")";
+                    }
+                    $.ajax({
+                        type: "post",
+                        data: { ID: $("#ID").val(), PersonnelName: $("#PersonnelName").val(), Sort: $("#Sort").val(), Responsibility: $("#Responsibility").val() },
+                        url: url,
+                        async: false,
+                        success: function (result) {
+                            if (result.ResultCode == "0") {
+                                $('#myModal').modal('hide');//关闭模态框
+                                document.getElementById("addPersonnelPlaceForm").reset();//清空表单
+                                $(".dataTables-example").dataTable().fnDraw();//点搜索重新绘制table。
+                            } else {
+                                swal({
+                                    title: "提示",
+                                    text: "添加失败"
+                                });
+                            }
+                        }
+                    });
+                } else {
+                    $("#PersonnelName").nextAll().remove();
+                    $("#PersonnelName").after('<p class="help-block"  style="color:red">名称已存在</p>');
+                }
+            }
+        });
+        return false;
+    });
+
+</script>
+

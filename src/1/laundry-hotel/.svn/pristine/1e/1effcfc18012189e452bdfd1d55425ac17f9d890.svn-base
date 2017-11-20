@@ -1,0 +1,752 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<script src="~/Scripts/ajaxfileupload.js"></script>
+<h2>Index</h2>
+<script src="@Url.Content("~/Scripts/jquery.md5.js")"></script>
+<input id="btnLogin" type="button" value="登录" />
+<input id="btnCheck" type="button" value="检测" />
+<input id="btnFirSyn" type="button" value="首次同步" />
+<input id="btnSecSyn" type="button" value="二次同步" />
+<input type="button" value="获取用户信息" id="buthuoqu" />
+<input id="btnreg" value="注册" type="button" />
+<input id="btntagselect" value="标签解析" type="button" />
+<input id="btnrfidInvoice" value="提交RFID单据" type="button" />
+<input id="btnscrap" value="报废" type="button" />
+<input id="btnSendTask" value="获取配送任务" type="button" />
+<input id="hidtoken" type="hidden" value="" />
+<br />
+<br />
+<input id="BillInquiry" type="button" value="订单查询" />
+<input id="Detail" type="button" value="详情" />
+<input id="Summary" type="button" value="汇总" />
+<input id="btnDeliveryTask" type="button" value="出库任务" />
+<input id="btnRepeatOperator" type="button" value="重复收货" />
+<input id="btnSignTask" type="button" value="签收任务" />
+
+<input id="btnrfidSign" type="button" value="净物签收" />
+
+<input id="btnHandSign" type="button" value="手工签收" />
+<input id="btnHandRecieve" type="button" value="手工收货" />
+<br /><br />
+<input id="btnHandSend" type="button" value="手工发货" />
+<input id="btnquery" type="button" value="单据查询" />
+<input id="btnsummary" type="button" value="单据汇总" />
+<input id="btnwxxcx" type="button" value="小程序" />
+<input id="userlist" type="button" value="得到用户集合" />
+<input id="infactorytask" type="button" value="入厂任务" />
+<input id="btnadroidrec" type="button" value="手机收货" />
+<form enctype="multipart/form-data" method="post" action="@Url.Action("UploadHotelImage", "api/WeChat")">
+    <input type="text" value="4" name="dd" />
+    <input type="file" id="file" name="t" />
+    <input type="submit" value="提交" />
+</form>
+<br />
+<br />
+<input id="btnowe" type="button" value="收发差异" />
+<input id="btnSendTask1" type="button" value="配送任务1" />
+<input id="btnqrcodevalidation" type="button" value="二维码校验" />
+<input id="btntruck" value="架子车解析" type="button" />
+
+<script>
+    $("#userlist").click(function () {
+        var data = { "QRCode": "E01150207219325466", "RFIDTagNo": "000000000000000005001142", "TimeStamp": "1506049195", "UUID": "74E50BF3C1C0", "TerminalType": "Desktop" }
+        var url = "@Url.Action("QRCodeBinding", "api/Textile")";
+        $.ajax({
+            url: url,
+            data: data,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", "123");
+                //request.setRequestHeader("signature", btoa(JSON.stringify(data)));
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'post',
+            success: function () {
+
+            },
+            error: function () {
+            }
+        });
+    });
+
+    $("#btnwxxcx").click(function () {
+        var data = { "hotelId": "4" }
+        var url = "@Url.Action("UploadHotelLogo", "api/WeChat")";
+        $.ajaxFileUpload({
+            url: url,
+            secureuri: false,
+            fileUpload: file,
+            data: data,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", "123");
+                //request.setRequestHeader("signature", btoa(JSON.stringify(data)));
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'post',
+            success: function () {
+
+            },
+            error: function () {
+            }
+        });
+    });
+    $("#btnDeliveryTask").click(function () {
+        var data = { TimeStamp: 123, UUID: "C85B76B1E589", TerminalType: "Windows" }
+        var url = "@Url.Action("DeliveryTask", "api/BusinessInvoice")";
+        $.ajax({
+            url: url,
+            data: data,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", $("#hidtoken").val());
+                //request.setRequestHeader("signature", btoa(JSON.stringify(data)));
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function () {
+
+            },
+            error: function () {
+            }
+        });
+    });
+
+    $("#Summary").click(function () {
+        var data = { "CreateTime": "2017-11-13T00:00:00", "InvType": 1, "HotelID": 25, "RegionID": 30, "TimeStamp": "1510638110", "UUID": "34F39AED9FDB", "TerminalType": "Desktop" };
+        var url = "@Url.Action("Summary", "api/BillInquiry")";
+        $.ajax({
+            url: url,
+            data: data,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", $("#hidtoken").val());
+                //request.setRequestHeader("signature", btoa(JSON.stringify(data)));
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function (list) {
+                var i = 0;
+            },
+            error: function () {
+            }
+        });
+    });
+
+    $("#Detail").click(function () {
+        var data = { OrderNumber: "SH20170705000006", TimeStamp: 123, UUID: "C85B76B1E589", TerminalType: "Windows" };
+        var url = "@Url.Action("Details", "api/BillInquiry")";
+        $.ajax({
+            url: url,
+            data: data,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", $("#hidtoken").val());
+                //request.setRequestHeader("signature", btoa(JSON.stringify(data)));
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function (list) {
+                var i = 0;
+            },
+            error: function () {
+            }
+        });
+    });
+
+    $("#BillInquiry").click(function myfunction() {
+        var data = { "HotelId": 26, "RegionID": 0, "CreateTime": "2017-11-13T00:00:00", "InvType": 1, "TimeStamp": "1510640687", "UUID": "34F39AED9FDB", "TerminalType": "Desktop" };
+        var url = "@Url.Action("SelectInvoice", "api/BillInquiry")"
+        $.ajax({
+            url: url,
+            data: data,
+            type: "Post",
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", $("#hidtoken").val());
+                //request.setRequestHeader("signature", btoa(JSON.stringify(data)));
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function (list) {
+                alert(list);
+                alert(JSON.stringify(list));
+            },
+            error: function () {
+            }
+        });
+    });
+
+    $("#buthuoqu").click(function () {
+        var url = "@Url.Action("UserList", "api/account")";
+        var data = { appId: 2 }
+        $.ajax({
+            url: url,
+            data: data,
+            type: 'post'
+        });
+    });
+    $("#btnLogin").click(function () {
+        var data = {
+            LoginName: "adu", LoginPwd: $.md5("123456"), TimeStamp: "123", UUID: "123", TerminalType: "Desktop" //"Desktop"
+        }
+        var url = "@Url.Action("login", "api/account")";
+        $.ajax({
+            url: url,
+            data: data,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", "E8A54BBAC8C1602E6456F31B5FFC07273BD826179F887976E7E45BA5B2CBD413438ECD66BFC32072618F90C2C4EBB847CC452AEB8EBFCADD1F36D0B6ADAA902DEF44EFD38014DA46C221378E4F4EA271F8D9EC543606A05A305AF7AAA0E13BBB");
+                //request.setRequestHeader("signature", btoa(JSON.stringify(data)));
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function (list) {
+                $("#hidtoken").val(list.ResultMsg);
+                alert("登录成功。");
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(textStatus);
+            }
+        });
+    });
+
+    $("#btnCheck").click(function () {
+
+        var val = { "CreateUserID": "35", "HotelID": "0", "RegionID": "0", "CreateTime": "", "InvType": "1", "PageIndex": 1, "PageSize": 5, "TimeStamp": 1509458650121, "UUID": "36d5c17668ba7115", "TerminalType": "android", "GUID": "C2DD45DC-F4FF-D6F5-6A43-1480F0EF49D9" };
+
+        var url1 = "@Url.Action("SummaryInvoice", "api/BillInquiry")";
+        $.ajax({
+            url: url1,
+            data: val,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", $("#hidtoken").val());
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function (list) {
+                var i = 0;
+            },
+            error: function () {
+            }
+        });
+
+        var data = { "Version": 34, "CreateTime": "0001/01/01", "UUID": "C85B76B1E589", "FilePath": null, "TimeStamp": new Date().getTime(), "TerminalType": "android" };
+
+        var url = "@Url.Action("Check", "api/datasync")";
+
+        $.ajax({
+            url: url,
+            data: data,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", $("#hidtoken").val());
+                //request.setRequestHeader("signature", btoa(JSON.stringify(data)));
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function (list) {
+                var i = 0;
+                alert("ok");
+            },
+            error: function () {
+            }
+        });
+    });
+
+    $("#btnFirSyn").click(function () {
+        var data = { "Version": 0, "CreateTime": "2017-07-20", "UUID": "36d5c17668ba7115", "TimeStamp": 1506757615362, "TerminalType": "android" };
+        var url = "@Url.Action("FirSync", "api/datasync")";
+        $.ajax({
+            url: url,
+            data: data,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", $("#hidtoken").val());
+                //request.setRequestHeader("signature", btoa(JSON.stringify(data)));
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function (list) {
+                var i = 0;
+            },
+            error: function () {
+            }
+        });
+    });
+
+    $("#btnSecSyn").click(function () {
+        var data = { "Version": 34, "CreateTime": "2017-06-28 17:21:53.493", "UUID": "fd531384c698a197", "TimeStamp": 1509517383981, "TerminalType": "windows", "FilePath": null };
+        var url = "@Url.Action("SecSync", "api/datasync")";
+        $.ajax({
+            url: url,
+            data: data,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", $("#hidtoken").val());
+                //request.setRequestHeader("signature", btoa(JSON.stringify(data)));
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function (list) {
+                var i = 0;
+            },
+            error: function () {
+            }
+        });
+    });
+
+    $("#btnreg").click(function () {
+        var tags = new Array();
+        tags.push("123435");
+        var data = { BrandID: 1, ClassID: 1, SizeID: 0, ColorID: 0, FabricID: 0, StoreID: 1, Tags: ["0000000000000005021762", "0000000000000005010902", "0000000000000005010902"], TimeStamp: 123, UUID: "C85B76B1E589", TerminalType: "Windows" };
+        var url = "@Url.Action("Register", "api/Textile")";
+        $.ajax({
+            url: url,
+            data: data,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", $("#hidtoken").val());
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function (list) {
+                var i = 0;
+            },
+            error: function () {
+            }
+        });
+    });
+
+    $("#btnscrap").click(function () {
+        var data = { "ResponsibleType": 1, "HotelID": 0, "HotelName": "", "ScrapID": 3, "ScrapName": "烟洞", "CreateUserID": 4, "CreateUserName": "夏芳", "Tags": ["300ED89F33500040009CB071", "300ED89F33500040008340A7"], "TimeStamp": "1503468337", "UUID": "28565A40C781", "TerminalType": "Desktop" };
+        var url = "@Url.Action("TextileScrap", "api/Textile")";
+        $.ajax({
+            url: url,
+            data: data,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", $("#hidtoken").val());
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function (list) {
+                var i = 0;
+            },
+            error: function () {
+            }
+        });
+    });
+
+    $("#btnrfidInvoice").click(function () {
+
+        var data = { "GUID": "e4b4ce8c-c0e2-44be-ae9e-ccb77a93fde5", "HotelID": 0, "RegionID": 0, "InvType": 5, "InvSubType": 0, "Quantity": 3, "Remrak": null, "CreateUserID": 17, "CreateUserName": "Test", "Tags": ["000000000000000005023179", "000000000000000011940972", "000000000000000005001142"], "Attach": null, "TaskType": 0, "ConfirmTime": "0001-01-01T00:00:00", "ConfirmUserID": 0, "ConfirmUserName": null, "ReciveDate": null, "CreateMode": 0, "Details": null, "Bag": null, "TaskInv": ["f10073ae-8bbd-493c-94fb-af7d5a6fc702", ""], "Sign": null, "TimeStamp": "1509442921", "UUID": "C85B76B1E589", "TerminalType": "Desktop" };
+
+        var url = "@Url.Action("InsertRFIDInvoice", "api/Textile")";
+        $.ajax({
+            url: url,
+            data: data,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", $("#hidtoken").val());
+                //request.setRequestHeader("signature", btoa(JSON.stringify(data)));
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function (list) {
+                var i = 0;
+            },
+            error: function () {
+            }
+        });
+    });
+
+    $("#btntagselect").click(function () {
+        var tags = new Array();
+        tags.push("300ED89F3350006000BD7974");
+        tags.push("300ED89F3350006000BD79A0");
+        var data = { TagList: tags, UUID: "23", TerminalType: "Web", TimeStamp: "12313123", RequestTime: "2017-10-11" };
+        var url = "@Url.Action("RFIDTagAnalysis", "api/Textile")";
+        $.ajax({
+            url: url,
+            data: data,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", $("#hidtoken").val());
+                //request.setRequestHeader("signature", btoa(JSON.stringify(data)));
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function (list) {
+                var i = 0;
+            },
+            error: function () {
+            }
+        });
+    });
+
+    $("#btnSendTask").click(function () {
+        var data = { "ID": 3, "CreateTime": "2017/07/05", "RegionMode": 1, UUID: "23", TerminalType: "T", TimeStamp: "12313123" };
+        var url = "@Url.Action("SendTask", "api/Textile")";
+        $.ajax({
+            url: url,
+            data: data,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", $("#hidtoken").val());
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function (list) {
+                var i = 0;
+            },
+            error: function () {
+            }
+        });
+    });
+
+    $("#btnSendTask1").click(function () {
+        var data = { UUID: "23", TerminalType: "T", TimeStamp: "12313123" };
+        var url = "@Url.Action("SendTask1", "api/Textile")";
+        $.ajax({
+            url: url,
+            data: data,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", $("#hidtoken").val());
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function (list) {
+                var i = 0;
+            },
+            error: function () {
+            }
+        });
+    });
+
+    function newGuid() {
+        var guid = "";
+        for (var i = 1; i <= 32; i++) {
+            var n = Math.floor(Math.random() * 16.0).toString(16);
+            guid += n;
+            if ((i == 8) || (i == 12) || (i == 16) || (i == 20))
+                guid += "-";
+        }
+        return guid;
+    }
+
+    $("#btnRepeatOperator").click(function () {
+        var val = {
+            "InvType": 1, "Tags": ["000000000000000005010769", "000000000000000011941786", "000000000000000005011309", "000000000000000011900354", "000000000000000005001680", "000000000000999990015E76", "000000000000000005021762"],
+            "HotelID": "3", "RegionID": "6", "CreateUserID": "1", "CreateUserName": "Admin", "InvNo": "", "Sign": [],
+            "Bag": [], "InvSubType": 1, "Remark": "", "CreateTime": "", "HotelName": "如家浦三路店", "RegionName": "一楼",
+            "Quantity": 0, "TimeStamp": 1500878002576, "UUID": "36d5c17668ba7115", "TerminalType": "app", "GUID": ""
+        };
+
+        val.GUID = newGuid();
+
+        var url = "@Url.Action("RepeatOperator", "api/Textile")";
+        $.ajax({
+            url: url,
+            data: val,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", $("#hidtoken").val());
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function (list) {
+                var i = 0;
+            },
+            error: function () {
+            }
+        });
+    });
+
+    $("#btnSignTask").click(function () {
+        var val = { "ID": "6", "RegionMode": 2, "TimeStamp": 1501319424190, "UUID": "36d5c17668ba7115", "TerminalType": "android" };
+        var url = "@Url.Action("SignTask", "api/Textile")";
+        $.ajax({
+            url: url,
+            data: val,
+            //contentType: "application/json; charset=utf-8",
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", $("#hidtoken").val());
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function (list) {
+                var i = 0;
+            },
+            error: function () {
+            }
+        });
+    });
+
+
+    $("#btnHandSign").click(function () {
+        var val = { "InvType": 9, "Tags": ["000000000000000000000000"], "HotelID": "3", "RegionID": 0, "CreateUserID": "4", "CreateUserName": "柏", "InvNo": "", "Sign": [], "Bag": [], "Attach": [{ "Type": "TaskID", "Value": "40b98735-d359-4fd6-85b3-b2ec1c7dc15b" }], "InvSubType": 0, "Remark": "", "TaskInv": ["40b98735-d359-4fd6-85b3-b2ec1c7dc15b"], "HotelName": "如家浦三路店", "RegionName": "", "CreateTime": "", "Quantity": 5, "CreateMode": 1, "TimeStamp": 1501640871825, "UUID": "36d5c17668ba7115", "TerminalType": "android", "GUID": "64D6FB09-3486-666C-5FDF-9C08E7511BA2" };
+        var url = "@Url.Action("InsertLogisticsRFIDInvoice", "api/Textile")";
+        $.ajax({
+            url: url,
+            data: val,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", $("#hidtoken").val());
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function (list) {
+                var i = 0;
+            },
+            error: function () {
+            }
+        });
+    });
+
+    $("#btnadroidrec").click(function () {
+
+        //InvType=1&Tags%5B%5D=300ED89F335000600082859C&Tags%5B%5D=300ED89F3350007FE25B738B&HotelID=14&RegionID=15&CreateUserID=16&CreateUserName=%E6%94%B6%E5%8F%91%E5%91%98&InvNo=&Sign%5B%5D=data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAASwAAAH0CAYAAACHEBA3AAAgAElEQVR4Xu2de6wV1dmHl1LhcIdii0BR1Cq0iUCbNo1KBYPxkpSqFLWlGlEram3KJWgtolAp9KJcpK0Va0CqoFSCFNIYCVgoyh9tmpJqrFBtoUYQxcrhcIeDH%2B983z7fnH1m7z0zey7rnfXsxIiembXe9fzmPMysWTP7lI9PfgwfCEAAAgoInIKwFKREiRCAgEcAYXEgQAACagggLDVRUSgEIICwOAYgAAE1BBCWmqgoFAIQQFgcAxCAgBoCCEtNVBQKAQggLI4BCEBADQGEpSYqCoUABBAWxwAEIKCGAMJSExWFQgACCItjAAIQUEMAYamJikIhAAGExTEAAQioIYCw1ERFoRCAAMLiGIAABNQQQFhqoqJQCEAAYXEMQAACagggLDVRUSgEIICwOAYgAAE1BBCWmqgoFAIQQFgcAxCAgBoCCEtNVBQKAQggLI4BCEBADQGEpSYqCoUABBAWxwAEIKCGAMJSExWFQgACCItjAAIQUEMAYamJikIhAAGExTEAAQioIYCw1ERFoRCAAMLiGIAABNQQQFhqoqJQCEAAYXEMOE%2Fg448%2FNu3atTPyb%2Fk0Njaabt26Oc%2FFRgAIy8ZUqClzAqecckpLnx06dDCHDx%2FOvAY6rE0AYdVmxBYOEPALS%2F584sQJB0atb4gIS19mVJwCAb%2BwpPnS5WEKXdFkHQQQVh3w2LU4BBoaGsyRI0daBoSw7MwWYdmZC1VlTOBLX%2FqS%2Betf%2F4qwMuYetTuEFZUY2xeWgP%2BycOLEiWbevHmFHavWgSEsrclRd%2BIEuFOYONLEG0RYiSOlQa0EmHi3PzmEZX9GVJgRgVNPPbXV3UEm3jMCH6EbhBUBFpsWmwB3Cu3PF2HZnxEVZkRgypQpZs6cOdwpzIh3nG4QVhxq7FNYAv55rE9%2F%2BtNm9%2B7dhR2rxoEhLI2pUXNqBPzCkjmt5ubm1Pqi4egEEFZ0ZuxRYALcKbQ7XIRldz5UlzEB7hRmDDxidwgrIjA2LzaBjh07tnq1DEsb7MobYdmVB9XkTKBz587m4MGD3CnMOYdK3SMsS4OhrHwIPPjgg2bmzJkIKx%2F8NXtFWDURsYFrBPwT71wS2pU%2BwrIrD6qxgADCsiCECiUgLHuzobKcCCCsnMCH6BZhhYDEJm4R8AurS5cupqmpyS0AFo8WYVkcDqXlQ8AvrE6dOpkDBw7kUwi9tiGAsDgoIFBGAGHZe0ggLHuzobKcCCCsnMCH6BZhhYDEJm4R4HlCe%2FNGWPZmQ2U5EUBYOYEP0S3CCgGJTdwigLDszRth2ZsNleVEAGHlBD5EtwgrBCQ2cYsAD0DbmzfCsjcbKsuJAMLKCXyIbhFWCEhs4hYBhGVv3gjL3myoLCcCCCsn8CG6RVghILGJewR4ANrOzBGWnblQVc4EEFbOAVToHmHZmQtV5UwAYeUcAMKyMwCqspOAX1gPPPCAeeihh%2Bws1LGqOMNyLHCGG44AD0CH45T1Vggra%2BL0p4IAwrIzJoRlZy5UlTMBhJVzAMxh2RkAVdlJwC%2Bsrl27mn379tlZqGNVcYblWOAMNxwBv7C6detmGhsbw%2B3IVqkSQFip4qVxrQQQlp3JISw7c6GqnAkgrJwDYA7LzgCoyk4CfmGdddZZZvv27XYW6lhVnGE5FjjDDUeAle7hOGW9FcLKmjj9qSCAsOyMCWHZmQtV5UwAYeUcAHNYdgZAVXYSQFiW5vLxyY%2BdpVEVBPIhMGDAALNjx46WzvkVySeHoF65JLQnCyqxhED37t1brWxHWJYEc7IMhGVPFlRiCQGEZUkQAWUgLHuzobKcCCCsnMCH6BZhhYDEJm4RQFj25o2w7M2GynIikPQ3P2%2FevNksWbLEdOjQwWzcuNGbHzt48KD573%2F%2F643w%2BPHjgSOdPn26mTFjRk4U7OwWYdmZC1XlSKCWsERAc%2BbM8Sp87733zBtvvOH9%2BejRo%2BbQoUPen5OYqEdYbQ8ChJXjLwZd20dg7dq15oorrrCiMISFsKw4ECkiPwIipFmzZpn333%2Ffe6BZLscqXZIlWWW7du2MnLl17NjRfPKTn%2FSa%2FtrXvub9e8SIEWbMmDFJdlfYtjjDKmy0bg5s5cqVLd9ws3Xr1tSEVLpslH%2FLG0lLn0svvbTlzy%2B88IKbIaQ4aoSVIlyaTp7AVVddZXbt2mVKMmpubk5kvqhSpSKkiy%2B%2B2Jx33nlm0aJFyQ%2BIFiMRQFiRcLFxmgSmTJli1q1bZz788ENvMvvEiRPeP2l95K6dfL785S%2Bb%2Fv37m2XLlnn%2Fzcv70iJef7sIq36GtBCSwPjx483LL7%2FsnSEdPnw4VRlJSe3bt%2FfkI0KSz6ZNm0JVirBCYcplI4SVC%2FZidpqlkEQqp556qunSpYs588wzTb9%2B%2FcyLL76YCFiElQjGVBpBWKlgLWajWQpJ7qrJ5%2FOf%2F7z3b1lAOXr06EzA%2BoU1cuRI7zKVjx0EEJYdOeRexdChQ80HH3xgmpqazP79%2B716klj8WGlgIoWGhgbTp08fI1J44okncmdQKoB3YVkTRZtCEJa92SRS2cKFC1tu8%2B%2FevdubN0pTRP5feluFVAsswqpFKL%2BfI6z82Mfqed68eWb27Nmt9pVn0koSykJG0rnNZ0ixwPp2Qlj1Ekxvf4SVHluv5QsvvND84x%2F%2FaNPLaaed5j386hdMVrIJO2SZ0JZFkbIi26ZLtrD1x90OYcUll%2F5%2BCCtlxuUP0qbcXajm5e5a7969vW137twZah9XNuL1yHYnjbBSzidrYZXOioYPH26effbZlEdXvOZ5F5bdmSKslPOR2%2FNRVmv36tWrVUWTJ082U6dOTblKmi8RQFh2HwsIy%2B58qC5jAj179jR79%2B5t6dW2ecWMcVjXHcKyLhIKypOA3Azxv24GYeWZRtu%2BEZZdeVBNzgRqvW005%2FKc7x5hOX8IAMBPAGHZfTwgLLvzobqMCfiF9YlPfMIcO3Ys4wrorhoBhMXxAQEfAb%2Bw5I7tnj174GMRAYRlURiUkj8BhJV%2FBpxh2Z0B1VlEwC%2BsUaNGmdWrV1tUHaVwhsUxAIEKl4QsabDv0EBY9mVCRTkS4MHnHOGH6BphhYDEJm4QGDhwoNm2bVvLYDnDsi93hGVfJlSUE4HTTz%2Fd%2B8ae0gdh5RRElW4Rln2ZUFFOBBBWTuAjdIuwIsBi02ITkPeE2fxCxWLTDzc6hBWOE1s5QIDHcuwPGWHZnxEVZkQAYWUEuo5uEFYd8Ni1WAR4jtD%2BPBGW%2FRlRYUYEeCwnI9B1dIOw6oDHrsUigLDszxNh2Z8RFWZEwC%2BsuXPnmkmTJmXUM92EJYCwwpJiu8IT4LEc%2ByNGWPZnRIUZEUBYGYGuoxuEVQc8ds2egCzurPXxL%2F4UCcmL%2BD744IOqu%2FEcYS2qdvwcYdmRA1XUIFC%2BCj0uMPlWnKNHj7bZncdy4hLNdj%2BElS1veotIoF%2B%2Ffmbnzp0R9wq3uUiwubnZ2xhhhWNWvtWKFSu8%2FzVmzJh4DUTcC2FFBMbm2RCoR1RR56LkyyZEXDxHWD3bzZs3m3vuuce88cYbprGxsYVXll%2FWgbCy%2Bf2jl5AErr%2F%2BeiN%2Fa1d6tUvfvn3Nu%2B%2B%2BG7K1%2F98s6iWl66%2BWETnNmTPHvPzyy6apqanlTLQSeFkCIktB0v4grLQJ035oAtWk0qFDB3P48OHQbVXbMIy8XBTW2rVrzbhx48x7771X8S%2BMSlzPOOMMs2vXrkTyqdYIwkodMR3UIlBNIHJ5d%2BLEiVpNxPp56VKwfOeGhgZz6NChWG1q3Olzn%2Fuc96bVOJwln0suucRs2LAhk6EjrEww00kQgbxE5a8lSFr%2ByfiiJhdWUh07djRnnnmmGT58uPnzn%2F9stmzZ0oKkR48eZs2aNWbYsGGZYUJYmaGmoxIBG0RVS1rt2rUzx48fL1RoY8eONc8%2F%2F3zNcXXr1s2bXJ82bZo3fpHUtddea7Zv397CY8KECWb%2B%2FPmZ80FYmSN3t8Nad%2F6uu%2B4687vf%2FS4XQOXvwpIiiiCtsJKSM83p06e3SKoUgsjq0ksvNXv37m3JZfHixd5cVx4fhJUHdcf6tFlUpSiChKVVWj%2F%2B8Y%2FNI4884i09qPYRSclfEsuWLQvc7KmnnvIeAC%2FJqnv37kb%2B3zXXXJPbEYywckNf%2FI7TWqKQBrlKwpK%2BXnrpJXP55Zen0W1ibU6ZMsU89thjNW8WyOX4RRddZDZt2lS1bxHTLbfc0rKNyEom1ocOHZpYzXEaQlhxqLFPVQK1RJXkEoWkoih%2F22hp%2Fsrmy8KVK1ea2267rdXlWhAPkdRnP%2FtZs3Xr1lC4RFQirNJnyJAhZtWqVWbAgAGh9k9zI4SVJl0H27ZtQj1sBOWr4%2BWZQ1mLZdvEe1hJyXh69%2B4daW2UXPrJJWC5rOTMSu4I2vBBWDakUJAaKskqzbVUSaGL%2BjhPUv2Gbad%2F%2F%2F7eCv9aC1pFLMuXL498CSuyksl1%2F7KFm2%2B%2BuZW8wtaa5nYIK026DrUdNAekQVSliGwU1uDBg83rr79eU1Ky0HXp0qVm9OjRsY44kZRcBtouKxkcwooVMTuVCNx4443eL0v559vf%2FrZ55pln1ICyRVhXXXWVkUdkaq06F0ndfffd3t3Aej62LVuoNRaEVYsQP69IoFOnToF3pWpdttiGVB6o9j8Hl3X9cofv0UcfrTlfJpfccrfyxRdfTAShTKTLmZV%2F2YIsBs1rjVWYQSGsMJTYpg2BoshKBpaHsERSv%2FrVr2o%2B0J20pEpB2rpsodavGsKqRYiftyEQNLmuab6qfEBZCSvKHb4%2BffrEeo1OmMNV7gT6H6uRZQsisLzXWIWpHWGFocQ2LQSCJtflAdmDBw%2BqpZSmsMJKqnSmF%2BddX1HAy%2FOAIqbSKniRlU3LFmqNBWHVIsTPPQJFmVwPijMNYYVdhiAryBctWhT7Dl%2Bcw7N0OXj11Vd7Z1a2rLEKMxaEFYaS49sUWVZJzmENGjTIe69UrUn7epchJHE4ylnViBEjkmgq0zYQVqa49XVWpMn1SvTrPcPq3LlzzUvipJYh6DuCkq0YYSXLs1CtFW1yvVI48myj%2F6u%2Fap0hldqpJaq07vAV6iCLOBiEFRGYK5sHyaqob%2BIsv5FQTVhPP%2F20t06p2sLOK6%2B8MrG1Uq4cb2HHibDCknJouyLeCawWXxhhjR8%2F3vzmN7%2Bp2Iy0sWTJEnPTTTc5dKRkP1SElT1za3ss%2BuR6JfDVhHXuueeaf%2F3rXxUzk5fgyV0%2BRJXNYY2wsuFsfS8uTK5HEVYtUWlfe2b9AVmhQISlNbkE6w6SleaV61HRVHvbaHlb55xzjnn77bejdsH2CRFAWAmB1NqMK3cCo8xhBW17%2B%2B23myeeeEJrzIWpG2EVJsroA3Ftcr2ckEykP%2FnkkxUXegqf73znO4gq%2BqGV2h4IKzW0djccJCtt77CKS5g7fnHJ5b8fwso%2Fg8wrcFVWtSbSJQh5S8LOnTszz4QOwxFAWOE4FWaroDmrsCu7tUKotSLdPy6EZXfKCMvufBKtziVZyYp0%2BQqsY8eOVWRYuuPnP%2BPkLmCih1zijSGsxJHa2aAscGxubm5VXBHPrMI8OlN%2Bxw9h2XnMBlWFsPRkFbvSLl26mAMHDrTaX97lLSu0i%2FKpZyLdli%2BgKEoWaY4DYaVJ14K2gyaaiySrWhPpYVakIywLDtSQJSCskKA0bnbrrbeaxYsXtypdJqD379%2BvcThtxlHttcxhRFVqEGHpORwQlp6sIlVaVFnVuuMXddK8%2FFKyiPN6kQ4cyzdGWJYHFLe88rVWmp8NXLhwobnrrruqvno47qMz5ZeUCCvuEZfNfggrG86Z9lIUWdUSVRLvoEJYmR6adXeGsOpGaFcDRVhrVUtUMj8l2yTxDiqEZdfxW6sahFWLkKKfa5dVLVG1b9%2FeHDlyJNFE%2FMw0XzYnCsXixhCWxeFEKU3zwtA8RFVii7CiHGX5b4uw8s%2Bg7gq0LgzNU1QIq%2B7DLpcGEFYu2JPrVOPCUBtEVUrAf4Miytqt5BKkpSgEEFYUWpZtq22tlU2iChJW1DVclh0OTpSDsJTGrElWNooKYek88BGWztyMhrVWNosKYek88BGWwtxsl5UGUQUJ67e%2F%2FW0ia7sUHlJqSkZYaqL630JtX2vVoUMHc%2FTo0UCqaayjqjc%2BHnyul2C2%2ByOsbHnX1ZvNstImqqAzLJ4jrOvwzGRnhJUJ5vo7sVVWWkUlifCmhvqPy6xbQFhZE4%2FRX7du3UxTU1OrPfN%2BCZ9mUZVA8hxhjIMx510QVs4B1Or%2Bzjvv9B709X%2FylFURRFViOXjwYPPaa6%2B1oOWSsNbRmP%2FPEVb%2BGVSsIEhW8hhO%2BdlWFkMokqgQVhZHTDp9IKx0uCbSavnyBXnAudrXViXSaVkjRRQVwkrjSMmmTYSVDefIveS91qrIokJYkQ9Ha3ZAWNZE8f%2BF5HlH0AVRlUj36NHDNDY2ev%2FJu7As%2FEUIKAlhWZbTaaedZo4fP96qqiwmg10SVQmu%2Fx1i7dq1a8PdskODcuQvlpO%2FDB9Dwg4CQcsX7rjjDvP444%2BnVmA1UUmnRT48EFZqh1VqDSOs1NBGazjojmCasjr99NPNhx9%2BWLFIkaT0X%2BQPwtKXLsKyJLPySfauXbuaffv2JV7dvHnzzOTJk50WFZeEiR9WmTWIsDJDXbmjrO4IyjzNiRMnAgtx4YyqfOBBZ1jz5883GzduNCNGjDBXX321GTBggAVHCCWUCCCsnI%2BFLGQ1cOBAs23btsCRjho1yqxevTpnCvl0HyQsEZUISz6LFy8248aNy6c4eg0kgLByPDDSXr5Q7fKvV69eZs%2BePTmOPv%2Bug4TVs2dPs3fvXq%2B4f%2F%2F735xh5R9TqwoQVk6BBN0RTPKOnHyhwuHDhwNHN3fuXDNp0qScRm5Pt%2F6z2759%2B5o%2F%2FOEP5gtf%2BIJX4FlnnWW2b99uT7FU4hFAWDkcCIMGDTJbt25t1XNSdwS%2F%2FvWvmzVr1gSOyuXLvyAgfmFdcMEFRt6TXxK5zF%2BtWrUqh6ODLqsRQFgZHx9ByxdkjunNN9%2Bsu5KgS0xptKGhwRw6dKju9ovWQLmwvvjFL5olS5Z4w5TL6YkTJxZtyOrHg7AyjjCN5QvV1lRx%2BVc54HJhyVswSpeBf%2Fvb38zQoUMzPjrorhYBhFWLUII%2FT%2FqOYLVJ9fPPP7%2FNZWeCQylEU%2F48zjvvPPPPf%2F6zZVxJzicWApYlg0BYGQWR9B3BSmuqeIg3fKB%2BYZ199tneXUH5DB8%2B3GzYsCF8Q2yZGQGElQHqJGVVbU0Vl3%2FRwvQLq3v37i1vbpg%2BfbqZMWNGtMbYOhMCCCtlzP51PaWu4lxusKYq%2BaDKL9FLPfzxj3%2F0VrrzsY8AwkoxkwkTJpgFCxa06iHO8oVqa6riyC%2FFIatqupKwPvroIyPvyuJjHwGElWIm5b8QctlRWkUdplvWVIWhFH%2BbIGENGTLEbNmyJX6j7JkqAYSVEt567wiypiqlYHzNBglLzorlAWg%2BdhJAWCnkIl%2FJXv5lEWEv3VhTlUIgFZoMEhYPPGfHP05PCCsOtSr7lH%2FXnWwaRlasqUo4iBDNBQmLB55DgMtxE4SVIPygSfbvf%2F%2F75tFHH63aC2uqEgwhQlPlwuKB5wjwctoUYSUIvvwXQO40yR2nSh%2FWVCUIP0ZT5XnxwHMMiBnvgrASAl4%2BSV5txTlrqhKCXmcz5cKaPXu2%2BeEPf1hnq%2ByeJgGElQDdKItDWVOVAPCEmigX1nPPPWduuOGGhFqnmTQIIKw6qQbNWwVNsl922WVm%2Ffr1gb3xnqo6Q4i5e7mwwtwcidkVuyVEAGHVCbL8oJcXwf39739v1SprquqEnNLu%2FuxqzTemVALNRiSAsCIC829eLiv51uajR4%2B2bCLfuLJjx47AHnhQuQ7wCe3qz483NCQENeVmEFZMwNUm2WXydtq0aYHrr7h1HhN4Crv5hcUbRlMAnEKTCCsG1Hvvvdc8%2FPDDrfYszX%2FI84KVvgCVOZIYsFPcxS8sskkRdIJNI6wYMMsvBWVxaO%2Fevc39998f2NrIkSPNunXrYvTELmkSKOUod24PHjyYZle0nRABhBUDpF9Y8mf5frvyZwelWblsbG5ujtEDu2RBoJSjvLtd3uHOx34CCCtiRpXu%2BJU3M2vWLDN16tSIrbN5lgRKwrrvvvvMT37ykyy7pq%2BYBBBWRHCVXvpWaqb8TmHE5tk8QwKlLOWbcuRmCB%2F7CSCsCBnVOrvirCoCTAs2rXY5b0F5lBBAAGFFOCwefPBBM3PmzDZ7yNfONzY2RmiJTW0gIMI699xzzVtvvWVDOdQQggDCCgHJv8mwYcPMq6%2B%2B2vK%2FuB0eEaBFm4uwbrvtNvPkk09aVBWlVCOAsGIcH7KCXT6lbwmO0QS7WEBAhLVp0yYjfwnx0UEAYenIiSpTICA3SIKWo6TQFU0mRABhJQSSZvQR6NOnj9m1a5e%2BwpVW%2FPvf%2F97ItxKVrlDiDANhxaHGPoUgcO2115oXXnihEGOxdRAybbJkyRLz1FNPeVMoN998s%2FfnuB%2BEFZcc%2B6knsHz5cl7Yl1KKJUlt2LChVQ%2FyGh%2F5oo%2B4X1SLsFIKjGYh4BoB%2BQLakqiCvjBYXgwwbtw4M2PGDITl2sHBeCFgAwERk8xNyZfPVvrGbPlyDxHVNddcU3fJnGHVjZAGIOAeAbnUk7OpVatWmaCzKXnUSSQl%2F9QzyV5OFmG5d6wxYgjEIiBiEknJ2VSlNYgyqS6SGjFiRKw%2Bau2EsGoR4ucQcJzAK6%2B8Ym655ZaKjzDJUoXS2VTcyfSwiBFWWFJsBwHHCMiZ1M9%2F%2FvPAtWoygS5zUhMnTjTyPrGsPggrK9L0A4GECchD94cPH06sVXlUSb6N%2FCtf%2BYpZsWJFxbkpucsnskr7bCpoYAgrsbhpCALpEujSpYv3Kuc8Hrg%2F44wzzA9%2B8APvjCrPD8LKkz59Q6AKgTwF5S%2FLpgfEERa%2FMhCwhIAtggq8FDt5uXjixIncSSGs3COgAFcJyNsi5EtKol7iyVxTp06dzP79%2ByOjqzaRLl%2Bm0qtXL7N79%2B6K7UrfeYoLYUWOnB0gEI9APYI6%2B%2Byzzdtvvx2v45N73X777RUn0mXy%2FBvf%2BEarFxkOHjzYvPbaa1XFNWXKFO8uYpYfhJUlbfpyikCeghLQO3bsMJMmTTJr1qwxx48fb8M%2BzET6hAkTzIIFCyrmFvXssN4DAGHVS5D9IfB%2FBORxlHfeeSfWJV69Z1D%2BEGSh5wMPPGA2btwYWIu8x15e8RLlTasirl%2F84hdt2sv6EhFh8esGgToIxJGU%2FJInKahS%2BdVWpEufl1xyifdoTb1faVb%2BVXf33HNPZpeGCKuOg5Vd3SQgE96HDh0KPXj5BZdHVxYtWhR6nygbykT6j370o8CFnjKRLs%2F3JflFG%2Ffee695%2BOGHW5WY1aUhwopyZLCtswRqfSelH4wIqn%2F%2F%2Ft4cUpofmUhfunRpoDxlIv3OO%2B9M7RutGxoazJEjR1qGJ3zkjmfaH4SVNmHaV0ngxhtvNMuWLQs9HyWSGjt2rHnmmWdSHW%2BtiXSZn%2Fre976XyYr0PC4NEVaqhxeNayIQR1JZrUmqNpEu4jjnnHMiT6TXm00el4YIq97U2F81gaiT5lld%2BmQ9kR43xHbt2rVaSNqhQ4dEH8gurwthxU2K%2FdQSkElzectB2Inijh07eg8dZ%2FnJeiK9nrGVXxrKkoqHHnqoniYr7ouwUsFKo7YRkLtlYSeFs5o0D2Ikq8svvvhi09TU1ObHaU%2Bkx82s%2FNIw7F8EcfpDWHGosY8KAlHv7GUxaV4N3M9%2B9jNz3333tdkky4n0uMH6z7IQVlyK7OcUgRtuuME8%2F%2FzzoS%2F1srqzFyaEIFnFWZEepq%2Bkt%2BncuXOrS2aElTRh2isMAXloV769OewvSdaPkoQBHSSru%2B%2B%2B2%2Fzyl78Ms3vu2yCs3COgAJsJ9OvXz3vPeFhJtW%2FfvtUiR5vGFiSrn%2F70p97bPbV8yi%2B9w%2BYSZ3zMYcWhxj6ZE%2BjTp4%2F3nqYwvwxyFiWSSvJ952kMePjw4eZPf%2FpTq6a1yUqKL79LGCajuDwRVlxy7Jc6AVnTc%2FTo0VD9yC%2BNSO3dd98NtX3eGxVFVuXCSvuSG2HlfeTSfysCUe%2Fsybe3rFy5UhXFclnJmJcvX27GjBmjahylYv1nWLLG7cCBA6mNA2GlhpaGwxKIeiZ13XXXeb%2FgGj9BstqyZYu54IILNA7HqxlhqY2OwuMQqHVWJb8Qx44dM%2FIYiOaPvAPL%2FxXvMm7tspIvVN23b19LLGnOX3lyPNnBx5oPAmrXT%2BD666%2F31k%2F5P2nPhWRNrfwXuwiyKj%2B7kv9OWycIK%2Bsjl%2F4CCcgvsLwD3f%2BOpaKgKpeVXAL%2F5S9%2FUX0ZKNlcdtllZv369S0xjRw50qxbty7V2BBWqnhp3HUC5bLq2rVrq0sozXyyXM5Q4oSwNB8x1G4tAXmI%2BcILL2x1x6xIsiq%2FHJSz47BLUOoJDWHVQ499IRBAQGQ1dOjQVu%2BJKpqsyt%2BDlfbcFWdY%2FKpBIAUCQbL61Kc%2BZd5%2F%2F%2F0UesuvSf%2FlYJY3SDjDyi9zei4YgSBZyVdryfcDFulTPi83a9YsM3Xq1EyGiLAywUwnRSewYsUKI6%2B38b%2FjvYiyKp%2B7kv%2FO6nLQ65t1WEX%2FVWJ8aRMIeuNCUWU1e%2FZsc%2F%2F997cglXfi%2BxfDps0aYaVNmPYLTcAlWeV9dsUZVqF%2FlRhc2gSK8C6rqIz8k%2B1Zf4MQwoqaFttDwEeg%2FIstNL7LKkqgeS1l8NfIJWGUxNgWAv9HYPPmzd6325Q%2B8oZQEVZRPwMHDjTbtm1rNbwsJ9tLHSOsoh5hjCtVAoMGDTJbt25t6SOPX95UB%2BhrXL6XsfztrVk8Nxg0PoSVVer0UygC%2FssjedPpzp07CzW%2B0mDkkZvjx4%2B3Gtv555%2FfStZZDhxhZUmbvgpB4Ne%2F%2FrX57ne%2F2zKWxx57zNx1112FGFur%2BaKT7yEr%2F%2BQpK6kFYRXuMGNAaRPo27ev98yc9GcAAAo5SURBVK098snjTlna4%2FPEECCruXPnmkmTJmXRfcU%2BEFau%2BOlcIwH%2FL7NMRr%2F55psahxFY87x588zkyZPb%2FMwGWXGGVZjDjIFkRaD8cvDVV181F110UVbdp9pPJVnZdEOBM6xUDwEaLxoB%2BVaYQ4cOecPK6h1QWTAMWraQ5VsYwo4RYYUlxXYQCJjbeemll8zll1%2Bumk2QrGRRrHzxh20fhGVbItRjNYGgb%2FgZNmyY2bRpk9V1VyouaNlCr169zJ49e6wcD8KyMhaKsplAQ0NDmy%2FLkP9XulS0uXZ%2FbbatsQrDDWGFocQ2ECgj8NWvftW88sorbbjMnDnTTJs2zXpeQcsWRo0aZVavXm117QjL6ngozmYCa9euNVdccUWbEvNeXFmN2be%2B9S3z3HPPtdnElmULtfJGWLUI8XMI1CBQ%2Fsrg0uY9evQwH330kRX8%2FItdywuyadlCLVgIqxYhfg6BEATGjh1rnn322cAtZX5r6dKlZvTo0SFaSnaTaqKSnjTJSupFWMkeH7TmMAG5RLzyyisrSkDmjWQV%2BSOPPJI6Jfl26WrfEzhkyBCzZcuW1OtIugOElTRR2nOewJQpU8z8%2BfNNc3NzRRaf%2BcxnzDvvvJM4q1qi%2BuY3v1nxTDDxYlJoEGGlAJUmIeCfx2psbKwIpFu3bka%2Bt3D69OnmpptuigVu4cKF3tsiql3eaRdVCQzCinWIsBMEohEYPHiwef3110PPGckC1Z49exqZuH%2FrrbcCOwsjqscff9zccccd0Yq1eGuEZXE4lFY8AnK5KA8Z%2B7%2B%2FMOooRWbV9m%2Ffvr1ZsGBBoUTFGVbUo4TtIZAggZUrV5pbb73VVLtcjNqdiOrIkSNRd1O1PWdYquKi2CITePrpp82MGTO8lwPKO9TDLjno3Lmz2b9%2Ff5HRtIwNYTkRM4PUTmD8%2BPFm%2Ffr15j%2F%2F%2BY9391FkVuR3yVfKC2FpP5KpHwIOEUBYDoXNUCGgnQDC0p4g9UPAIQIIy6GwGSoEtBNAWNoTpH4IOEQAYTkUNkOFgHYCCEt7gtQPAYcIICyHwmaoENBOAGFpT5D6IeAQAYTlUNgMFQLaCSAs7QlSPwQcIoCwHAqboUJAOwGEpT1B6oeAQwQQlkNhM1QIaCeAsLQnSP0QcIgAwnIobIYKAe0EEJb2BKkfAg4RQFgOhc1QIaCdAMLSniD1Q8AhAgjLobAZKgS0E0BY2hOkfgg4RABhORQ2Q4WAdgIIS3uC1A8BhwggLIfCZqgQ0E4AYWlPkPoh4BABhOVQ2AwVAtoJICztCVI%2FBBwigLAcCpuhQkA7AYSlPUHqh4BDBBCWQ2EzVAhoJ4CwtCdI%2FRBwiADCcihshgoB7QQQlvYEqR8CDhFAWA6FzVAhoJ0AwtKeIPVDwCECCMuhsBkqBLQTQFjaE6R%2BCDhEAGE5FDZDhYB2AghLe4LUDwGHCCAsh8JmqBDQTgBhaU%2BQ%2BiHgEAGE5VDYDBUC2gkgLO0JUj8EHCKAsBwKm6FCQDsBhKU9QeqHgEMEEJZDYTNUCGgngLC0J0j9EHCIAMJyKGyGCgHtBBCW9gSpHwIOEUBYDoXNUCGgnQDC0p4g9UPAIQIIy6GwGSoEtBNAWNoTpH4IOEQAYTkUNkOFgHYCCEt7gtQPAYcIICyHwmaoENBOAGFpT5D6IeAQAYTlUNgMFQLaCSAs7QlSPwQcIoCwHAqboUJAOwGEpT1B6oeAQwQQlkNhM1QIaCeAsLQnSP0QcIgAwnIobIYKAe0EEJb2BKkfAg4RQFgOhc1QIaCdAMLSniD1Q8AhAgjLobAZKgS0E0BY2hOkfgg4RABhORQ2Q4WAdgIIS3uC1A8BhwggLIfCZqgQ0E4AYWlPkPoh4BABhOVQ2AwVAtoJICztCVI%2FBBwigLAcCpuhQkA7AYSlPUHqh4BDBBCWQ2EzVAhoJ4CwtCdI%2FRBwiADCcihshgoB7QQQlvYEqR8CDhFAWA6FzVAhoJ0AwtKeIPVDwCECCMuhsBkqBLQTQFjaE6R%2BCDhEAGE5FDZDhYB2AghLe4LUDwGHCCAsh8JmqBDQTgBhaU%2BQ%2BiHgEAGE5VDYDBUC2gkgLO0JUj8EHCKAsBwKm6FCQDsBhKU9QeqHgEMEEJZDYTNUCGgngLC0J0j9EHCIAMJyKGyGCgHtBBCW9gSpHwIOEUBYDoXNUCGgnQDC0p4g9UPAIQIIy6GwGSoEtBNAWNoTpH4IOEQAYTkUNkOFgHYCCEt7gtQPAYcIICyHwmaoENBOAGFpT5D6IeAQAYTlUNgMFQLaCSAs7QlSPwQcIoCwHAqboUJAOwGEpT1B6oeAQwQQlkNhM1QIaCeAsLQnSP0QcIgAwnIobIYKAe0EEJb2BKkfAg4RQFgOhc1QIaCdAMLSniD1Q8AhAgjLobAZKgS0E0BY2hOkfgg4RABhORQ2Q4WAdgIIS3uC1A8BhwggLIfCZqgQ0E4AYWlPkPoh4BABhOVQ2AwVAtoJICztCVI%2FBBwigLAcCpuhQkA7AYSlPUHqh4BDBBCWQ2EzVAhoJ4CwtCdI%2FRBwiADCcihshgoB7QQQlvYEqR8CDhFAWA6FzVAhoJ0AwtKeIPVDwCECCMuhsBkqBLQTQFjaE6R%2BCDhEAGE5FDZDhYB2AghLe4LUDwGHCCAsh8JmqBDQTgBhaU%2BQ%2BiHgEAGE5VDYDBUC2gkgLO0JUj8EHCKAsBwKm6FCQDsBhKU9QeqHgEMEEJZDYTNUCGgngLC0J0j9EHCIAMJyKGyGCgHtBBCW9gSpHwIOEUBYDoXNUCGgnQDC0p4g9UPAIQIIy6GwGSoEtBNAWNoTpH4IOEQAYTkUNkOFgHYCCEt7gtQPAYcIICyHwmaoENBOAGFpT5D6IeAQAYTlUNgMFQLaCSAs7QlSPwQcIoCwHAqboUJAOwGEpT1B6oeAQwQQlkNhM1QIaCeAsLQnSP0QcIgAwnIobIYKAe0EEJb2BKkfAg4RQFgOhc1QIaCdAMLSniD1Q8AhAgjLobAZKgS0E0BY2hOkfgg4RABhORQ2Q4WAdgIIS3uC1A8BhwggLIfCZqgQ0E4AYWlPkPoh4BABhOVQ2AwVAtoJICztCVI%2FBBwigLAcCpuhQkA7AYSlPUHqh4BDBBCWQ2EzVAhoJ4CwtCdI%2FRBwiADCcihshgoB7QQQlvYEqR8CDhFAWA6FzVAhoJ0AwtKeIPVDwCECCMuhsBkqBLQTQFjaE6R%2BCDhEAGE5FDZDhYB2AghLe4LUDwGHCCAsh8JmqBDQTgBhaU%2BQ%2BiHgEAGE5VDYDBUC2gkgLO0JUj8EHCKAsBwKm6FCQDsBhKU9QeqHgEMEEJZDYTNUCGgngLC0J0j9EHCIAMJyKGyGCgHtBBCW9gSpHwIOEUBYDoXNUCGgnQDC0p4g9UPAIQIIy6GwGSoEtBNAWNoTpH4IOEQAYTkUNkOFgHYCCEt7gtQPAYcIICyHwmaoENBOAGFpT5D6IeAQAYTlUNgMFQLaCSAs7QlSPwQcIoCwHAqboUJAO4H%2FAR%2FszVEhMhatAAAAAElFTkSuQmCC
+        //&InvSubType=1&Remark=&CreateTime=&HotelName=%E5%AE%9C%E5%BF%85%E6%80%9D&RegionName=%E5%B8%83%E8%8D%89%E9%97%B4&Quantity=2&TimeStamp=1504232501027&UUID=ebba6fd972251fc1&TerminalType=android&GUID=B0D4E16B-EEC9-C533-1470-8356F7E4B33E
+
+        var img = "data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAASwAAAH0CAYAAACHEBA3AAAgAElEQVR4Xu2de6wV1dmHl1LhcIdii0BR1Cq0iUCbNo1KBYPxkpSqFLWlGlEram3KJWgtolAp9KJcpK0Va0CqoFSCFNIYCVgoyh9tmpJqrFBtoUYQxcrhcIeDH%2B983z7fnH1m7z0zey7rnfXsxIiembXe9fzmPMysWTP7lI9PfgwfCEAAAgoInIKwFKREiRCAgEcAYXEgQAACagggLDVRUSgEIICwOAYgAAE1BBCWmqgoFAIQQFgcAxCAgBoCCEtNVBQKAQggLI4BCEBADQGEpSYqCoUABBAWxwAEIKCGAMJSExWFQgACCItjAAIQUEMAYamJikIhAAGExTEAAQioIYCw1ERFoRCAAMLiGIAABNQQQFhqoqJQCEAAYXEMQAACagggLDVRUSgEIICwOAYgAAE1BBCWmqgoFAIQQFgcAxCAgBoCCEtNVBQKAQggLI4BCEBADQGEpSYqCoUABBAWxwAEIKCGAMJSExWFQgACCItjAAIQUEMAYamJikIhAAGExTEAAQioIYCw1ERFoRCAAMLiGIAABNQQQFhqoqJQCEAAYXEMOE%2Fg448%2FNu3atTPyb%2Fk0Njaabt26Oc%2FFRgAIy8ZUqClzAqecckpLnx06dDCHDx%2FOvAY6rE0AYdVmxBYOEPALS%2F584sQJB0atb4gIS19mVJwCAb%2BwpPnS5WEKXdFkHQQQVh3w2LU4BBoaGsyRI0daBoSw7MwWYdmZC1VlTOBLX%2FqS%2Betf%2F4qwMuYetTuEFZUY2xeWgP%2BycOLEiWbevHmFHavWgSEsrclRd%2BIEuFOYONLEG0RYiSOlQa0EmHi3PzmEZX9GVJgRgVNPPbXV3UEm3jMCH6EbhBUBFpsWmwB3Cu3PF2HZnxEVZkRgypQpZs6cOdwpzIh3nG4QVhxq7FNYAv55rE9%2F%2BtNm9%2B7dhR2rxoEhLI2pUXNqBPzCkjmt5ubm1Pqi4egEEFZ0ZuxRYALcKbQ7XIRldz5UlzEB7hRmDDxidwgrIjA2LzaBjh07tnq1DEsb7MobYdmVB9XkTKBz587m4MGD3CnMOYdK3SMsS4OhrHwIPPjgg2bmzJkIKx%2F8NXtFWDURsYFrBPwT71wS2pU%2BwrIrD6qxgADCsiCECiUgLHuzobKcCCCsnMCH6BZhhYDEJm4R8AurS5cupqmpyS0AFo8WYVkcDqXlQ8AvrE6dOpkDBw7kUwi9tiGAsDgoIFBGAGHZe0ggLHuzobKcCCCsnMCH6BZhhYDEJm4R4HlCe%2FNGWPZmQ2U5EUBYOYEP0S3CCgGJTdwigLDszRth2ZsNleVEAGHlBD5EtwgrBCQ2cYsAD0DbmzfCsjcbKsuJAMLKCXyIbhFWCEhs4hYBhGVv3gjL3myoLCcCCCsn8CG6RVghILGJewR4ANrOzBGWnblQVc4EEFbOAVToHmHZmQtV5UwAYeUcAMKyMwCqspOAX1gPPPCAeeihh%2Bws1LGqOMNyLHCGG44AD0CH45T1Vggra%2BL0p4IAwrIzJoRlZy5UlTMBhJVzAMxh2RkAVdlJwC%2Bsrl27mn379tlZqGNVcYblWOAMNxwBv7C6detmGhsbw%2B3IVqkSQFip4qVxrQQQlp3JISw7c6GqnAkgrJwDYA7LzgCoyk4CfmGdddZZZvv27XYW6lhVnGE5FjjDDUeAle7hOGW9FcLKmjj9qSCAsOyMCWHZmQtV5UwAYeUcAHNYdgZAVXYSQFiW5vLxyY%2BdpVEVBPIhMGDAALNjx46WzvkVySeHoF65JLQnCyqxhED37t1brWxHWJYEc7IMhGVPFlRiCQGEZUkQAWUgLHuzobKcCCCsnMCH6BZhhYDEJm4RQFj25o2w7M2GynIikPQ3P2%2FevNksWbLEdOjQwWzcuNGbHzt48KD573%2F%2F643w%2BPHjgSOdPn26mTFjRk4U7OwWYdmZC1XlSKCWsERAc%2BbM8Sp87733zBtvvOH9%2BejRo%2BbQoUPen5OYqEdYbQ8ChJXjLwZd20dg7dq15oorrrCiMISFsKw4ECkiPwIipFmzZpn333%2Ffe6BZLscqXZIlWWW7du2MnLl17NjRfPKTn%2FSa%2FtrXvub9e8SIEWbMmDFJdlfYtjjDKmy0bg5s5cqVLd9ws3Xr1tSEVLpslH%2FLG0lLn0svvbTlzy%2B88IKbIaQ4aoSVIlyaTp7AVVddZXbt2mVKMmpubk5kvqhSpSKkiy%2B%2B2Jx33nlm0aJFyQ%2BIFiMRQFiRcLFxmgSmTJli1q1bZz788ENvMvvEiRPeP2l95K6dfL785S%2Bb%2Fv37m2XLlnn%2Fzcv70iJef7sIq36GtBCSwPjx483LL7%2FsnSEdPnw4VRlJSe3bt%2FfkI0KSz6ZNm0JVirBCYcplI4SVC%2FZidpqlkEQqp556qunSpYs588wzTb9%2B%2FcyLL76YCFiElQjGVBpBWKlgLWajWQpJ7qrJ5%2FOf%2F7z3b1lAOXr06EzA%2BoU1cuRI7zKVjx0EEJYdOeRexdChQ80HH3xgmpqazP79%2B716klj8WGlgIoWGhgbTp08fI1J44okncmdQKoB3YVkTRZtCEJa92SRS2cKFC1tu8%2B%2FevdubN0pTRP5feluFVAsswqpFKL%2BfI6z82Mfqed68eWb27Nmt9pVn0koSykJG0rnNZ0ixwPp2Qlj1Ekxvf4SVHluv5QsvvND84x%2F%2FaNPLaaed5j386hdMVrIJO2SZ0JZFkbIi26ZLtrD1x90OYcUll%2F5%2BCCtlxuUP0qbcXajm5e5a7969vW137twZah9XNuL1yHYnjbBSzidrYZXOioYPH26effbZlEdXvOZ5F5bdmSKslPOR2%2FNRVmv36tWrVUWTJ082U6dOTblKmi8RQFh2HwsIy%2B58qC5jAj179jR79%2B5t6dW2ecWMcVjXHcKyLhIKypOA3Azxv24GYeWZRtu%2BEZZdeVBNzgRqvW005%2FKc7x5hOX8IAMBPAGHZfTwgLLvzobqMCfiF9YlPfMIcO3Ys4wrorhoBhMXxAQEfAb%2Bw5I7tnj174GMRAYRlURiUkj8BhJV%2FBpxh2Z0B1VlEwC%2BsUaNGmdWrV1tUHaVwhsUxAIEKl4QsabDv0EBY9mVCRTkS4MHnHOGH6BphhYDEJm4QGDhwoNm2bVvLYDnDsi93hGVfJlSUE4HTTz%2Fd%2B8ae0gdh5RRElW4Rln2ZUFFOBBBWTuAjdIuwIsBi02ITkPeE2fxCxWLTDzc6hBWOE1s5QIDHcuwPGWHZnxEVZkQAYWUEuo5uEFYd8Ni1WAR4jtD%2BPBGW%2FRlRYUYEeCwnI9B1dIOw6oDHrsUigLDszxNh2Z8RFWZEwC%2BsuXPnmkmTJmXUM92EJYCwwpJiu8IT4LEc%2ByNGWPZnRIUZEUBYGYGuoxuEVQc8ds2egCzurPXxL%2F4UCcmL%2BD744IOqu%2FEcYS2qdvwcYdmRA1XUIFC%2BCj0uMPlWnKNHj7bZncdy4hLNdj%2BElS1veotIoF%2B%2Ffmbnzp0R9wq3uUiwubnZ2xhhhWNWvtWKFSu8%2FzVmzJh4DUTcC2FFBMbm2RCoR1RR56LkyyZEXDxHWD3bzZs3m3vuuce88cYbprGxsYVXll%2FWgbCy%2Bf2jl5AErr%2F%2BeiN%2Fa1d6tUvfvn3Nu%2B%2B%2BG7K1%2F98s6iWl66%2BWETnNmTPHvPzyy6apqanlTLQSeFkCIktB0v4grLQJ035oAtWk0qFDB3P48OHQbVXbMIy8XBTW2rVrzbhx48x7771X8S%2BMSlzPOOMMs2vXrkTyqdYIwkodMR3UIlBNIHJ5d%2BLEiVpNxPp56VKwfOeGhgZz6NChWG1q3Olzn%2Fuc96bVOJwln0suucRs2LAhk6EjrEww00kQgbxE5a8lSFr%2ByfiiJhdWUh07djRnnnmmGT58uPnzn%2F9stmzZ0oKkR48eZs2aNWbYsGGZYUJYmaGmoxIBG0RVS1rt2rUzx48fL1RoY8eONc8%2F%2F3zNcXXr1s2bXJ82bZo3fpHUtddea7Zv397CY8KECWb%2B%2FPmZ80FYmSN3t8Nad%2F6uu%2B4687vf%2FS4XQOXvwpIiiiCtsJKSM83p06e3SKoUgsjq0ksvNXv37m3JZfHixd5cVx4fhJUHdcf6tFlUpSiChKVVWj%2F%2B8Y%2FNI4884i09qPYRSclfEsuWLQvc7KmnnvIeAC%2FJqnv37kb%2B3zXXXJPbEYywckNf%2FI7TWqKQBrlKwpK%2BXnrpJXP55Zen0W1ibU6ZMsU89thjNW8WyOX4RRddZDZt2lS1bxHTLbfc0rKNyEom1ocOHZpYzXEaQlhxqLFPVQK1RJXkEoWkoih%2F22hp%2Fsrmy8KVK1ea2267rdXlWhAPkdRnP%2FtZs3Xr1lC4RFQirNJnyJAhZtWqVWbAgAGh9k9zI4SVJl0H27ZtQj1sBOWr4%2BWZQ1mLZdvEe1hJyXh69%2B4daW2UXPrJJWC5rOTMSu4I2vBBWDakUJAaKskqzbVUSaGL%2BjhPUv2Gbad%2F%2F%2F7eCv9aC1pFLMuXL498CSuyksl1%2F7KFm2%2B%2BuZW8wtaa5nYIK026DrUdNAekQVSliGwU1uDBg83rr79eU1Ky0HXp0qVm9OjRsY44kZRcBtouKxkcwooVMTuVCNx4443eL0v559vf%2FrZ55pln1ICyRVhXXXWVkUdkaq06F0ndfffd3t3Aej62LVuoNRaEVYsQP69IoFOnToF3pWpdttiGVB6o9j8Hl3X9cofv0UcfrTlfJpfccrfyxRdfTAShTKTLmZV%2F2YIsBs1rjVWYQSGsMJTYpg2BoshKBpaHsERSv%2FrVr2o%2B0J20pEpB2rpsodavGsKqRYiftyEQNLmuab6qfEBZCSvKHb4%2BffrEeo1OmMNV7gT6H6uRZQsisLzXWIWpHWGFocQ2LQSCJtflAdmDBw%2BqpZSmsMJKqnSmF%2BddX1HAy%2FOAIqbSKniRlU3LFmqNBWHVIsTPPQJFmVwPijMNYYVdhiAryBctWhT7Dl%2Bcw7N0OXj11Vd7Z1a2rLEKMxaEFYaS49sUWVZJzmENGjTIe69UrUn7epchJHE4ylnViBEjkmgq0zYQVqa49XVWpMn1SvTrPcPq3LlzzUvipJYh6DuCkq0YYSXLs1CtFW1yvVI48myj%2F6u%2Fap0hldqpJaq07vAV6iCLOBiEFRGYK5sHyaqob%2BIsv5FQTVhPP%2F20t06p2sLOK6%2B8MrG1Uq4cb2HHibDCknJouyLeCawWXxhhjR8%2F3vzmN7%2Bp2Iy0sWTJEnPTTTc5dKRkP1SElT1za3ss%2BuR6JfDVhHXuueeaf%2F3rXxUzk5fgyV0%2BRJXNYY2wsuFsfS8uTK5HEVYtUWlfe2b9AVmhQISlNbkE6w6SleaV61HRVHvbaHlb55xzjnn77bejdsH2CRFAWAmB1NqMK3cCo8xhBW17%2B%2B23myeeeEJrzIWpG2EVJsroA3Ftcr2ckEykP%2FnkkxUXegqf73znO4gq%2BqGV2h4IKzW0djccJCtt77CKS5g7fnHJ5b8fwso%2Fg8wrcFVWtSbSJQh5S8LOnTszz4QOwxFAWOE4FWaroDmrsCu7tUKotSLdPy6EZXfKCMvufBKtziVZyYp0%2BQqsY8eOVWRYuuPnP%2BPkLmCih1zijSGsxJHa2aAscGxubm5VXBHPrMI8OlN%2Bxw9h2XnMBlWFsPRkFbvSLl26mAMHDrTaX97lLSu0i%2FKpZyLdli%2BgKEoWaY4DYaVJ14K2gyaaiySrWhPpYVakIywLDtSQJSCskKA0bnbrrbeaxYsXtypdJqD379%2BvcThtxlHttcxhRFVqEGHpORwQlp6sIlVaVFnVuuMXddK8%2FFKyiPN6kQ4cyzdGWJYHFLe88rVWmp8NXLhwobnrrruqvno47qMz5ZeUCCvuEZfNfggrG86Z9lIUWdUSVRLvoEJYmR6adXeGsOpGaFcDRVhrVUtUMj8l2yTxDiqEZdfxW6sahFWLkKKfa5dVLVG1b9%2FeHDlyJNFE%2FMw0XzYnCsXixhCWxeFEKU3zwtA8RFVii7CiHGX5b4uw8s%2Bg7gq0LgzNU1QIq%2B7DLpcGEFYu2JPrVOPCUBtEVUrAf4Miytqt5BKkpSgEEFYUWpZtq22tlU2iChJW1DVclh0OTpSDsJTGrElWNooKYek88BGWztyMhrVWNosKYek88BGWwtxsl5UGUQUJ67e%2F%2FW0ia7sUHlJqSkZYaqL630JtX2vVoUMHc%2FTo0UCqaayjqjc%2BHnyul2C2%2ByOsbHnX1ZvNstImqqAzLJ4jrOvwzGRnhJUJ5vo7sVVWWkUlifCmhvqPy6xbQFhZE4%2FRX7du3UxTU1OrPfN%2BCZ9mUZVA8hxhjIMx510QVs4B1Or%2Bzjvv9B709X%2FylFURRFViOXjwYPPaa6%2B1oOWSsNbRmP%2FPEVb%2BGVSsIEhW8hhO%2BdlWFkMokqgQVhZHTDp9IKx0uCbSavnyBXnAudrXViXSaVkjRRQVwkrjSMmmTYSVDefIveS91qrIokJYkQ9Ha3ZAWNZE8f%2BF5HlH0AVRlUj36NHDNDY2ev%2FJu7As%2FEUIKAlhWZbTaaedZo4fP96qqiwmg10SVQmu%2Fx1i7dq1a8PdskODcuQvlpO%2FDB9Dwg4CQcsX7rjjDvP444%2BnVmA1UUmnRT48EFZqh1VqDSOs1NBGazjojmCasjr99NPNhx9%2BWLFIkaT0X%2BQPwtKXLsKyJLPySfauXbuaffv2JV7dvHnzzOTJk50WFZeEiR9WmTWIsDJDXbmjrO4IyjzNiRMnAgtx4YyqfOBBZ1jz5883GzduNCNGjDBXX321GTBggAVHCCWUCCCsnI%2BFLGQ1cOBAs23btsCRjho1yqxevTpnCvl0HyQsEZUISz6LFy8248aNy6c4eg0kgLByPDDSXr5Q7fKvV69eZs%2BePTmOPv%2Bug4TVs2dPs3fvXq%2B4f%2F%2F735xh5R9TqwoQVk6BBN0RTPKOnHyhwuHDhwNHN3fuXDNp0qScRm5Pt%2F6z2759%2B5o%2F%2FOEP5gtf%2BIJX4FlnnWW2b99uT7FU4hFAWDkcCIMGDTJbt25t1XNSdwS%2F%2FvWvmzVr1gSOyuXLvyAgfmFdcMEFRt6TXxK5zF%2BtWrUqh6ODLqsRQFgZHx9ByxdkjunNN9%2Bsu5KgS0xptKGhwRw6dKju9ovWQLmwvvjFL5olS5Z4w5TL6YkTJxZtyOrHg7AyjjCN5QvV1lRx%2BVc54HJhyVswSpeBf%2Fvb38zQoUMzPjrorhYBhFWLUII%2FT%2FqOYLVJ9fPPP7%2FNZWeCQylEU%2F48zjvvPPPPf%2F6zZVxJzicWApYlg0BYGQWR9B3BSmuqeIg3fKB%2BYZ199tneXUH5DB8%2B3GzYsCF8Q2yZGQGElQHqJGVVbU0Vl3%2FRwvQLq3v37i1vbpg%2BfbqZMWNGtMbYOhMCCCtlzP51PaWu4lxusKYq%2BaDKL9FLPfzxj3%2F0VrrzsY8AwkoxkwkTJpgFCxa06iHO8oVqa6riyC%2FFIatqupKwPvroIyPvyuJjHwGElWIm5b8QctlRWkUdplvWVIWhFH%2BbIGENGTLEbNmyJX6j7JkqAYSVEt567wiypiqlYHzNBglLzorlAWg%2BdhJAWCnkIl%2FJXv5lEWEv3VhTlUIgFZoMEhYPPGfHP05PCCsOtSr7lH%2FXnWwaRlasqUo4iBDNBQmLB55DgMtxE4SVIPygSfbvf%2F%2F75tFHH63aC2uqEgwhQlPlwuKB5wjwctoUYSUIvvwXQO40yR2nSh%2FWVCUIP0ZT5XnxwHMMiBnvgrASAl4%2BSV5txTlrqhKCXmcz5cKaPXu2%2BeEPf1hnq%2ByeJgGElQDdKItDWVOVAPCEmigX1nPPPWduuOGGhFqnmTQIIKw6qQbNWwVNsl922WVm%2Ffr1gb3xnqo6Q4i5e7mwwtwcidkVuyVEAGHVCbL8oJcXwf39739v1SprquqEnNLu%2FuxqzTemVALNRiSAsCIC829eLiv51uajR4%2B2bCLfuLJjx47AHnhQuQ7wCe3qz483NCQENeVmEFZMwNUm2WXydtq0aYHrr7h1HhN4Crv5hcUbRlMAnEKTCCsG1Hvvvdc8%2FPDDrfYszX%2FI84KVvgCVOZIYsFPcxS8sskkRdIJNI6wYMMsvBWVxaO%2Fevc39998f2NrIkSPNunXrYvTELmkSKOUod24PHjyYZle0nRABhBUDpF9Y8mf5frvyZwelWblsbG5ujtEDu2RBoJSjvLtd3uHOx34CCCtiRpXu%2BJU3M2vWLDN16tSIrbN5lgRKwrrvvvvMT37ykyy7pq%2BYBBBWRHCVXvpWaqb8TmHE5tk8QwKlLOWbcuRmCB%2F7CSCsCBnVOrvirCoCTAs2rXY5b0F5lBBAAGFFOCwefPBBM3PmzDZ7yNfONzY2RmiJTW0gIMI699xzzVtvvWVDOdQQggDCCgHJv8mwYcPMq6%2B%2B2vK%2FuB0eEaBFm4uwbrvtNvPkk09aVBWlVCOAsGIcH7KCXT6lbwmO0QS7WEBAhLVp0yYjfwnx0UEAYenIiSpTICA3SIKWo6TQFU0mRABhJQSSZvQR6NOnj9m1a5e%2BwpVW%2FPvf%2F97ItxKVrlDiDANhxaHGPoUgcO2115oXXnihEGOxdRAybbJkyRLz1FNPeVMoN998s%2FfnuB%2BEFZcc%2B6knsHz5cl7Yl1KKJUlt2LChVQ%2FyGh%2F5oo%2B4X1SLsFIKjGYh4BoB%2BQLakqiCvjBYXgwwbtw4M2PGDITl2sHBeCFgAwERk8xNyZfPVvrGbPlyDxHVNddcU3fJnGHVjZAGIOAeAbnUk7OpVatWmaCzKXnUSSQl%2F9QzyV5OFmG5d6wxYgjEIiBiEknJ2VSlNYgyqS6SGjFiRKw%2Bau2EsGoR4ucQcJzAK6%2B8Ym655ZaKjzDJUoXS2VTcyfSwiBFWWFJsBwHHCMiZ1M9%2F%2FvPAtWoygS5zUhMnTjTyPrGsPggrK9L0A4GECchD94cPH06sVXlUSb6N%2FCtf%2BYpZsWJFxbkpucsnskr7bCpoYAgrsbhpCALpEujSpYv3Kuc8Hrg%2F44wzzA9%2B8APvjCrPD8LKkz59Q6AKgTwF5S%2FLpgfEERa%2FMhCwhIAtggq8FDt5uXjixIncSSGs3COgAFcJyNsi5EtKol7iyVxTp06dzP79%2ByOjqzaRLl%2Bm0qtXL7N79%2B6K7UrfeYoLYUWOnB0gEI9APYI6%2B%2Byzzdtvvx2v45N73X777RUn0mXy%2FBvf%2BEarFxkOHjzYvPbaa1XFNWXKFO8uYpYfhJUlbfpyikCeghLQO3bsMJMmTTJr1qwxx48fb8M%2BzET6hAkTzIIFCyrmFvXssN4DAGHVS5D9IfB%2FBORxlHfeeSfWJV69Z1D%2BEGSh5wMPPGA2btwYWIu8x15e8RLlTasirl%2F84hdt2sv6EhFh8esGgToIxJGU%2FJInKahS%2BdVWpEufl1xyifdoTb1faVb%2BVXf33HNPZpeGCKuOg5Vd3SQgE96HDh0KPXj5BZdHVxYtWhR6nygbykT6j370o8CFnjKRLs%2F3JflFG%2Ffee695%2BOGHW5WY1aUhwopyZLCtswRqfSelH4wIqn%2F%2F%2Ft4cUpofmUhfunRpoDxlIv3OO%2B9M7RutGxoazJEjR1qGJ3zkjmfaH4SVNmHaV0ngxhtvNMuWLQs9HyWSGjt2rHnmmWdSHW%2BtiXSZn%2Fre976XyYr0PC4NEVaqhxeNayIQR1JZrUmqNpEu4jjnnHMiT6TXm00el4YIq97U2F81gaiT5lld%2BmQ9kR43xHbt2rVaSNqhQ4dEH8gurwthxU2K%2FdQSkElzectB2Inijh07eg8dZ%2FnJeiK9nrGVXxrKkoqHHnqoniYr7ouwUsFKo7YRkLtlYSeFs5o0D2Ikq8svvvhi09TU1ObHaU%2Bkx82s%2FNIw7F8EcfpDWHGosY8KAlHv7GUxaV4N3M9%2B9jNz3333tdkky4n0uMH6z7IQVlyK7OcUgRtuuME8%2F%2FzzoS%2F1srqzFyaEIFnFWZEepq%2Bkt%2BncuXOrS2aElTRh2isMAXloV769OewvSdaPkoQBHSSru%2B%2B%2B2%2Fzyl78Ms3vu2yCs3COgAJsJ9OvXz3vPeFhJtW%2FfvtUiR5vGFiSrn%2F70p97bPbV8yi%2B9w%2BYSZ3zMYcWhxj6ZE%2BjTp4%2F3nqYwvwxyFiWSSvJ952kMePjw4eZPf%2FpTq6a1yUqKL79LGCajuDwRVlxy7Jc6AVnTc%2FTo0VD9yC%2BNSO3dd98NtX3eGxVFVuXCSvuSG2HlfeTSfysCUe%2Fsybe3rFy5UhXFclnJmJcvX27GjBmjahylYv1nWLLG7cCBA6mNA2GlhpaGwxKIeiZ13XXXeb%2FgGj9BstqyZYu54IILNA7HqxlhqY2OwuMQqHVWJb8Qx44dM%2FIYiOaPvAPL%2FxXvMm7tspIvVN23b19LLGnOX3lyPNnBx5oPAmrXT%2BD666%2F31k%2F5P2nPhWRNrfwXuwiyKj%2B7kv9OWycIK%2Bsjl%2F4CCcgvsLwD3f%2BOpaKgKpeVXAL%2F5S9%2FUX0ZKNlcdtllZv369S0xjRw50qxbty7V2BBWqnhp3HUC5bLq2rVrq0sozXyyXM5Q4oSwNB8x1G4tAXmI%2BcILL2x1x6xIsiq%2FHJSz47BLUOoJDWHVQ499IRBAQGQ1dOjQVu%2BJKpqsyt%2BDlfbcFWdY%2FKpBIAUCQbL61Kc%2BZd5%2F%2F%2F0UesuvSf%2FlYJY3SDjDyi9zei4YgSBZyVdryfcDFulTPi83a9YsM3Xq1EyGiLAywUwnRSewYsUKI6%2B38b%2FjvYiyKp%2B7kv%2FO6nLQ65t1WEX%2FVWJ8aRMIeuNCUWU1e%2FZsc%2F%2F997cglXfi%2BxfDps0aYaVNmPYLTcAlWeV9dsUZVqF%2FlRhc2gSK8C6rqIz8k%2B1Zf4MQwoqaFttDwEeg%2FIstNL7LKkqgeS1l8NfIJWGUxNgWAv9HYPPmzd6325Q%2B8oZQEVZRPwMHDjTbtm1rNbwsJ9tLHSOsoh5hjCtVAoMGDTJbt25t6SOPX95UB%2BhrXL6XsfztrVk8Nxg0PoSVVer0UygC%2FssjedPpzp07CzW%2B0mDkkZvjx4%2B3Gtv555%2FfStZZDhxhZUmbvgpB4Ne%2F%2FrX57ne%2F2zKWxx57zNx1112FGFur%2BaKT7yEr%2F%2BQpK6kFYRXuMGNAaRPo27ev98yc9GcAAAo5SURBVK098snjTlna4%2FPEECCruXPnmkmTJmXRfcU%2BEFau%2BOlcIwH%2FL7NMRr%2F55psahxFY87x588zkyZPb%2FMwGWXGGVZjDjIFkRaD8cvDVV181F110UVbdp9pPJVnZdEOBM6xUDwEaLxoB%2BVaYQ4cOecPK6h1QWTAMWraQ5VsYwo4RYYUlxXYQCJjbeemll8zll1%2Bumk2QrGRRrHzxh20fhGVbItRjNYGgb%2FgZNmyY2bRpk9V1VyouaNlCr169zJ49e6wcD8KyMhaKsplAQ0NDmy%2FLkP9XulS0uXZ%2FbbatsQrDDWGFocQ2ECgj8NWvftW88sorbbjMnDnTTJs2zXpeQcsWRo0aZVavXm117QjL6ngozmYCa9euNVdccUWbEvNeXFmN2be%2B9S3z3HPPtdnElmULtfJGWLUI8XMI1CBQ%2Fsrg0uY9evQwH330kRX8%2FItdywuyadlCLVgIqxYhfg6BEATGjh1rnn322cAtZX5r6dKlZvTo0SFaSnaTaqKSnjTJSupFWMkeH7TmMAG5RLzyyisrSkDmjWQV%2BSOPPJI6Jfl26WrfEzhkyBCzZcuW1OtIugOElTRR2nOewJQpU8z8%2BfNNc3NzRRaf%2BcxnzDvvvJM4q1qi%2BuY3v1nxTDDxYlJoEGGlAJUmIeCfx2psbKwIpFu3bka%2Bt3D69OnmpptuigVu4cKF3tsiql3eaRdVCQzCinWIsBMEohEYPHiwef3110PPGckC1Z49exqZuH%2FrrbcCOwsjqscff9zccccd0Yq1eGuEZXE4lFY8AnK5KA8Z%2B7%2B%2FMOooRWbV9m%2Ffvr1ZsGBBoUTFGVbUo4TtIZAggZUrV5pbb73VVLtcjNqdiOrIkSNRd1O1PWdYquKi2CITePrpp82MGTO8lwPKO9TDLjno3Lmz2b9%2Ff5HRtIwNYTkRM4PUTmD8%2BPFm%2Ffr15j%2F%2F%2BY9391FkVuR3yVfKC2FpP5KpHwIOEUBYDoXNUCGgnQDC0p4g9UPAIQIIy6GwGSoEtBNAWNoTpH4IOEQAYTkUNkOFgHYCCEt7gtQPAYcIICyHwmaoENBOAGFpT5D6IeAQAYTlUNgMFQLaCSAs7QlSPwQcIoCwHAqboUJAOwGEpT1B6oeAQwQQlkNhM1QIaCeAsLQnSP0QcIgAwnIobIYKAe0EEJb2BKkfAg4RQFgOhc1QIaCdAMLSniD1Q8AhAgjLobAZKgS0E0BY2hOkfgg4RABhORQ2Q4WAdgIIS3uC1A8BhwggLIfCZqgQ0E4AYWlPkPoh4BABhOVQ2AwVAtoJICztCVI%2FBBwigLAcCpuhQkA7AYSlPUHqh4BDBBCWQ2EzVAhoJ4CwtCdI%2FRBwiADCcihshgoB7QQQlvYEqR8CDhFAWA6FzVAhoJ0AwtKeIPVDwCECCMuhsBkqBLQTQFjaE6R%2BCDhEAGE5FDZDhYB2AghLe4LUDwGHCCAsh8JmqBDQTgBhaU%2BQ%2BiHgEAGE5VDYDBUC2gkgLO0JUj8EHCKAsBwKm6FCQDsBhKU9QeqHgEMEEJZDYTNUCGgngLC0J0j9EHCIAMJyKGyGCgHtBBCW9gSpHwIOEUBYDoXNUCGgnQDC0p4g9UPAIQIIy6GwGSoEtBNAWNoTpH4IOEQAYTkUNkOFgHYCCEt7gtQPAYcIICyHwmaoENBOAGFpT5D6IeAQAYTlUNgMFQLaCSAs7QlSPwQcIoCwHAqboUJAOwGEpT1B6oeAQwQQlkNhM1QIaCeAsLQnSP0QcIgAwnIobIYKAe0EEJb2BKkfAg4RQFgOhc1QIaCdAMLSniD1Q8AhAgjLobAZKgS0E0BY2hOkfgg4RABhORQ2Q4WAdgIIS3uC1A8BhwggLIfCZqgQ0E4AYWlPkPoh4BABhOVQ2AwVAtoJICztCVI%2FBBwigLAcCpuhQkA7AYSlPUHqh4BDBBCWQ2EzVAhoJ4CwtCdI%2FRBwiADCcihshgoB7QQQlvYEqR8CDhFAWA6FzVAhoJ0AwtKeIPVDwCECCMuhsBkqBLQTQFjaE6R%2BCDhEAGE5FDZDhYB2AghLe4LUDwGHCCAsh8JmqBDQTgBhaU%2BQ%2BiHgEAGE5VDYDBUC2gkgLO0JUj8EHCKAsBwKm6FCQDsBhKU9QeqHgEMEEJZDYTNUCGgngLC0J0j9EHCIAMJyKGyGCgHtBBCW9gSpHwIOEUBYDoXNUCGgnQDC0p4g9UPAIQIIy6GwGSoEtBNAWNoTpH4IOEQAYTkUNkOFgHYCCEt7gtQPAYcIICyHwmaoENBOAGFpT5D6IeAQAYTlUNgMFQLaCSAs7QlSPwQcIoCwHAqboUJAOwGEpT1B6oeAQwQQlkNhM1QIaCeAsLQnSP0QcIgAwnIobIYKAe0EEJb2BKkfAg4RQFgOhc1QIaCdAMLSniD1Q8AhAgjLobAZKgS0E0BY2hOkfgg4RABhORQ2Q4WAdgIIS3uC1A8BhwggLIfCZqgQ0E4AYWlPkPoh4BABhOVQ2AwVAtoJICztCVI%2FBBwigLAcCpuhQkA7AYSlPUHqh4BDBBCWQ2EzVAhoJ4CwtCdI%2FRBwiADCcihshgoB7QQQlvYEqR8CDhFAWA6FzVAhoJ0AwtKeIPVDwCECCMuhsBkqBLQTQFjaE6R%2BCDhEAGE5FDZDhYB2AghLe4LUDwGHCCAsh8JmqBDQTgBhaU%2BQ%2BiHgEAGE5VDYDBUC2gkgLO0JUj8EHCKAsBwKm6FCQDsBhKU9QeqHgEMEEJZDYTNUCGgngLC0J0j9EHCIAMJyKGyGCgHtBBCW9gSpHwIOEUBYDoXNUCGgnQDC0p4g9UPAIQIIy6GwGSoEtBNAWNoTpH4IOEQAYTkUNkOFgHYCCEt7gtQPAYcIICyHwmaoENBOAGFpT5D6IeAQAYTlUNgMFQLaCSAs7QlSPwQcIoCwHAqboUJAOwGEpT1B6oeAQwQQlkNhM1QIaCeAsLQnSP0QcIgAwnIobIYKAe0EEJb2BKkfAg4RQFgOhc1QIaCdAMLSniD1Q8AhAgjLobAZKgS0E0BY2hOkfgg4RABhORQ2Q4WAdgIIS3uC1A8BhwggLIfCZqgQ0E4AYWlPkPoh4BABhOVQ2AwVAtoJICztCVI%2FBBwigLAcCpuhQkA7AYSlPUHqh4BDBBCWQ2EzVAhoJ4CwtCdI%2FRBwiADCcihshgoB7QQQlvYEqR8CDhFAWA6FzVAhoJ0AwtKeIPVDwCECCMuhsBkqBLQTQFjaE6R%2BCDhEAGE5FDZDhYB2AghLe4LUDwGHCCAsh8JmqBDQTgBhaU%2BQ%2BiHgEAGE5VDYDBUC2gkgLO0JUj8EHCKAsBwKm6FCQDsBhKU9QeqHgEMEEJZDYTNUCGgngLC0J0j9EHCIAMJyKGyGCgHtBBCW9gSpHwIOEUBYDoXNUCGgnQDC0p4g9UPAIQIIy6GwGSoEtBNAWNoTpH4IOEQAYTkUNkOFgHYCCEt7gtQPAYcIICyHwmaoENBOAGFpT5D6IeAQAYTlUNgMFQLaCSAs7QlSPwQcIoCwHAqboUJAO4H%2FAR%2FszVEhMhatAAAAAElFTkSuQmCC";
+        var iii = decodeURIComponent(img);
+        console.log(iii);
+
+        var val = {
+            "InvType": 1, "Tags": ["300ED89F335000600082859C", "300ED89F3350007FE25B738B"], "HotelID": "14", "RegionID": 15, "CreateUserID": "16",
+            "CreateUserName": "柏", "InvNo": "",
+            "Sign": [iii],
+            "Bag": [], "Attach": [{ "Type": "TaskID", "Value": "40b98735-d359-4fd6-85b3-b2ec1c7dc15b" }], "InvSubType": 1, "Remark": "", "TaskInv": ["40b98735-d359-4fd6-85b3-b2ec1c7dc15b"], "HotelName": "如家浦三路店", "RegionName": "", "CreateTime": "", "Quantity": 2, "CreateMode": 1, "TimeStamp": 1504232501027, "UUID": "ebba6fd972251fc1", "TerminalType": "android",
+            "GUID": "E3410056-18BC-4A2B-A53D-AB38F7A5A3FF"
+        };
+        var url = "@Url.Action("InsertLogisticsRFIDInvoice", "api/Textile")";
+        $.ajax({
+            url: url,
+            data: val,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", $("#hidtoken").val());
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function (list) {
+                var i = 0;
+            },
+            error: function () {
+            }
+        });
+    });
+
+    $("#btnHandRecieve").click(function () {
+        var val = { "InvType": 1, "Tags": ["000000000000000000000000"], "HotelID": "4", "RegionID": "25", "CreateUserID": "1", "CreateUserName": "Admin", "InvNo": "", "Sign": [], "Bag": [], "Attach": [], "InvSubType": 0, "Remark": "", "CreateTime": "", "HotelName": "汉庭张江店", "RegionName": "1F", "Quantity": 66, "Details": ["6;非租赁床单;1;1", "6;非租赁床单;2;2", "8;毛巾;5;2", "8;毛巾;5;3", "8;毛巾;53;4"], "TimeStamp": 1501465662100, "UUID": "36d5c17668ba7115", "TerminalType": "android", "GUID": "A2F918F3-EF9C-EF1C-56B5-5D76C1478D20" };
+        var url = "@Url.Action("InsertHandInvoice", "api/Textile")";
+        $.ajax({
+            url: url,
+            data: val,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", $("#hidtoken").val());
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function (list) {
+                var i = 0;
+            },
+            error: function () {
+            }
+        });
+    });
+
+    $("#btnquery").click(function () {
+        var val = { "CreateUserID": "36", "HotelID": "0", "RegionID": "0", "CreateTime": "", "InvType": 1, "PageIndex": 1, "PageSize": 5, "TimeStamp": 1509110337676, "UUID": "36d5c17668ba7115", "TerminalType": "android", "GUID": "4A393EE2-2DCB-7CD0-35D0-1A55D9157C7A" };
+
+        var url = "@Url.Action("SearchInvoice", "api/BillInquiry")";
+        $.ajax({
+            url: url,
+            data: val,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", $("#hidtoken").val());
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function (list) {
+                var i = 0;
+            },
+            error: function () {
+            }
+        });
+    });
+
+    $("#btnsummary").click(function () {
+        var val = { "CreateUserID": "1", "HotelID": "0", "RegionID": "0", "CreateTime": "", "InvType": 1, "PageIndex": 1, "PageSize": 5, "TimeStamp": 1510646613844, "UUID": "36d5c17668ba7115", "TerminalType": "android", "GUID": "C8BD3A7C-57FB-F957-A13C-8DB964DAB094" };
+
+        var url = "@Url.Action("SummaryInvoice", "api/BillInquiry")";
+        $.ajax({
+            url: url,
+            data: val,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", $("#hidtoken").val());
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function (list) {
+                var i = 0;
+            },
+            error: function () {
+            }
+        });
+    });
+
+    $("#infactorytask").click(function () {
+        var val = { "HotelID": "4", "TimeStamp": 1501579883049, "UUID": "36d5c17668ba7115", "TerminalType": "Tunnel", "GUID": "715E52A8-CB1D-586D-0284-410DB42A95AC" };
+
+        var url = "@Url.Action("InfactoryTask", "api/Textile")";
+        $.ajax({
+            url: url,
+            data: val,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", $("#hidtoken").val());
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function (list) {
+                var i = 0;
+            },
+            error: function () {
+            }
+        });
+    });
+
+    $("#btnowe").click(function () {
+        //var val = { "CreateUserID": "1", "HotelID": "4", "CreateTime": "2017-09-15", "InvType": "1", "RegionID": "6", "PageIndex": 1, "PageSize": 10, "TimeStamp": 1501570564556, "UUID": "36d5c17668ba7115", "TerminalType": "android", "GUID": "44BBB941-1F75-9E4C-00A2-CE2861C88179" };
+        var val = { "CreateUserID": "1", "HotelID": "5", "CreateTime": "2017-09-15", "InvType": "1", "RegionID": "0", "PageIndex": 1, "PageSize": 10, "TimeStamp": 1501570564556, "UUID": "36d5c17668ba7115", "TerminalType": "android", "GUID": "44BBB941-1F75-9E4C-00A2-CE2861C88179" };
+
+        var url = "@Url.Action("OweInvoice", "api/BillInquiry")";
+        $.ajax({
+            url: url,
+            data: val,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", $("#hidtoken").val());
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function (list) {
+                var i = 0;
+            },
+            error: function () {
+            }
+        });
+    });
+
+    $("#btnqrcodevalidation").click(function () {
+        var val = { "Tags": ["300ED89F3350007FE25B7471", "000000000000000011940972", "000000000000000005001683"], "TimeStamp": 1501579883049, "UUID": "36d5c17668ba7115", "TerminalType": "android", "GUID": "715E52A8-CB1D-586D-0284-410DB42A95AC" };
+
+        var url = "@Url.Action("ValidationQRCode", "api/Textile")";
+        $.ajax({
+            url: url,
+            data: val,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", $("#hidtoken").val());
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function (data) {
+                if (data.ResultCode == 0) {
+                    alert("校验成功，没有发现未绑定的芯片码。");
+                } else {
+                    alert("校验失败，发现未绑定的芯片码。");
+                }
+            },
+            error: function () {
+            }
+        });
+    });
+
+    $("#btntruck").click(function () {
+        var val = { "TagList": ["000000000000000011941448"], "RequestTime": "2017-10-13T17:26:54.2651559+08:00", "TimeStamp": "1507886814", "UUID": "34F39AED9FDB", "TerminalType": "Desktop" };
+
+        var url = "@Url.Action("LoadTextileByTruck", "api/Textile")";
+        $.ajax({
+            url: url,
+            data: val,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", $("#hidtoken").val());
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function (data) {
+                if (data.ResultCode == 0) {
+                    alert("校验成功，没有发现未绑定的芯片码。");
+                } else {
+                    alert("校验失败，发现未绑定的芯片码。");
+                }
+            },
+            error: function () {
+            }
+        });
+    });
+
+    $("#btnrfidSign").click(function () {
+        var val = {
+            "InvType": 9,
+            "Tags": ["300ED89F33500060008FA64D",
+            "300ED89F33500040017884DC"],
+            "HotelID": "7",
+            "RegionID": "0",
+            "CreateUserID": "36",
+            "CreateUserName": "冯雄",
+            "InvNo": "",
+            "Sign": [],
+            "Bag": [],
+            "Attach": [],
+            "InvSubType": 0,
+            "Remark": "",
+            "SystemCode": "",
+            "TaskInv": ["1ea2fdfe-3012-4199-9ddb-dd1640f18db5"],
+            "HotelName": "春夏秋冬",
+            "RegionName": "",
+            "CreateTime": "",
+            "Quantity": 0,
+            "CreateMode": 0,
+            "TimeStamp": 1508983878223,
+            "UUID": "36d5c17668ba7115",
+            "TerminalType": "android",
+            "GUID": "84A4773A-ABB3-3847-251D-2C2DE2173040"
+        };
+
+        var url = "@Url.Action("InsertLogisticsRFIDInvoice", "api/Textile")";
+        $.ajax({
+            url: url,
+            data: val,
+            beforeSend: function (request) {
+                request.setRequestHeader("access_token", $("#hidtoken").val());
+            },
+            dataType: 'JSON',
+            async: false,//请求是否异步，默认为异步
+            type: 'Post',
+            success: function (data) {
+                if (data.ResultCode == 0) {
+                    alert("校验成功，没有发现未绑定的芯片码。");
+                } else {
+                    alert("校验失败，发现未绑定的芯片码。");
+                }
+            },
+            error: function () {
+            }
+        });
+    });
+
+
+</script>

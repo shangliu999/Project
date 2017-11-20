@@ -1,0 +1,23 @@
+﻿<Application x:Class="ETextsys.Terminal.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ETextsys.Terminal"
+             StartupUri="Login.xaml" DispatcherUnhandledException="Application_DispatcherUnhandledException">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Skins/Default/DefaultDictionary.xaml"/>
+                <ResourceDictionary Source="/Skins/Default/Imagestyle.xaml"/>
+                <ResourceDictionary Source="/Skins/Default/Icon.xaml"/>
+                <ResourceDictionary Source="/Skins/Default/Window.xaml"/>
+                <ResourceDictionary Source="/Skins/Default/TextBlock.xaml"/>
+                <ResourceDictionary Source="/Skins/Default/TextBox.xaml"/>
+                <ResourceDictionary Source="/Skins/Default/Label.xaml"/>
+                <ResourceDictionary Source="/Skins/Default/ComboBox.xaml"/>
+                <ResourceDictionary Source="/Skins/Default/CheckBox.xaml"/>
+                <ResourceDictionary Source="/Skins/Default/DataGrid.xaml"/>
+                <ResourceDictionary Source="/Skins/Default/Button.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

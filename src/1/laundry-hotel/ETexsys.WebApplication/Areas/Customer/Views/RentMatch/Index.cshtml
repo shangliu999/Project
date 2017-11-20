@@ -1,0 +1,90 @@
+﻿@{
+    Layout = null;
+}
+@using ETexsys.Model
+@using ETexsys.WebApplication.Areas.Customer.Models
+@model List<OrderDetailsModel>
+
+<div class="ibox-content">
+    <form class="form-horizontal" id="OrderForm">
+
+        @for (int i = 0; i < Model.Count; i += 2)
+            {
+                OrderDetailsModel item1 = Model[i];
+
+                <div class="form-group">
+                    <div class="col-lg-2 control-label">
+                        @item1.TextileName @item1.SizeName
+                    </div>
+                    <div class="col-lg-2">
+                        <input type="text" id="@item1.AreaID|@item1.SizeID" name="@item1.AreaID|@item1.SizeID" data-area="@item1.TextileName" data-size="@item1.SizeName" value="@item1.Count" />
+                    </div>
+
+                    @{
+                            if (i + 1 > Model.Count - 1)
+                            {
+                                break;
+                            }
+                            OrderDetailsModel item2 = Model[i + 1];
+                    }
+
+                    <div class="col-lg-2 control-label">
+                        @item2.TextileName @item2.SizeName
+                    </div>
+                    <div class="col-lg-2">
+                        <input type="text" id="@item2.AreaID|@item2.SizeID" name="@item2.AreaID|@item2.SizeID" data-area="@item2.TextileName" data-size="@item2.SizeName" value="@item2.Count" />
+                    </div>
+                </div>
+                            }
+        <br />
+        <br />
+        <div class="form-group" style="text-align:center;">
+            <button class="btn btn-success" type="button" id="btnSubmit"><i class="fa fa-save"></i>提交</button>
+            @*<button class="btn btn-danger" type="button" id="btnCancel"><i class="fa fa-remove"></i>取消</button>*@
+        </div>
+    </form>
+</div>
+
+<script>
+
+    $("#btnSubmit").click(function () {
+        var info, item, txt, total = 0, temp = [], array = [];
+
+        $("#OrderForm input[type='text']").each(function (i, item) {
+            txt = parseInt($(item).val());
+            if (txt > 0) {
+                info = $(item).attr("id");
+                temp = info.split("|");
+                item = { "AreaID": temp[0], "SizeID": temp[1], "TextileName": $(item).data("area"), "SizeName": $(item).data("size"), "Count": txt };
+                array.push(item);
+                total += txt;
+            }
+        });
+        if (total == 0) {
+            swal("提示", "请输入数量后再提交.");
+            return false;
+        }
+        var url = "@Url.Action("Add", "RentMatch")";
+        var v = { "HotelID": $("#HotelID").val(), "Data": array };
+
+        $.ajax({
+            type: "post",
+            data: v,
+            dataType: "json",
+            url: url,
+            success: function (result) {
+                if (result.ResultCode == 0) {
+                    swal("提示", "提交成功.");
+                } else {
+                    swal("提示", "提交失败.");
+                }
+                return false;
+            }
+        });
+    });
+
+    $("#btnCancel").click(function () {
+        $("#OrderForm input").val("");
+    });
+</script>
+

@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ETexsys.Model
+{
+    public class C_AutoRFIDCollectReader
+    {
+        public string ReaderName { get; set; }
+
+        public string ReaderCode { get; set; }
+    }
+
+    public class C_TextileSummary
+    {
+        public string SiteCode { get; set; }
+
+        public int ClassID { get; set; }
+
+        public string ClassName { get; set; }
+
+        public int TextileCount { get; set; }
+    }
+}

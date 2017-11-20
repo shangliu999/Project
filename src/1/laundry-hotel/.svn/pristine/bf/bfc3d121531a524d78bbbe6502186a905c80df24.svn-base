@@ -1,0 +1,66 @@
+﻿
+@model ETexsys.Model.fabric
+
+<div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">面料</h4>
+            </div>
+            <form class="form-horizontal" id="addFabricForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        @Html.HiddenFor(m => m.ID)
+                        <label class="col-lg-2 control-label">面料名称</label>
+                        <div class="col-lg-10">
+                            @Html.TextBoxFor(m => m.FabricName, new { @class = "form-control", @required = "", @onblur = "CheckFabricName(this)" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">规格</label>
+                        <div class="col-lg-10">
+                            @Html.TextBoxFor(m => m.Specifications, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">生产商</label>
+                        <div class="col-lg-10">
+                            @Html.TextBoxFor(m => m.Producer, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">密度</label>
+                        <div class="col-lg-10">
+                            @Html.TextBoxFor(m => m.Density, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">原值</label>
+                        <div class="col-lg-10">
+                            @Html.TextBoxFor(m => m.oldValue, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">重量</label>
+                        <div class="col-lg-10">
+                            @Html.TextBoxFor(m => m.FabricWeight, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">等级</label>
+                        <div class="col-lg-10">
+                            @Html.TextBoxFor(m => m.FabricLevel, new { @class = "form-control" })
+                        </div>
+                    </div> 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+

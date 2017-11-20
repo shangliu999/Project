@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "欢迎页面";
+}
+
+<div class="child" style="background-color:gray;">
+</div>
+<script>
+    //诗兰美租赁仓库:2 洗涤工厂周转仓库:3
+    //小蜜蜂配送中心:2 洗涤中心:4
+    localStorage.setItem("WarehouseID", "4");
+    //RegionMode 1:租赁仓库 2:周转仓库
+    localStorage.setItem("RegionMode", "2");
+
+    var infactoryurl = "@Url.Action("GetInfactory", "Factory")";
+    var stockurl = "@Url.Action("GetStock", "Factory")";
+    var noticeurl = "@Url.Action("GetNotices", "Notice")";
+    localStorage.setItem("InfactoryURL", infactoryurl);
+    localStorage.setItem("StockURL", stockurl);
+    localStorage.setItem("NoticeURL", noticeurl);
+</script>
+

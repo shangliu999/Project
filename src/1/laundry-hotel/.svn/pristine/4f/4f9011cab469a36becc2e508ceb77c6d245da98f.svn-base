@@ -1,0 +1,3065 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="laundry_hotelModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="bag">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BagNo" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="BagRFIDNo" Type="varchar" MaxLength="24" />
+          <Property Name="RegionID" Type="int" />
+          <Property Name="IsDelete" Type="bit" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="UpdateUserID" Type="int" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+          <Property Name="State" Type="smallint" Nullable="false" />
+          <Property Name="Flag" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="brandtype">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BrandName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="BrandCode" Type="varchar" MaxLength="20" />
+          <Property Name="BrandDesc" Type="varchar" MaxLength="200" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+          <Property Name="UpdateUserID" Type="int" />
+          <Property Name="IsDelete" Type="bit" Nullable="false" />
+          <Property Name="Sort" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="businessdetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BID" Type="varchar" MaxLength="36" Nullable="false" />
+          <Property Name="HotelID" Type="int" Nullable="false" />
+          <Property Name="InvType" Type="smallint" Nullable="false" />
+          <Property Name="SubType" Type="smallint" />
+          <Property Name="BNo" Type="varchar" MaxLength="14" Nullable="false" />
+          <Property Name="ClassID" Type="int" Nullable="false" />
+          <Property Name="ClassName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="SizeID" Type="int" Nullable="false" />
+          <Property Name="SizeName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="TextileCount" Type="int" Nullable="false" />
+          <Property Name="ExecCount" Type="int" />
+        </EntityType>
+        <EntityType Name="businessinvoice">
+          <Key>
+            <PropertyRef Name="BID" />
+          </Key>
+          <Property Name="BID" Type="varchar" MaxLength="36" Nullable="false" />
+          <Property Name="HotelID" Type="int" Nullable="false" />
+          <Property Name="BNo" Type="varchar" MaxLength="14" Nullable="false" />
+          <Property Name="InvType" Type="smallint" Nullable="false" />
+          <Property Name="SubType" Type="smallint" />
+          <Property Name="Note" Type="varchar" MaxLength="200" />
+          <Property Name="Stated" Type="smallint" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="ReviewTime" Type="datetime" Precision="0" />
+          <Property Name="ReviewUserID" Type="int" />
+          <Property Name="CloseTime" Type="datetime" Precision="0" />
+          <Property Name="CloseUserID" Type="int" />
+          <Property Name="ExecTime" Type="datetime" Precision="0" />
+        </EntityType>
+        <EntityType Name="car">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CarNo" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="UseName" Type="varchar" MaxLength="50" />
+          <Property Name="Phone" Type="varchar" MaxLength="20" />
+          <Property Name="OldValue" Type="double" />
+          <Property Name="IsDelete" Type="bit" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="UpdateUserID" Type="int" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+        </EntityType>
+        <EntityType Name="category">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CateName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Sort" Type="int" Nullable="false" />
+          <Property Name="IsDelete" Type="bit" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="UpdateUserID" Type="int" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+        </EntityType>
+        <EntityType Name="classsize">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClassID" Type="int" Nullable="false" />
+          <Property Name="SizeID" Type="int" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="color">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ColorName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="UpdateUserID" Type="int" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+          <Property Name="Sort" Type="int" Nullable="false" />
+          <Property Name="IsDelete" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="complain">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="36" Nullable="false" />
+          <Property Name="HappenTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="Cause" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Remarks" Type="varchar" MaxLength="200" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="HotelID" Type="int" Nullable="false" />
+          <Property Name="Comfirmed" Type="bit" Nullable="false" />
+          <Property Name="ComfirmUserID" Type="int" />
+          <Property Name="ComfirmTime" Type="datetime" Precision="0" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="complainattach">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ComplaintID" Type="varchar" MaxLength="36" Nullable="false" />
+          <Property Name="AttachType" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="AttachContent" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="complainmessage">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ComplainID" Type="varchar" MaxLength="36" Nullable="false" />
+          <Property Name="PublishUserID" Type="int" Nullable="false" />
+          <Property Name="PublishType" Type="smallint" Nullable="false" />
+          <Property Name="PublishMessage" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="PublishTime" Type="datetime" Precision="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="dataversion">
+          <Key>
+            <PropertyRef Name="Version" />
+          </Key>
+          <Property Name="Version" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UUID" Type="varchar" MaxLength="50" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="fabric">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FabricName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Specifications" Type="varchar" MaxLength="200" />
+          <Property Name="Producer" Type="varchar" MaxLength="100" />
+          <Property Name="Density" Type="varchar" MaxLength="20" />
+          <Property Name="oldValue" Type="varchar" MaxLength="20" />
+          <Property Name="FabricWeight" Type="varchar" MaxLength="10" />
+          <Property Name="FabricLevel" Type="varchar" MaxLength="20" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="UpdateUserID" Type="int" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+          <Property Name="IsDelete" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="fc_invoice">
+          <Key>
+            <PropertyRef Name="No" />
+          </Key>
+          <Property Name="No" Type="varchar" MaxLength="36" Nullable="false" />
+          <Property Name="State" Type="smallint" Nullable="false" />
+          <Property Name="ResultMsg" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="goods">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GoodsName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CateID" Type="int" Nullable="false" />
+          <Property Name="GoodsLogo" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="GoodsMoney" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="CostPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="UnitName" Type="varchar" MaxLength="20" />
+          <Property Name="Remarks" Type="varchar" MaxLength="1000" />
+          <Property Name="Grounding" Type="bit" Nullable="false" />
+          <Property Name="Sort" Type="int" Nullable="false" />
+          <Property Name="Hoting" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+          <Property Name="UpdateUserID" Type="int" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="goodscate">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CateName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Sort" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+          <Property Name="UpdateUserID" Type="int" />
+        </EntityType>
+        <EntityType Name="goodsorder">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="36" Nullable="false" />
+          <Property Name="OrderNo" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="HotelID" Type="int" Nullable="false" />
+          <Property Name="TotalQuantity" Type="int" Nullable="false" />
+          <Property Name="TotalMoney" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="OrderState" Type="smallint" Nullable="false" />
+          <Property Name="PaymentType" Type="smallint" Nullable="false" />
+          <Property Name="ComfirmUserID" Type="int" />
+          <Property Name="ComfirmTime" Type="datetime" Precision="0" />
+          <Property Name="Remarks" Type="varchar" MaxLength="1000" />
+          <Property Name="DeliveryDate" Type="date" Nullable="false" />
+          <Property Name="DeliveryTime" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="DistributionTime" Type="datetime" Precision="0" />
+          <Property Name="SignTime" Type="datetime" Precision="0" />
+          <Property Name="Distributor" Type="varchar" MaxLength="50" />
+          <Property Name="DistributorTel" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="goodsorderdetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderID" Type="varchar" MaxLength="36" Nullable="false" />
+          <Property Name="OrderNo" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="HotelID" Type="int" Nullable="false" />
+          <Property Name="GoodsID" Type="int" Nullable="false" />
+          <Property Name="GoodsCount" Type="int" Nullable="false" />
+          <Property Name="GoodMoney" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TotalMoney" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="GoodsName" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="hotel_detail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HotelID" Type="int" Nullable="false" />
+          <Property Name="Slogan" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Logo" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="HotelName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="HotelPoint" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="HotelProfile" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="HotelTel" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="HotelImg" Type="varchar" MaxLength="500" Nullable="false" />
+        </EntityType>
+        <EntityType Name="integraldetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HotelID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="SubType" Type="smallint" Nullable="false" />
+          <Property Name="InvNo" Type="varchar" MaxLength="30" />
+          <Property Name="Points" Type="double" Nullable="false" />
+        </EntityType>
+        <EntityType Name="inventory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RegionID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="InvType" Type="smallint" Nullable="false" />
+          <Property Name="ClassID" Type="int" Nullable="false" />
+          <Property Name="SizeID" Type="int" />
+          <Property Name="TextileCount" Type="int" Nullable="false" />
+          <Property Name="TextileTotal" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="invoice">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="36" Nullable="false" />
+          <Property Name="InvNo" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="InvType" Type="smallint" Nullable="false" />
+          <Property Name="InvSubType" Type="smallint" />
+          <Property Name="DataType" Type="smallint" Nullable="false" />
+          <Property Name="HotelID" Type="int" Nullable="false" />
+          <Property Name="RegionID" Type="int" Nullable="false" />
+          <Property Name="InvState" Type="smallint" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="TaskType" Type="int" />
+          <Property Name="Remrak" Type="varchar" MaxLength="200" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateUserName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="UpdateUserID" Type="int" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+          <Property Name="MacCode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Comfirmed" Type="smallint" Nullable="false" />
+          <Property Name="Processed" Type="bit" Nullable="false" />
+          <Property Name="ConfirmTime" Type="datetime" Precision="0" />
+          <Property Name="ConfirmUserID" Type="int" />
+          <Property Name="ConfirmUserName" Type="varchar" MaxLength="50" />
+          <Property Name="PaymentStatus" Type="smallint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="invoiceattach">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InvNo" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="ParamType" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="ParamValue" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="invoicedetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InvNo" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="InvID" Type="varchar" MaxLength="36" Nullable="false" />
+          <Property Name="InvType" Type="smallint" Nullable="false" />
+          <Property Name="DataType" Type="smallint" Nullable="false" />
+          <Property Name="InvSubType" Type="smallint" />
+          <Property Name="HotelID" Type="int" Nullable="false" />
+          <Property Name="RegionID" Type="int" Nullable="false" />
+          <Property Name="ClassID" Type="int" Nullable="false" />
+          <Property Name="ClassName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="SizeID" Type="int" Nullable="false" />
+          <Property Name="SizeName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="TextileCount" Type="int" Nullable="false" />
+          <Property Name="InvCreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="BrandID" Type="int" Nullable="false" />
+          <Property Name="BrandName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="WashingPrice" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="RentPrice" Type="decimal" Precision="10" Scale="2" />
+        </EntityType>
+        <EntityType Name="invoicelog">
+          <Key>
+            <PropertyRef Name="LogID" />
+          </Key>
+          <Property Name="LogID" Type="varchar" MaxLength="36" Nullable="false" />
+          <Property Name="TableName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="BussinessName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="CreateUserName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreateType" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="invoicelogdetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LogID" Type="varchar" MaxLength="36" Nullable="false" />
+          <Property Name="ColumnName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ColumnText" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PrimaryKeyColName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="PrimaryKeyValue" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="OldValue" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NewValue" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreateType" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="invoicerfid">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InvID" Type="varchar" MaxLength="36" Nullable="false" />
+          <Property Name="InvNo" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="InvType" Type="smallint" Nullable="false" />
+          <Property Name="HotelID" Type="int" Nullable="false" />
+          <Property Name="RegionID" Type="int" Nullable="false" />
+          <Property Name="SourceRegionID" Type="int" Nullable="false" />
+          <Property Name="TextileID" Type="int" Nullable="false" />
+          <Property Name="TextileTagNo" Type="varchar" MaxLength="24" Nullable="false" />
+          <Property Name="InvCreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="ClassID" Type="int" Nullable="false" />
+          <Property Name="ClassName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="SizeID" Type="int" Nullable="false" />
+          <Property Name="SizeName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="InvSubType" Type="smallint" Nullable="false" />
+          <Property Name="BrandID" Type="int" Nullable="false" />
+          <Property Name="BrandName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="notice">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Content" Type="varchar" MaxLength="2000" Nullable="false" />
+          <Property Name="Position" Type="int" Nullable="false" />
+          <Property Name="IsFull" Type="bit" Nullable="false" />
+          <Property Name="Start" Type="datetime" Precision="0" />
+          <Property Name="End" Type="datetime" Precision="0" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="UpdateUserID" Type="int" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+          <Property Name="IsDelete" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="organise">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FullName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="OrgCode" Type="varchar" MaxLength="20" />
+          <Property Name="ParentID" Type="int" />
+          <Property Name="Sort" Type="int" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="UpdateUserID" Type="int" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+          <Property Name="IsDelete" Type="bit" Nullable="false" />
+          <Property Name="PersonID" Type="int" />
+        </EntityType>
+        <EntityType Name="personnelplace">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PersonnelName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Sort" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="UpdateUserID" Type="int" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+          <Property Name="IsDelete" Type="bit" Nullable="false" />
+          <Property Name="Responsibility" Type="varchar" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="pricedetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TemplateID" Type="int" Nullable="false" />
+          <Property Name="ClassID" Type="int" Nullable="false" />
+          <Property Name="SizeID" Type="int" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="pricetemplate">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TemplateName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TemplateType" Type="smallint" Nullable="false" />
+          <Property Name="SubType" Type="smallint" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="UpdateUserID" Type="int" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+          <Property Name="DataSources" Type="smallint" Nullable="false" />
+          <Property Name="SettlementMode" Type="smallint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="qrcode">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QRCodeValue" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="BindingTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="RFIDTagNo" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsLock" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="region">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ParentID" Type="int" />
+          <Property Name="FullName" Type="varchar" MaxLength="100" />
+          <Property Name="RegionName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="RegionType" Type="int" Nullable="false" />
+          <Property Name="RegionMode" Type="int" />
+          <Property Name="BrandID" Type="int" />
+          <Property Name="Tel" Type="varchar" MaxLength="20" />
+          <Property Name="LinkMan" Type="varchar" MaxLength="20" />
+          <Property Name="Province" Type="varchar" MaxLength="20" />
+          <Property Name="City" Type="varchar" MaxLength="20" />
+          <Property Name="Area" Type="varchar" MaxLength="20" />
+          <Property Name="Address" Type="varchar" MaxLength="100" />
+          <Property Name="Lng" Type="varchar" MaxLength="20" />
+          <Property Name="Lat" Type="varchar" MaxLength="20" />
+          <Property Name="IsDelete" Type="bit" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="UpdateUserID" Type="int" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+          <Property Name="LogoUrl" Type="varchar" MaxLength="200" />
+          <Property Name="Sort" Type="int" Nullable="false" />
+          <Property Name="DeliveryTime" Type="varchar" MaxLength="20" />
+          <Property Name="HandConfirm" Type="bit" />
+        </EntityType>
+        <EntityType Name="region_setting">
+          <Key>
+            <PropertyRef Name="RegionID" />
+          </Key>
+          <Property Name="RegionID" Type="int" Nullable="false" />
+          <Property Name="WashID" Type="int" />
+          <Property Name="RentID" Type="int" />
+          <Property Name="SettleDay" Type="int" />
+          <Property Name="SettleType" Type="int" />
+          <Property Name="MatchNumber" Type="double" />
+          <Property Name="LimitNumber" Type="double" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="UpdateUserID" Type="int" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+          <Property Name="Integral" Type="double" />
+          <Property Name="PaymentMode" Type="smallint" />
+          <Property Name="Deposit" Type="double" />
+          <Property Name="RentPaymentMode" Type="smallint" />
+          <Property Name="WashingTime" Type="datetime" Precision="0" />
+          <Property Name="RentTime" Type="datetime" Precision="0" />
+        </EntityType>
+        <EntityType Name="rentmatch">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HotelID" Type="int" Nullable="false" />
+          <Property Name="ClassID" Type="int" Nullable="false" />
+          <Property Name="SizeID" Type="int" Nullable="false" />
+          <Property Name="TextileCount" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="repeatop">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TextileID" Type="int" Nullable="false" />
+          <Property Name="ClassID" Type="int" Nullable="false" />
+          <Property Name="SizeID" Type="int" />
+          <Property Name="TagNo" Type="varchar" MaxLength="24" Nullable="false" />
+          <Property Name="PreHotelID" Type="int" />
+          <Property Name="PreRegionID" Type="int" />
+          <Property Name="PreCreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="HotelID" Type="int" />
+          <Property Name="RegionID" Type="int" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="InvID" Type="varchar" MaxLength="36" Nullable="false" />
+          <Property Name="InvType" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="rfidreplace">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TextileID" Type="int" Nullable="false" />
+          <Property Name="OldTagNo" Type="varchar" MaxLength="24" Nullable="false" />
+          <Property Name="NewTagNo" Type="varchar" MaxLength="24" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="TagWashtime" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="rfidtag">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="RFIDTagNo" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RFIDTagNo" Type="varchar" MaxLength="24" Nullable="false" />
+          <Property Name="RFIDWashtime" Type="int" Nullable="false" />
+          <Property Name="CostTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="RFIDState" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="scrap">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ScrapName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ScrapType" Type="int" Nullable="false" />
+          <Property Name="ScrapDesc" Type="varchar" MaxLength="100" />
+          <Property Name="IsDelete" Type="bit" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="UpdateUserID" Type="int" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+        </EntityType>
+        <EntityType Name="scrapdetail">
+          <Key>
+            <PropertyRef Name="TextileID" />
+          </Key>
+          <Property Name="TextileID" Type="int" Nullable="false" />
+          <Property Name="RFIDTagNo" Type="varchar" MaxLength="24" Nullable="false" />
+          <Property Name="ClassID" Type="int" Nullable="false" />
+          <Property Name="ClassName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="SizeID" Type="int" Nullable="false" />
+          <Property Name="SizeName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="FabricID" Type="int" Nullable="false" />
+          <Property Name="BrandID" Type="int" Nullable="false" />
+          <Property Name="BrandName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ResponsibleType" Type="int" Nullable="false" />
+          <Property Name="ResponsibleID" Type="int" />
+          <Property Name="ResponsibleName" Type="varchar" MaxLength="100" />
+          <Property Name="ScrapID" Type="int" Nullable="false" />
+          <Property Name="ScrapName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Washtime" Type="int" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="CreateUserName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastUsingTime" Type="date" Nullable="false" />
+          <Property Name="LastUsingArea" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="size">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SizeName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="IsDelete" Type="bit" Nullable="false" />
+          <Property Name="Sort" Type="int" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="UpdateUserID" Type="int" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+        </EntityType>
+        <EntityType Name="sys_admin">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" />
+          <Property Name="UserPwd" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="sys_application">
+          <Key>
+            <PropertyRef Name="ApplicationID" />
+          </Key>
+          <Property Name="ApplicationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ApplicationCode" Type="varchar" MaxLength="20" />
+          <Property Name="ApplicationName" Type="varchar" MaxLength="50" />
+          <Property Name="ApplicationDesc" Type="varchar" MaxLength="100" />
+          <Property Name="ShowInMenu" Type="bit" />
+        </EntityType>
+        <EntityType Name="sys_customer">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SysCusName" Type="varchar" MaxLength="50" />
+          <Property Name="LinkMan" Type="varchar" MaxLength="50" />
+          <Property Name="Phone" Type="varchar" MaxLength="20" />
+          <Property Name="Address" Type="varchar" MaxLength="100" />
+          <Property Name="SystemTitle" Type="varchar" MaxLength="100" />
+          <Property Name="Logo" Type="varchar" MaxLength="200" />
+          <Property Name="Code" Type="varchar" MaxLength="5" />
+          <Property Name="ServiceTel" Type="varchar" MaxLength="20" />
+          <Property Name="FullName" Type="varchar" MaxLength="100" />
+          <Property Name="Introduce" Type="varchar" MaxLength="500" />
+          <Property Name="FactoryImg" Type="varchar" MaxLength="500" />
+          <Property Name="WeixinAppId" Type="varchar" MaxLength="50" />
+          <Property Name="WeixinAppSecret" Type="varchar" MaxLength="50" />
+          <Property Name="ReceiveMessageTemplateID" Type="varchar" MaxLength="50" />
+          <Property Name="SendMessageTemplateID" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sys_customer_right">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CusID" Type="int" />
+          <Property Name="RightID" Type="int" />
+        </EntityType>
+        <EntityType Name="sys_privilege">
+          <Key>
+            <PropertyRef Name="PrivilegeID" />
+          </Key>
+          <Property Name="PrivilegeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PrivilegeMaster" Type="varchar" MaxLength="20" />
+          <Property Name="PrivilegeMasterValue" Type="int" />
+          <Property Name="PrivilegeAccess" Type="varchar" MaxLength="20" />
+          <Property Name="PrivilegeAccessValue" Type="int" />
+          <Property Name="PrivilegeOperation" Type="bit" />
+        </EntityType>
+        <EntityType Name="sys_right">
+          <Key>
+            <PropertyRef Name="RightID" />
+          </Key>
+          <Property Name="RightID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RightCode" Type="varchar" MaxLength="20" />
+          <Property Name="RightParentID" Type="int" />
+          <Property Name="RightName" Type="varchar" MaxLength="50" />
+          <Property Name="RightSort" Type="int" />
+          <Property Name="RightUrl" Type="varchar" MaxLength="200" />
+          <Property Name="RightIcon" Type="varchar" MaxLength="50" />
+          <Property Name="RightType" Type="int" />
+          <Property Name="ShowInMainMenu" Type="bit" />
+          <Property Name="ApplicationID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sys_right_button">
+          <Key>
+            <PropertyRef Name="BtnID" />
+          </Key>
+          <Property Name="BtnID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BtnName" Type="varchar" MaxLength="50" />
+          <Property Name="BtnClass" Type="varchar" MaxLength="50" />
+          <Property Name="BtnIcon" Type="varchar" MaxLength="50" />
+          <Property Name="BtnScript" Type="varchar" MaxLength="200" />
+          <Property Name="BtnCode" Type="varchar" MaxLength="20" />
+          <Property Name="RightID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sys_role">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="varchar" MaxLength="50" />
+          <Property Name="RoleDesc" Type="varchar" MaxLength="100" />
+          <Property Name="CreateUserID" Type="int" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" />
+          <Property Name="UpdateUserID" Type="int" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+        </EntityType>
+        <EntityType Name="sys_user">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LoginName" Type="varchar" MaxLength="50" />
+          <Property Name="LoginPwd" Type="varchar" MaxLength="200" />
+          <Property Name="OrganiseID" Type="int" />
+          <Property Name="PersonnelPlaceID" Type="int" />
+          <Property Name="UName" Type="varchar" MaxLength="50" />
+          <Property Name="Phone" Type="varchar" MaxLength="20" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="CreateUserID" Type="int" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" />
+          <Property Name="IsAdmin" Type="bit" />
+          <Property Name="IsLevel" Type="bit" />
+          <Property Name="LastLoginTime" Type="datetime" Precision="0" />
+          <Property Name="UserType" Type="smallint" />
+          <Property Name="WXOpenID" Type="varchar" MaxLength="100" />
+          <Property Name="XCXOpenID" Type="varchar" MaxLength="100" />
+          <Property Name="SMSCode" Type="varchar" MaxLength="10" />
+          <Property Name="SMSTime" Type="datetime" Precision="0" />
+        </EntityType>
+        <EntityType Name="sys_user_dataview">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="RegionID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="IsDelete" Type="bit" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+        </EntityType>
+        <EntityType Name="sys_user_role">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="RoleID" Type="int" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" />
+          <Property Name="CreateUserID" Type="int" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+          <Property Name="UpdateUserID" Type="int" />
+        </EntityType>
+        <EntityType Name="task">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RegionID" Type="int" Nullable="false" />
+          <Property Name="TaskTime" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="ClassID" Type="int" Nullable="false" />
+          <Property Name="ClassName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="SizeID" Type="int" Nullable="false" />
+          <Property Name="SizeName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="TaskCount" Type="int" Nullable="false" />
+          <Property Name="TaskType" Type="smallint" Nullable="false" />
+          <Property Name="CheckCount" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="textile">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClassID" Type="int" Nullable="false" />
+          <Property Name="SizeID" Type="int" Nullable="false" />
+          <Property Name="FabricID" Type="int" Nullable="false" />
+          <Property Name="IsFlag" Type="int" Nullable="false" />
+          <Property Name="HotelID" Type="int" />
+          <Property Name="RegionID" Type="int" />
+          <Property Name="BrandID" Type="int" Nullable="false" />
+          <Property Name="Washtimes" Type="int" Nullable="false" />
+          <Property Name="RegisterTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="TagNo" Type="varchar" MaxLength="24" Nullable="false" />
+          <Property Name="LogoutTime" Type="datetime" Precision="0" />
+          <Property Name="LogoutType" Type="smallint" />
+          <Property Name="TextileState" Type="smallint" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+          <Property Name="ColorID" Type="int" Nullable="false" />
+          <Property Name="LastReceiveRegionID" Type="int" />
+          <Property Name="LastReceiveInvID" Type="varchar" MaxLength="36" />
+        </EntityType>
+        <EntityType Name="textileclass">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClassName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ClassCode" Type="varchar" MaxLength="20" />
+          <Property Name="Sort" Type="int" Nullable="false" />
+          <Property Name="UnitID" Type="int" />
+          <Property Name="ClassLeft" Type="int" />
+          <Property Name="PackCount" Type="int" />
+          <Property Name="CateID" Type="int" />
+          <Property Name="IsRFID" Type="bit" />
+          <Property Name="IsDelete" Type="bit" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="UpdateUserID" Type="int" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+        </EntityType>
+        <EntityType Name="textilegroup">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GroupNo" Type="varchar" MaxLength="36" Nullable="false" />
+          <Property Name="TextileID" Type="int" Nullable="false" />
+          <Property Name="TextileTagNo" Type="varchar" MaxLength="24" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="truck">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TruckRFIDNo" Type="varchar" MaxLength="24" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+          <Property Name="UpdateUserID" Type="int" />
+          <Property Name="RegionID" Type="int" />
+          <Property Name="State" Type="smallint" Nullable="false" />
+          <Property Name="Flag" Type="bit" Nullable="false" />
+          <Property Name="TruckNo" Type="varchar" MaxLength="24" Nullable="false" />
+        </EntityType>
+        <EntityType Name="truck_textile">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TruckRFIDNo" Type="varchar" MaxLength="24" Nullable="false" />
+          <Property Name="TextileTagNo" Type="varchar" MaxLength="24" Nullable="false" />
+          <Property Name="TextileID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="unit">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UnitName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="CreateUserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="UpdateUserID" Type="int" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+          <Property Name="IsDelete" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“def.laundry_hotel.v_textile_tag”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="v_textile_tag">
+          <Key>
+            <PropertyRef Name="RFIDWashtime" />
+            <PropertyRef Name="RFIDCostTime" />
+          </Key>
+          <Property Name="ID" Type="int" />
+          <Property Name="ClassID" Type="int" />
+          <Property Name="ClassName" Type="varchar" MaxLength="50" />
+          <Property Name="ClassSort" Type="int" />
+          <Property Name="SizeID" Type="int" />
+          <Property Name="SizeName" Type="varchar" MaxLength="20" />
+          <Property Name="SizeSort" Type="int" />
+          <Property Name="BrandID" Type="int" />
+          <Property Name="BrandName" Type="varchar" MaxLength="50" />
+          <Property Name="BrandSort" Type="int" />
+          <Property Name="TextileState" Type="smallint" />
+          <Property Name="TagNo" Type="varchar" MaxLength="24" />
+          <Property Name="RegisterTime" Type="datetime" Precision="0" />
+          <Property Name="Washtimes" Type="int" />
+          <Property Name="UpdateTime" Type="datetime" Precision="0" />
+          <Property Name="HotelID" Type="int" />
+          <Property Name="HotelName" Type="varchar" MaxLength="50" />
+          <Property Name="RegionID" Type="int" />
+          <Property Name="LastReceiveRegionID" Type="int" />
+          <Property Name="RFIDWashtime" Type="int" Nullable="false" />
+          <Property Name="ClassLeft" Type="int" />
+          <Property Name="RFIDCostTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="PackCount" Type="int" />
+          <Property Name="LastReceiveInvID" Type="varchar" MaxLength="36" />
+        </EntityType>
+        <Association Name="right_appid_key">
+          <End Role="sys_application" Type="Self.sys_application" Multiplicity="1" />
+          <End Role="sys_right" Type="Self.sys_right" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sys_application">
+              <PropertyRef Name="ApplicationID" />
+            </Principal>
+            <Dependent Role="sys_right">
+              <PropertyRef Name="ApplicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="right_btn_key">
+          <End Role="sys_right" Type="Self.sys_right" Multiplicity="1" />
+          <End Role="sys_right_button" Type="Self.sys_right_button" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sys_right">
+              <PropertyRef Name="RightID" />
+            </Principal>
+            <Dependent Role="sys_right_button">
+              <PropertyRef Name="RightID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="laundry_hotelModelStoreContainer">
+          <EntitySet Name="bag" EntityType="Self.bag" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="brandtype" EntityType="Self.brandtype" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="businessdetail" EntityType="Self.businessdetail" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="businessinvoice" EntityType="Self.businessinvoice" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="car" EntityType="Self.car" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="category" EntityType="Self.category" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="classsize" EntityType="Self.classsize" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="color" EntityType="Self.color" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="complain" EntityType="Self.complain" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="complainattach" EntityType="Self.complainattach" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="complainmessage" EntityType="Self.complainmessage" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="dataversion" EntityType="Self.dataversion" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="fabric" EntityType="Self.fabric" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="fc_invoice" EntityType="Self.fc_invoice" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="goods" EntityType="Self.goods" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="goodscate" EntityType="Self.goodscate" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="goodsorder" EntityType="Self.goodsorder" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="goodsorderdetail" EntityType="Self.goodsorderdetail" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="hotel_detail" EntityType="Self.hotel_detail" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="integraldetail" EntityType="Self.integraldetail" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="inventory" EntityType="Self.inventory" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="invoice" EntityType="Self.invoice" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="invoiceattach" EntityType="Self.invoiceattach" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="invoicedetail" EntityType="Self.invoicedetail" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="invoicelog" EntityType="Self.invoicelog" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="invoicelogdetail" EntityType="Self.invoicelogdetail" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="invoicerfid" EntityType="Self.invoicerfid" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="notice" EntityType="Self.notice" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="organise" EntityType="Self.organise" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="personnelplace" EntityType="Self.personnelplace" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="pricedetail" EntityType="Self.pricedetail" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="pricetemplate" EntityType="Self.pricetemplate" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="qrcode" EntityType="Self.qrcode" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="region" EntityType="Self.region" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="region_setting" EntityType="Self.region_setting" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="rentmatch" EntityType="Self.rentmatch" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="repeatop" EntityType="Self.repeatop" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="rfidreplace" EntityType="Self.rfidreplace" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="rfidtag" EntityType="Self.rfidtag" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="scrap" EntityType="Self.scrap" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="scrapdetail" EntityType="Self.scrapdetail" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="size" EntityType="Self.size" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="sys_admin" EntityType="Self.sys_admin" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="sys_application" EntityType="Self.sys_application" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="sys_customer" EntityType="Self.sys_customer" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="sys_customer_right" EntityType="Self.sys_customer_right" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="sys_privilege" EntityType="Self.sys_privilege" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="sys_right" EntityType="Self.sys_right" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="sys_right_button" EntityType="Self.sys_right_button" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="sys_role" EntityType="Self.sys_role" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="sys_user" EntityType="Self.sys_user" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="sys_user_dataview" EntityType="Self.sys_user_dataview" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="sys_user_role" EntityType="Self.sys_user_role" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="task" EntityType="Self.task" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="textile" EntityType="Self.textile" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="textileclass" EntityType="Self.textileclass" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="textilegroup" EntityType="Self.textilegroup" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="truck" EntityType="Self.truck" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="truck_textile" EntityType="Self.truck_textile" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="unit" EntityType="Self.unit" Schema="laundry_hotel" store:Type="Tables" />
+          <EntitySet Name="v_textile_tag" EntityType="Self.v_textile_tag" store:Type="Views" store:Schema="laundry_hotel">
+            <DefiningQuery>SELECT
+`v_textile_tag`.`ID`, 
+`v_textile_tag`.`ClassID`, 
+`v_textile_tag`.`ClassName`, 
+`v_textile_tag`.`ClassSort`, 
+`v_textile_tag`.`SizeID`, 
+`v_textile_tag`.`SizeName`, 
+`v_textile_tag`.`SizeSort`, 
+`v_textile_tag`.`BrandID`, 
+`v_textile_tag`.`BrandName`, 
+`v_textile_tag`.`BrandSort`, 
+`v_textile_tag`.`TextileState`, 
+`v_textile_tag`.`TagNo`, 
+`v_textile_tag`.`RegisterTime`, 
+`v_textile_tag`.`Washtimes`, 
+`v_textile_tag`.`UpdateTime`, 
+`v_textile_tag`.`HotelID`, 
+`v_textile_tag`.`HotelName`, 
+`v_textile_tag`.`RegionID`, 
+`v_textile_tag`.`LastReceiveRegionID`, 
+`v_textile_tag`.`RFIDWashtime`, 
+`v_textile_tag`.`ClassLeft`, 
+`v_textile_tag`.`RFIDCostTime`, 
+`v_textile_tag`.`PackCount`, 
+`v_textile_tag`.`LastReceiveInvID`
+FROM `v_textile_tag` AS `v_textile_tag`</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="right_appid_key" Association="Self.right_appid_key">
+            <End Role="sys_application" EntitySet="sys_application" />
+            <End Role="sys_right" EntitySet="sys_right" />
+          </AssociationSet>
+          <AssociationSet Name="right_btn_key" Association="Self.right_btn_key">
+            <End Role="sys_right" EntitySet="sys_right" />
+            <End Role="sys_right_button" EntitySet="sys_right_button" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="laundry_hotelModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="brandtype">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BrandName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BrandCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="BrandDesc" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" />
+          <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="IsDelete" Type="Boolean" Nullable="false" />
+          <Property Name="Sort" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="businessinvoice">
+          <Key>
+            <PropertyRef Name="BID" />
+          </Key>
+          <Property Name="BID" Type="String" MaxLength="36" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="HotelID" Type="Int32" Nullable="false" />
+          <Property Name="BNo" Type="String" MaxLength="14" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="InvType" Type="Int16" Nullable="false" />
+          <Property Name="SubType" Type="Int16" />
+          <Property Name="Note" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Stated" Type="Int16" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="ReviewTime" Type="DateTime" />
+          <Property Name="ReviewUserID" Type="Int32" />
+          <Property Name="CloseTime" Type="DateTime" />
+          <Property Name="CloseUserID" Type="Int32" />
+          <Property Name="ExecTime" Type="DateTime" />
+        </EntityType>
+        <EntityType Name="car">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CarNo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UseName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="OldValue" Type="Double" />
+          <Property Name="IsDelete" Type="Boolean" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="UpdateTime" Type="DateTime" />
+        </EntityType>
+        <EntityType Name="category">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CateName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Sort" Type="Int32" Nullable="false" />
+          <Property Name="IsDelete" Type="Boolean" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="UpdateTime" Type="DateTime" />
+        </EntityType>
+        <EntityType Name="classsize">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
+          <Property Name="SizeID" Type="Int32" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="color">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ColorName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="UpdateTime" Type="DateTime" />
+          <Property Name="Sort" Type="Int32" Nullable="false" />
+          <Property Name="IsDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="dataversion">
+          <Key>
+            <PropertyRef Name="Version" />
+          </Key>
+          <Property Name="Version" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UUID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="fabric">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FabricName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Specifications" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Producer" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Density" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="oldValue" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="FabricWeight" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="FabricLevel" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="UpdateTime" Type="DateTime" />
+          <Property Name="IsDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="inventory">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RegionID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="InvType" Type="Int16" Nullable="false" />
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
+          <Property Name="SizeID" Type="Int32" />
+          <Property Name="TextileCount" Type="Int32" Nullable="false" />
+          <Property Name="TextileTotal" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="invoiceattach">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InvNo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ParamType" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ParamValue" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="invoicerfid">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InvID" Type="String" MaxLength="36" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="InvNo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="InvType" Type="Int16" Nullable="false" />
+          <Property Name="HotelID" Type="Int32" Nullable="false" />
+          <Property Name="RegionID" Type="Int32" Nullable="false" />
+          <Property Name="SourceRegionID" Type="Int32" Nullable="false" />
+          <Property Name="TextileID" Type="Int32" Nullable="false" />
+          <Property Name="TextileTagNo" Type="String" MaxLength="24" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="InvCreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
+          <Property Name="ClassName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SizeID" Type="Int32" Nullable="false" />
+          <Property Name="SizeName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="InvSubType" Type="Int16" Nullable="false" />
+          <Property Name="BrandID" Type="Int32" Nullable="false" />
+          <Property Name="BrandName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="organise">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="OrgCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ParentID" Type="Int32" />
+          <Property Name="Sort" Type="Int32" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="UpdateTime" Type="DateTime" />
+          <Property Name="IsDelete" Type="Boolean" Nullable="false" />
+          <Property Name="PersonID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="personnelplace">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PersonnelName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Sort" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="UpdateTime" Type="DateTime" />
+          <Property Name="IsDelete" Type="Boolean" Nullable="false" />
+          <Property Name="Responsibility" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="region">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParentID" Type="Int32" />
+          <Property Name="FullName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="RegionName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RegionType" Type="Int32" Nullable="false" />
+          <Property Name="RegionMode" Type="Int32" />
+          <Property Name="BrandID" Type="Int32" />
+          <Property Name="Tel" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LinkMan" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Province" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Area" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Lng" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Lat" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IsDelete" Type="Boolean" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="UpdateTime" Type="DateTime" />
+          <Property Name="LogoUrl" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Sort" Type="Int32" Nullable="false" />
+          <Property Name="DeliveryTime" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="HandConfirm" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="rfidreplace">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TextileID" Type="Int32" Nullable="false" />
+          <Property Name="OldTagNo" Type="String" MaxLength="24" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NewTagNo" Type="String" MaxLength="24" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="TagWashtime" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="rfidtag">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="RFIDTagNo" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RFIDTagNo" Type="String" MaxLength="24" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RFIDWashtime" Type="Int32" Nullable="false" />
+          <Property Name="CostTime" Type="DateTime" Nullable="false" />
+          <Property Name="RFIDState" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="scrap">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScrapName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ScrapType" Type="Int32" Nullable="false" />
+          <Property Name="ScrapDesc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IsDelete" Type="Boolean" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="UpdateTime" Type="DateTime" />
+        </EntityType>
+        <EntityType Name="size">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SizeName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsDelete" Type="Boolean" Nullable="false" />
+          <Property Name="Sort" Type="Int32" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="UpdateTime" Type="DateTime" />
+        </EntityType>
+        <EntityType Name="sys_admin">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserPwd" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="sys_application">
+          <Key>
+            <PropertyRef Name="ApplicationID" />
+          </Key>
+          <Property Name="ApplicationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApplicationCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ApplicationName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ApplicationDesc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ShowInMenu" Type="Boolean" />
+          <NavigationProperty Name="sys_right" Relationship="Self.right_appid_key" FromRole="sys_application" ToRole="sys_right" />
+        </EntityType>
+        <EntityType Name="sys_customer">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SysCusName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LinkMan" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="SystemTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Logo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Code" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="ServiceTel" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="FullName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Introduce" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="FactoryImg" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="WeixinAppId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="WeixinAppSecret" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ReceiveMessageTemplateID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SendMessageTemplateID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="sys_customer_right">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CusID" Type="Int32" />
+          <Property Name="RightID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="sys_privilege">
+          <Key>
+            <PropertyRef Name="PrivilegeID" />
+          </Key>
+          <Property Name="PrivilegeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PrivilegeMaster" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PrivilegeMasterValue" Type="Int32" />
+          <Property Name="PrivilegeAccess" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PrivilegeAccessValue" Type="Int32" />
+          <Property Name="PrivilegeOperation" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="sys_right">
+          <Key>
+            <PropertyRef Name="RightID" />
+          </Key>
+          <Property Name="RightID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RightCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="RightParentID" Type="Int32" />
+          <Property Name="RightName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RightSort" Type="Int32" />
+          <Property Name="RightUrl" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="RightIcon" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RightType" Type="Int32" />
+          <Property Name="ShowInMainMenu" Type="Boolean" />
+          <Property Name="ApplicationID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="sys_application" Relationship="Self.right_appid_key" FromRole="sys_right" ToRole="sys_application" />
+          <NavigationProperty Name="sys_right_button" Relationship="laundry_hotelModel.right_btn_key" FromRole="sys_right" ToRole="sys_right_button" />
+        </EntityType>
+        <EntityType Name="sys_role">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RoleDesc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreateUserID" Type="Int32" />
+          <Property Name="CreateTime" Type="DateTime" />
+          <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="UpdateTime" Type="DateTime" />
+        </EntityType>
+        <EntityType Name="sys_user">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LoginName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LoginPwd" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="OrganiseID" Type="Int32" />
+          <Property Name="PersonnelPlaceID" Type="Int32" />
+          <Property Name="UName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateUserID" Type="Int32" />
+          <Property Name="CreateTime" Type="DateTime" />
+          <Property Name="IsAdmin" Type="Boolean" />
+          <Property Name="IsLevel" Type="Boolean" />
+          <Property Name="LastLoginTime" Type="DateTime" />
+          <Property Name="UserType" Type="Int16" />
+          <Property Name="WXOpenID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="XCXOpenID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="SMSCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="SMSTime" Type="DateTime" />
+        </EntityType>
+        <EntityType Name="sys_user_dataview">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="RegionID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="IsDelete" Type="Boolean" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" />
+        </EntityType>
+        <EntityType Name="sys_user_role">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="RoleID" Type="Int32" />
+          <Property Name="CreateTime" Type="DateTime" />
+          <Property Name="CreateUserID" Type="Int32" />
+          <Property Name="UpdateTime" Type="DateTime" />
+          <Property Name="UpdateUserID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="task">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RegionID" Type="Int32" Nullable="false" />
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
+          <Property Name="ClassName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SizeID" Type="Int32" Nullable="false" />
+          <Property Name="SizeName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TaskCount" Type="Int32" Nullable="false" />
+          <Property Name="TaskType" Type="Int16" Nullable="false" />
+          <Property Name="CheckCount" Type="Int32" Nullable="false" />
+          <Property Name="TaskTime" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="textile">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
+          <Property Name="SizeID" Type="Int32" Nullable="false" />
+          <Property Name="FabricID" Type="Int32" Nullable="false" />
+          <Property Name="IsFlag" Type="Int32" Nullable="false" />
+          <Property Name="RegionID" Type="Int32" />
+          <Property Name="BrandID" Type="Int32" Nullable="false" />
+          <Property Name="Washtimes" Type="Int32" Nullable="false" />
+          <Property Name="RegisterTime" Type="DateTime" Nullable="false" />
+          <Property Name="TagNo" Type="String" MaxLength="24" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LogoutTime" Type="DateTime" />
+          <Property Name="LogoutType" Type="Int16" />
+          <Property Name="TextileState" Type="Int16" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" />
+          <Property Name="ColorID" Type="Int32" Nullable="false" />
+          <Property Name="LastReceiveRegionID" Type="Int32" />
+          <Property Name="HotelID" Type="Int32" />
+          <Property Name="LastReceiveInvID" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="textileclass">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClassName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ClassCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Sort" Type="Int32" Nullable="false" />
+          <Property Name="UnitID" Type="Int32" />
+          <Property Name="ClassLeft" Type="Int32" />
+          <Property Name="PackCount" Type="Int32" />
+          <Property Name="CateID" Type="Int32" />
+          <Property Name="IsRFID" Type="Boolean" />
+          <Property Name="IsDelete" Type="Boolean" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="UpdateTime" Type="DateTime" />
+        </EntityType>
+        <EntityType Name="unit">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UnitName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="UpdateTime" Type="DateTime" />
+          <Property Name="IsDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <Association Name="right_appid_key">
+          <End Role="sys_application" Type="Self.sys_application" Multiplicity="1" />
+          <End Role="sys_right" Type="Self.sys_right" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sys_application">
+              <PropertyRef Name="ApplicationID" />
+            </Principal>
+            <Dependent Role="sys_right">
+              <PropertyRef Name="ApplicationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="laundry_hotelEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="brandtype" EntityType="Self.brandtype" />
+          <EntitySet Name="businessinvoice" EntityType="Self.businessinvoice" />
+          <EntitySet Name="car" EntityType="Self.car" />
+          <EntitySet Name="category" EntityType="Self.category" />
+          <EntitySet Name="classsize" EntityType="Self.classsize" />
+          <EntitySet Name="color" EntityType="Self.color" />
+          <EntitySet Name="dataversion" EntityType="Self.dataversion" />
+          <EntitySet Name="fabric" EntityType="Self.fabric" />
+          <EntitySet Name="inventory" EntityType="Self.inventory" />
+          <EntitySet Name="invoiceattach" EntityType="Self.invoiceattach" />
+          <EntitySet Name="invoicerfid" EntityType="Self.invoicerfid" />
+          <EntitySet Name="organise" EntityType="Self.organise" />
+          <EntitySet Name="personnelplace" EntityType="Self.personnelplace" />
+          <EntitySet Name="region" EntityType="Self.region" />
+          <EntitySet Name="rfidreplace" EntityType="Self.rfidreplace" />
+          <EntitySet Name="rfidtag" EntityType="Self.rfidtag" />
+          <EntitySet Name="scrap" EntityType="Self.scrap" />
+          <EntitySet Name="size" EntityType="Self.size" />
+          <EntitySet Name="sys_admin" EntityType="Self.sys_admin" />
+          <EntitySet Name="sys_application" EntityType="Self.sys_application" />
+          <EntitySet Name="sys_customer" EntityType="Self.sys_customer" />
+          <EntitySet Name="sys_customer_right" EntityType="Self.sys_customer_right" />
+          <EntitySet Name="sys_privilege" EntityType="Self.sys_privilege" />
+          <EntitySet Name="sys_right" EntityType="Self.sys_right" />
+          <EntitySet Name="sys_role" EntityType="Self.sys_role" />
+          <EntitySet Name="sys_user" EntityType="Self.sys_user" />
+          <EntitySet Name="sys_user_dataview" EntityType="Self.sys_user_dataview" />
+          <EntitySet Name="sys_user_role" EntityType="Self.sys_user_role" />
+          <EntitySet Name="task" EntityType="Self.task" />
+          <EntitySet Name="textile" EntityType="Self.textile" />
+          <EntitySet Name="textileclass" EntityType="Self.textileclass" />
+          <EntitySet Name="unit" EntityType="Self.unit" />
+          <AssociationSet Name="right_appid_key" Association="Self.right_appid_key">
+            <End Role="sys_application" EntitySet="sys_application" />
+            <End Role="sys_right" EntitySet="sys_right" />
+          </AssociationSet>
+          <EntitySet Name="sys_right_button" EntityType="laundry_hotelModel.sys_right_button" />
+          <AssociationSet Name="right_btn_key" Association="laundry_hotelModel.right_btn_key">
+            <End Role="sys_right" EntitySet="sys_right" />
+            <End Role="sys_right_button" EntitySet="sys_right_button" />
+          </AssociationSet>
+          <EntitySet Name="qrcode" EntityType="laundry_hotelModel.qrcode" />
+          <EntitySet Name="businessdetail" EntityType="laundry_hotelModel.businessdetail" />
+          <EntitySet Name="fc_invoice" EntityType="laundry_hotelModel.fc_invoice" />
+          <EntitySet Name="pricedetail" EntityType="laundry_hotelModel.pricedetail" />
+          <EntitySet Name="pricetemplate" EntityType="laundry_hotelModel.pricetemplate" />
+          <EntitySet Name="scrapdetail" EntityType="laundry_hotelModel.scrapdetail" />
+          <EntitySet Name="repeatop" EntityType="laundry_hotelModel.repeatop" />
+          <EntitySet Name="complain" EntityType="laundry_hotelModel.complain" />
+          <EntitySet Name="complainattach" EntityType="laundry_hotelModel.complainattach" />
+          <EntitySet Name="complainmessage" EntityType="laundry_hotelModel.complainmessage" />
+          <EntitySet Name="goods" EntityType="laundry_hotelModel.goods" />
+          <EntitySet Name="goodscate" EntityType="laundry_hotelModel.goodscate" />
+          <EntitySet Name="goodsorder" EntityType="laundry_hotelModel.goodsorder" />
+          <EntitySet Name="goodsorderdetail" EntityType="laundry_hotelModel.goodsorderdetail" />
+          <EntitySet Name="bag" EntityType="laundry_hotelModel.bag" />
+          <EntitySet Name="integraldetail" EntityType="laundry_hotelModel.integraldetail" />
+          <EntitySet Name="invoice" EntityType="laundry_hotelModel.invoice" />
+          <EntitySet Name="invoicedetail" EntityType="laundry_hotelModel.invoicedetail" />
+          <EntitySet Name="region_setting" EntityType="laundry_hotelModel.region_setting" />
+          <EntitySet Name="truck" EntityType="laundry_hotelModel.truck" />
+          <EntitySet Name="v_textile_tag" EntityType="laundry_hotelModel.v_textile_tag" />
+          <EntitySet Name="textilegroup" EntityType="laundry_hotelModel.textilegroup" />
+          <EntitySet Name="truck_textile" EntityType="laundry_hotelModel.truck_textile" />
+          <EntitySet Name="invoicelog" EntityType="laundry_hotelModel.invoicelog" />
+          <EntitySet Name="invoicelogdetail" EntityType="laundry_hotelModel.invoicelogdetail" />
+          <EntitySet Name="hotel_detail" EntityType="laundry_hotelModel.hotel_detail" />
+          <EntitySet Name="notice" EntityType="laundry_hotelModel.notice" />
+          <EntitySet Name="rentmatch" EntityType="laundry_hotelModel.rentmatch" />
+        </EntityContainer>
+        <EntityType Name="sys_right_button">
+          <Key>
+            <PropertyRef Name="BtnID" />
+          </Key>
+          <Property Name="BtnID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BtnName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BtnClass" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BtnIcon" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BtnScript" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="BtnCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="RightID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="sys_right" Relationship="laundry_hotelModel.right_btn_key" FromRole="sys_right_button" ToRole="sys_right" />
+        </EntityType>
+        <Association Name="right_btn_key">
+          <End Type="laundry_hotelModel.sys_right" Role="sys_right" Multiplicity="1" />
+          <End Type="laundry_hotelModel.sys_right_button" Role="sys_right_button" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sys_right">
+              <PropertyRef Name="RightID" />
+            </Principal>
+            <Dependent Role="sys_right_button">
+              <PropertyRef Name="RightID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="qrcode">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QRCodeValue" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="BindingTime" Type="DateTime" Nullable="false" />
+          <Property Name="RFIDTagNo" Type="String" Nullable="false" MaxLength="24" FixedLength="false" Unicode="false" />
+          <Property Name="IsLock" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="businessdetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BID" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="HotelID" Type="Int32" Nullable="false" />
+          <Property Name="InvType" Type="Int16" Nullable="false" />
+          <Property Name="SubType" Type="Int16" />
+          <Property Name="BNo" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="false" />
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
+          <Property Name="ClassName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SizeID" Type="Int32" Nullable="false" />
+          <Property Name="SizeName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TextileCount" Type="Int32" Nullable="false" />
+          <Property Name="ExecCount" Type="Int32" />
+        </EntityType>
+        <EntityType Name="fc_invoice">
+          <Key>
+            <PropertyRef Name="No" />
+          </Key>
+          <Property Name="No" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="Int16" Nullable="false" />
+          <Property Name="ResultMsg" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="pricedetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TemplateID" Type="Int32" Nullable="false" />
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
+          <Property Name="SizeID" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Nullable="false" />
+        </EntityType>
+        <EntityType Name="pricetemplate">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TemplateName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TemplateType" Type="Int16" Nullable="false" />
+          <Property Name="SubType" Type="Int16" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="UpdateTime" Type="DateTime" />
+          <Property Name="DataSources" Type="Int16" Nullable="false" />
+          <Property Name="SettlementMode" Type="Int16" Nullable="false" />
+        </EntityType>
+        <EntityType Name="scrapdetail">
+          <Key>
+            <PropertyRef Name="TextileID" />
+          </Key>
+          <Property Name="TextileID" Type="Int32" Nullable="false" />
+          <Property Name="RFIDTagNo" Type="String" Nullable="false" MaxLength="24" FixedLength="false" Unicode="false" />
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
+          <Property Name="ClassName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SizeID" Type="Int32" Nullable="false" />
+          <Property Name="SizeName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="FabricID" Type="Int32" Nullable="false" />
+          <Property Name="BrandID" Type="Int32" Nullable="false" />
+          <Property Name="BrandName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ResponsibleType" Type="Int32" Nullable="false" />
+          <Property Name="ResponsibleID" Type="Int32" />
+          <Property Name="ResponsibleName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ScrapID" Type="Int32" Nullable="false" />
+          <Property Name="ScrapName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Washtime" Type="Int32" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="CreateUserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastUsingTime" Type="DateTime" Nullable="false" />
+          <Property Name="LastUsingArea" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="repeatop">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TextileID" Type="Int32" Nullable="false" />
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
+          <Property Name="SizeID" Type="Int32" />
+          <Property Name="TagNo" Type="String" Nullable="false" MaxLength="24" FixedLength="false" Unicode="false" />
+          <Property Name="PreHotelID" Type="Int32" />
+          <Property Name="PreRegionID" Type="Int32" />
+          <Property Name="PreCreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="HotelID" Type="Int32" />
+          <Property Name="RegionID" Type="Int32" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="InvID" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="InvType" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="complain">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="HappenTime" Type="DateTime" Nullable="false" />
+          <Property Name="Cause" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Remarks" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="HotelID" Type="Int32" Nullable="false" />
+          <Property Name="Comfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="ComfirmUserID" Type="Int32" />
+          <Property Name="ComfirmTime" Type="DateTime" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="complainattach">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ComplaintID" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="AttachType" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="AttachContent" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="complainmessage">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ComplainID" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="PublishUserID" Type="Int32" Nullable="false" />
+          <Property Name="PublishType" Type="Int16" Nullable="false" />
+          <Property Name="PublishMessage" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="PublishTime" Type="DateTime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="goods">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GoodsName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CateID" Type="Int32" Nullable="false" />
+          <Property Name="GoodsLogo" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="GoodsMoney" Type="Decimal" Nullable="false" />
+          <Property Name="CostPrice" Type="Decimal" Nullable="false" />
+          <Property Name="UnitName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Remarks" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="Grounding" Type="Boolean" Nullable="false" />
+          <Property Name="Sort" Type="Int32" Nullable="false" />
+          <Property Name="Hoting" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" />
+          <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="goodscate">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CateName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Sort" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" />
+          <Property Name="UpdateUserID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="goodsorder">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="OrderNo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="HotelID" Type="Int32" Nullable="false" />
+          <Property Name="TotalQuantity" Type="Int32" Nullable="false" />
+          <Property Name="TotalMoney" Type="Decimal" Nullable="false" />
+          <Property Name="OrderState" Type="Int16" Nullable="false" />
+          <Property Name="PaymentType" Type="Int16" Nullable="false" />
+          <Property Name="ComfirmUserID" Type="Int32" />
+          <Property Name="ComfirmTime" Type="DateTime" />
+          <Property Name="Remarks" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="DeliveryDate" Type="DateTime" Nullable="false" />
+          <Property Name="DeliveryTime" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DistributionTime" Type="DateTime" />
+          <Property Name="SignTime" Type="DateTime" />
+          <Property Name="Distributor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DistributorTel" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="goodsorderdetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderID" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="OrderNo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="HotelID" Type="Int32" Nullable="false" />
+          <Property Name="GoodsID" Type="Int32" Nullable="false" />
+          <Property Name="GoodsCount" Type="Int32" Nullable="false" />
+          <Property Name="GoodMoney" Type="Decimal" Nullable="false" />
+          <Property Name="TotalMoney" Type="Decimal" Nullable="false" />
+          <Property Name="GoodsName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="bag">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BagNo" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="BagRFIDNo" Type="String" MaxLength="24" FixedLength="false" Unicode="false" />
+          <Property Name="RegionID" Type="Int32" />
+          <Property Name="IsDelete" Type="Boolean" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="UpdateTime" Type="DateTime" />
+          <Property Name="State" Type="Int16" Nullable="false" />
+          <Property Name="Flag" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="integraldetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HotelID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="SubType" Type="Int16" Nullable="false" />
+          <Property Name="InvNo" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Points" Type="Double" Nullable="false" />
+        </EntityType>
+        <EntityType Name="invoice">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="InvNo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="InvType" Type="Int16" Nullable="false" />
+          <Property Name="InvSubType" Type="Int16" />
+          <Property Name="DataType" Type="Int16" Nullable="false" />
+          <Property Name="HotelID" Type="Int32" Nullable="false" />
+          <Property Name="RegionID" Type="Int32" Nullable="false" />
+          <Property Name="InvState" Type="Int16" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="TaskType" Type="Int32" />
+          <Property Name="Remrak" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateUserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="UpdateTime" Type="DateTime" />
+          <Property Name="MacCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Comfirmed" Type="Int16" Nullable="false" />
+          <Property Name="Processed" Type="Boolean" Nullable="false" />
+          <Property Name="ConfirmTime" Type="DateTime" />
+          <Property Name="ConfirmUserID" Type="Int32" />
+          <Property Name="ConfirmUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PaymentStatus" Type="Int16" Nullable="false" />
+        </EntityType>
+        <EntityType Name="invoicedetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InvNo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="InvID" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="InvType" Type="Int16" Nullable="false" />
+          <Property Name="DataType" Type="Int16" Nullable="false" />
+          <Property Name="InvSubType" Type="Int16" />
+          <Property Name="HotelID" Type="Int32" Nullable="false" />
+          <Property Name="RegionID" Type="Int32" Nullable="false" />
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
+          <Property Name="ClassName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SizeID" Type="Int32" Nullable="false" />
+          <Property Name="SizeName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TextileCount" Type="Int32" Nullable="false" />
+          <Property Name="InvCreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="BrandID" Type="Int32" Nullable="false" />
+          <Property Name="BrandName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="WashingPrice" Type="Decimal" />
+          <Property Name="RentPrice" Type="Decimal" />
+        </EntityType>
+        <EntityType Name="region_setting">
+          <Key>
+            <PropertyRef Name="RegionID" />
+          </Key>
+          <Property Name="RegionID" Type="Int32" Nullable="false" />
+          <Property Name="WashID" Type="Int32" />
+          <Property Name="RentID" Type="Int32" />
+          <Property Name="SettleDay" Type="Int32" />
+          <Property Name="SettleType" Type="Int32" />
+          <Property Name="MatchNumber" Type="Double" />
+          <Property Name="LimitNumber" Type="Double" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="UpdateTime" Type="DateTime" />
+          <Property Name="Integral" Type="Double" />
+          <Property Name="PaymentMode" Type="Int16" />
+          <Property Name="Deposit" Type="Double" />
+          <Property Name="RentPaymentMode" Type="Int16" />
+          <Property Name="WashingTime" Type="DateTime" />
+          <Property Name="RentTime" Type="DateTime" />
+        </EntityType>
+        <EntityType Name="truck">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TruckRFIDNo" Type="String" Nullable="false" MaxLength="24" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" />
+          <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="RegionID" Type="Int32" />
+          <Property Name="State" Type="Int16" Nullable="false" />
+          <Property Name="Flag" Type="Boolean" Nullable="false" />
+          <Property Name="TruckNo" Type="String" Nullable="false" MaxLength="24" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="v_textile_tag">
+          <Key>
+            <PropertyRef Name="RFIDWashtime" />
+            <PropertyRef Name="RFIDCostTime" />
+          </Key>
+          <Property Name="ID" Type="Int32" />
+          <Property Name="ClassID" Type="Int32" />
+          <Property Name="ClassName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ClassSort" Type="Int32" />
+          <Property Name="SizeID" Type="Int32" />
+          <Property Name="SizeName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="SizeSort" Type="Int32" />
+          <Property Name="BrandID" Type="Int32" />
+          <Property Name="BrandName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BrandSort" Type="Int32" />
+          <Property Name="TextileState" Type="Int16" />
+          <Property Name="TagNo" Type="String" MaxLength="24" FixedLength="false" Unicode="false" />
+          <Property Name="RegisterTime" Type="DateTime" />
+          <Property Name="Washtimes" Type="Int32" />
+          <Property Name="UpdateTime" Type="DateTime" />
+          <Property Name="HotelID" Type="Int32" />
+          <Property Name="HotelName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RegionID" Type="Int32" />
+          <Property Name="LastReceiveRegionID" Type="Int32" />
+          <Property Name="RFIDWashtime" Type="Int32" Nullable="false" />
+          <Property Name="ClassLeft" Type="Int32" />
+          <Property Name="RFIDCostTime" Type="DateTime" Nullable="false" />
+          <Property Name="PackCount" Type="Int32" />
+          <Property Name="LastReceiveInvID" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="textilegroup">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GroupNo" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="TextileID" Type="Int32" Nullable="false" />
+          <Property Name="TextileTagNo" Type="String" Nullable="false" MaxLength="24" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="truck_textile">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TruckRFIDNo" Type="String" Nullable="false" MaxLength="24" FixedLength="false" Unicode="false" />
+          <Property Name="TextileTagNo" Type="String" Nullable="false" MaxLength="24" FixedLength="false" Unicode="false" />
+          <Property Name="TextileID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="invoicelog">
+          <Key>
+            <PropertyRef Name="LogID" />
+          </Key>
+          <Property Name="LogID" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="TableName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BussinessName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CreateUserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateType" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="invoicelogdetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LogID" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="ColumnName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ColumnText" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PrimaryKeyColName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PrimaryKeyValue" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="OldValue" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NewValue" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="hotel_detail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HotelID" Type="Int32" Nullable="false" />
+          <Property Name="Slogan" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Logo" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="HotelName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="HotelPoint" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="HotelProfile" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="HotelTel" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="HotelImg" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="notice">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="Position" Type="Int32" Nullable="false" />
+          <Property Name="IsFull" Type="Boolean" Nullable="false" />
+          <Property Name="Start" Type="DateTime" />
+          <Property Name="End" Type="DateTime" />
+          <Property Name="CreateUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" />
+          <Property Name="UpdateUserID" Type="Int32" />
+          <Property Name="UpdateTime" Type="DateTime" />
+          <Property Name="IsDelete" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="rentmatch">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HotelID" Type="Int32" Nullable="false" />
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
+          <Property Name="SizeID" Type="Int32" Nullable="false" />
+          <Property Name="TextileCount" Type="Int32" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="laundry_hotelModelStoreContainer" CdmEntityContainer="laundry_hotelEntities">
+          <EntitySetMapping Name="brandtype">
+            <EntityTypeMapping TypeName="laundry_hotelModel.brandtype">
+              <MappingFragment StoreEntitySet="brandtype">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="BrandName" ColumnName="BrandName" />
+                <ScalarProperty Name="BrandCode" ColumnName="BrandCode" />
+                <ScalarProperty Name="BrandDesc" ColumnName="BrandDesc" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="Sort" ColumnName="Sort" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="businessinvoice">
+            <EntityTypeMapping TypeName="laundry_hotelModel.businessinvoice">
+              <MappingFragment StoreEntitySet="businessinvoice">
+                <ScalarProperty Name="BID" ColumnName="BID" />
+                <ScalarProperty Name="HotelID" ColumnName="HotelID" />
+                <ScalarProperty Name="BNo" ColumnName="BNo" />
+                <ScalarProperty Name="InvType" ColumnName="InvType" />
+                <ScalarProperty Name="SubType" ColumnName="SubType" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="Stated" ColumnName="Stated" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="ReviewTime" ColumnName="ReviewTime" />
+                <ScalarProperty Name="ReviewUserID" ColumnName="ReviewUserID" />
+                <ScalarProperty Name="CloseTime" ColumnName="CloseTime" />
+                <ScalarProperty Name="CloseUserID" ColumnName="CloseUserID" />
+                <ScalarProperty Name="ExecTime" ColumnName="ExecTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="car">
+            <EntityTypeMapping TypeName="laundry_hotelModel.car">
+              <MappingFragment StoreEntitySet="car">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="CarNo" ColumnName="CarNo" />
+                <ScalarProperty Name="UseName" ColumnName="UseName" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="OldValue" ColumnName="OldValue" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="category">
+            <EntityTypeMapping TypeName="laundry_hotelModel.category">
+              <MappingFragment StoreEntitySet="category">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="CateName" ColumnName="CateName" />
+                <ScalarProperty Name="Sort" ColumnName="Sort" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="classsize">
+            <EntityTypeMapping TypeName="laundry_hotelModel.classsize">
+              <MappingFragment StoreEntitySet="classsize">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="SizeID" ColumnName="SizeID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="color">
+            <EntityTypeMapping TypeName="laundry_hotelModel.color">
+              <MappingFragment StoreEntitySet="color">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ColorName" ColumnName="ColorName" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="Sort" ColumnName="Sort" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dataversion">
+            <EntityTypeMapping TypeName="laundry_hotelModel.dataversion">
+              <MappingFragment StoreEntitySet="dataversion">
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="UUID" ColumnName="UUID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="fabric">
+            <EntityTypeMapping TypeName="laundry_hotelModel.fabric">
+              <MappingFragment StoreEntitySet="fabric">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="FabricName" ColumnName="FabricName" />
+                <ScalarProperty Name="Specifications" ColumnName="Specifications" />
+                <ScalarProperty Name="Producer" ColumnName="Producer" />
+                <ScalarProperty Name="Density" ColumnName="Density" />
+                <ScalarProperty Name="oldValue" ColumnName="oldValue" />
+                <ScalarProperty Name="FabricWeight" ColumnName="FabricWeight" />
+                <ScalarProperty Name="FabricLevel" ColumnName="FabricLevel" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="inventory">
+            <EntityTypeMapping TypeName="laundry_hotelModel.inventory">
+              <MappingFragment StoreEntitySet="inventory">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="InvType" ColumnName="InvType" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="SizeID" ColumnName="SizeID" />
+                <ScalarProperty Name="TextileCount" ColumnName="TextileCount" />
+                <ScalarProperty Name="TextileTotal" ColumnName="TextileTotal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="invoiceattach">
+            <EntityTypeMapping TypeName="laundry_hotelModel.invoiceattach">
+              <MappingFragment StoreEntitySet="invoiceattach">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="InvNo" ColumnName="InvNo" />
+                <ScalarProperty Name="ParamType" ColumnName="ParamType" />
+                <ScalarProperty Name="ParamValue" ColumnName="ParamValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="invoicerfid">
+            <EntityTypeMapping TypeName="laundry_hotelModel.invoicerfid">
+              <MappingFragment StoreEntitySet="invoicerfid">
+                <ScalarProperty Name="BrandName" ColumnName="BrandName" />
+                <ScalarProperty Name="BrandID" ColumnName="BrandID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="InvID" ColumnName="InvID" />
+                <ScalarProperty Name="InvNo" ColumnName="InvNo" />
+                <ScalarProperty Name="InvType" ColumnName="InvType" />
+                <ScalarProperty Name="HotelID" ColumnName="HotelID" />
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="SourceRegionID" ColumnName="SourceRegionID" />
+                <ScalarProperty Name="TextileID" ColumnName="TextileID" />
+                <ScalarProperty Name="TextileTagNo" ColumnName="TextileTagNo" />
+                <ScalarProperty Name="InvCreateTime" ColumnName="InvCreateTime" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="SizeID" ColumnName="SizeID" />
+                <ScalarProperty Name="SizeName" ColumnName="SizeName" />
+                <ScalarProperty Name="InvSubType" ColumnName="InvSubType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="organise">
+            <EntityTypeMapping TypeName="laundry_hotelModel.organise">
+              <MappingFragment StoreEntitySet="organise">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="OrgCode" ColumnName="OrgCode" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="Sort" ColumnName="Sort" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="PersonID" ColumnName="PersonID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="personnelplace">
+            <EntityTypeMapping TypeName="laundry_hotelModel.personnelplace">
+              <MappingFragment StoreEntitySet="personnelplace">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PersonnelName" ColumnName="PersonnelName" />
+                <ScalarProperty Name="Sort" ColumnName="Sort" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="Responsibility" ColumnName="Responsibility" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="region">
+            <EntityTypeMapping TypeName="laundry_hotelModel.region">
+              <MappingFragment StoreEntitySet="region">
+                <ScalarProperty Name="HandConfirm" ColumnName="HandConfirm" />
+                <ScalarProperty Name="DeliveryTime" ColumnName="DeliveryTime" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="RegionName" ColumnName="RegionName" />
+                <ScalarProperty Name="RegionType" ColumnName="RegionType" />
+                <ScalarProperty Name="RegionMode" ColumnName="RegionMode" />
+                <ScalarProperty Name="BrandID" ColumnName="BrandID" />
+                <ScalarProperty Name="Tel" ColumnName="Tel" />
+                <ScalarProperty Name="LinkMan" ColumnName="LinkMan" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Area" ColumnName="Area" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Lng" ColumnName="Lng" />
+                <ScalarProperty Name="Lat" ColumnName="Lat" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="LogoUrl" ColumnName="LogoUrl" />
+                <ScalarProperty Name="Sort" ColumnName="Sort" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="rfidreplace">
+            <EntityTypeMapping TypeName="laundry_hotelModel.rfidreplace">
+              <MappingFragment StoreEntitySet="rfidreplace">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TextileID" ColumnName="TextileID" />
+                <ScalarProperty Name="OldTagNo" ColumnName="OldTagNo" />
+                <ScalarProperty Name="NewTagNo" ColumnName="NewTagNo" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="TagWashtime" ColumnName="TagWashtime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="rfidtag">
+            <EntityTypeMapping TypeName="laundry_hotelModel.rfidtag">
+              <MappingFragment StoreEntitySet="rfidtag">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="RFIDTagNo" ColumnName="RFIDTagNo" />
+                <ScalarProperty Name="RFIDWashtime" ColumnName="RFIDWashtime" />
+                <ScalarProperty Name="CostTime" ColumnName="CostTime" />
+                <ScalarProperty Name="RFIDState" ColumnName="RFIDState" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="scrap">
+            <EntityTypeMapping TypeName="laundry_hotelModel.scrap">
+              <MappingFragment StoreEntitySet="scrap">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ScrapName" ColumnName="ScrapName" />
+                <ScalarProperty Name="ScrapType" ColumnName="ScrapType" />
+                <ScalarProperty Name="ScrapDesc" ColumnName="ScrapDesc" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="size">
+            <EntityTypeMapping TypeName="laundry_hotelModel.size">
+              <MappingFragment StoreEntitySet="size">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="SizeName" ColumnName="SizeName" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="Sort" ColumnName="Sort" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sys_admin">
+            <EntityTypeMapping TypeName="laundry_hotelModel.sys_admin">
+              <MappingFragment StoreEntitySet="sys_admin">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserPwd" ColumnName="UserPwd" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sys_application">
+            <EntityTypeMapping TypeName="laundry_hotelModel.sys_application">
+              <MappingFragment StoreEntitySet="sys_application">
+                <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+                <ScalarProperty Name="ApplicationCode" ColumnName="ApplicationCode" />
+                <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
+                <ScalarProperty Name="ApplicationDesc" ColumnName="ApplicationDesc" />
+                <ScalarProperty Name="ShowInMenu" ColumnName="ShowInMenu" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sys_customer">
+            <EntityTypeMapping TypeName="laundry_hotelModel.sys_customer">
+              <MappingFragment StoreEntitySet="sys_customer">
+                <ScalarProperty Name="SendMessageTemplateID" ColumnName="SendMessageTemplateID" />
+                <ScalarProperty Name="ReceiveMessageTemplateID" ColumnName="ReceiveMessageTemplateID" />
+                <ScalarProperty Name="WeixinAppSecret" ColumnName="WeixinAppSecret" />
+                <ScalarProperty Name="WeixinAppId" ColumnName="WeixinAppId" />
+                <ScalarProperty Name="FactoryImg" ColumnName="FactoryImg" />
+                <ScalarProperty Name="Introduce" ColumnName="Introduce" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="ServiceTel" ColumnName="ServiceTel" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="SysCusName" ColumnName="SysCusName" />
+                <ScalarProperty Name="LinkMan" ColumnName="LinkMan" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="SystemTitle" ColumnName="SystemTitle" />
+                <ScalarProperty Name="Logo" ColumnName="Logo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sys_customer_right">
+            <EntityTypeMapping TypeName="laundry_hotelModel.sys_customer_right">
+              <MappingFragment StoreEntitySet="sys_customer_right">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="CusID" ColumnName="CusID" />
+                <ScalarProperty Name="RightID" ColumnName="RightID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sys_privilege">
+            <EntityTypeMapping TypeName="laundry_hotelModel.sys_privilege">
+              <MappingFragment StoreEntitySet="sys_privilege">
+                <ScalarProperty Name="PrivilegeID" ColumnName="PrivilegeID" />
+                <ScalarProperty Name="PrivilegeMaster" ColumnName="PrivilegeMaster" />
+                <ScalarProperty Name="PrivilegeMasterValue" ColumnName="PrivilegeMasterValue" />
+                <ScalarProperty Name="PrivilegeAccess" ColumnName="PrivilegeAccess" />
+                <ScalarProperty Name="PrivilegeAccessValue" ColumnName="PrivilegeAccessValue" />
+                <ScalarProperty Name="PrivilegeOperation" ColumnName="PrivilegeOperation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sys_right">
+            <EntityTypeMapping TypeName="laundry_hotelModel.sys_right">
+              <MappingFragment StoreEntitySet="sys_right">
+                <ScalarProperty Name="RightID" ColumnName="RightID" />
+                <ScalarProperty Name="RightCode" ColumnName="RightCode" />
+                <ScalarProperty Name="RightParentID" ColumnName="RightParentID" />
+                <ScalarProperty Name="RightName" ColumnName="RightName" />
+                <ScalarProperty Name="RightSort" ColumnName="RightSort" />
+                <ScalarProperty Name="RightUrl" ColumnName="RightUrl" />
+                <ScalarProperty Name="RightIcon" ColumnName="RightIcon" />
+                <ScalarProperty Name="RightType" ColumnName="RightType" />
+                <ScalarProperty Name="ShowInMainMenu" ColumnName="ShowInMainMenu" />
+                <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sys_role">
+            <EntityTypeMapping TypeName="laundry_hotelModel.sys_role">
+              <MappingFragment StoreEntitySet="sys_role">
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleDesc" ColumnName="RoleDesc" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sys_user">
+            <EntityTypeMapping TypeName="laundry_hotelModel.sys_user">
+              <MappingFragment StoreEntitySet="sys_user">
+                <ScalarProperty Name="SMSTime" ColumnName="SMSTime" />
+                <ScalarProperty Name="SMSCode" ColumnName="SMSCode" />
+                <ScalarProperty Name="XCXOpenID" ColumnName="XCXOpenID" />
+                <ScalarProperty Name="WXOpenID" ColumnName="WXOpenID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="LoginName" ColumnName="LoginName" />
+                <ScalarProperty Name="LoginPwd" ColumnName="LoginPwd" />
+                <ScalarProperty Name="OrganiseID" ColumnName="OrganiseID" />
+                <ScalarProperty Name="PersonnelPlaceID" ColumnName="PersonnelPlaceID" />
+                <ScalarProperty Name="UName" ColumnName="UName" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+                <ScalarProperty Name="IsLevel" ColumnName="IsLevel" />
+                <ScalarProperty Name="LastLoginTime" ColumnName="LastLoginTime" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sys_user_dataview">
+            <EntityTypeMapping TypeName="laundry_hotelModel.sys_user_dataview">
+              <MappingFragment StoreEntitySet="sys_user_dataview">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sys_user_role">
+            <EntityTypeMapping TypeName="laundry_hotelModel.sys_user_role">
+              <MappingFragment StoreEntitySet="sys_user_role">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="task">
+            <EntityTypeMapping TypeName="laundry_hotelModel.task">
+              <MappingFragment StoreEntitySet="task">
+                <ScalarProperty Name="TaskTime" ColumnName="TaskTime" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="SizeID" ColumnName="SizeID" />
+                <ScalarProperty Name="SizeName" ColumnName="SizeName" />
+                <ScalarProperty Name="TaskCount" ColumnName="TaskCount" />
+                <ScalarProperty Name="TaskType" ColumnName="TaskType" />
+                <ScalarProperty Name="CheckCount" ColumnName="CheckCount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="textile">
+            <EntityTypeMapping TypeName="laundry_hotelModel.textile">
+              <MappingFragment StoreEntitySet="textile">
+                <ScalarProperty Name="LastReceiveInvID" ColumnName="LastReceiveInvID" />
+                <ScalarProperty Name="HotelID" ColumnName="HotelID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="SizeID" ColumnName="SizeID" />
+                <ScalarProperty Name="FabricID" ColumnName="FabricID" />
+                <ScalarProperty Name="IsFlag" ColumnName="IsFlag" />
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="BrandID" ColumnName="BrandID" />
+                <ScalarProperty Name="Washtimes" ColumnName="Washtimes" />
+                <ScalarProperty Name="RegisterTime" ColumnName="RegisterTime" />
+                <ScalarProperty Name="TagNo" ColumnName="TagNo" />
+                <ScalarProperty Name="LogoutTime" ColumnName="LogoutTime" />
+                <ScalarProperty Name="LogoutType" ColumnName="LogoutType" />
+                <ScalarProperty Name="TextileState" ColumnName="TextileState" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="ColorID" ColumnName="ColorID" />
+                <ScalarProperty Name="LastReceiveRegionID" ColumnName="LastReceiveRegionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="textileclass">
+            <EntityTypeMapping TypeName="laundry_hotelModel.textileclass">
+              <MappingFragment StoreEntitySet="textileclass">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="ClassCode" ColumnName="ClassCode" />
+                <ScalarProperty Name="Sort" ColumnName="Sort" />
+                <ScalarProperty Name="UnitID" ColumnName="UnitID" />
+                <ScalarProperty Name="ClassLeft" ColumnName="ClassLeft" />
+                <ScalarProperty Name="PackCount" ColumnName="PackCount" />
+                <ScalarProperty Name="CateID" ColumnName="CateID" />
+                <ScalarProperty Name="IsRFID" ColumnName="IsRFID" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="unit">
+            <EntityTypeMapping TypeName="laundry_hotelModel.unit">
+              <MappingFragment StoreEntitySet="unit">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UnitName" ColumnName="UnitName" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sys_right_button">
+            <EntityTypeMapping TypeName="laundry_hotelModel.sys_right_button">
+              <MappingFragment StoreEntitySet="sys_right_button">
+                <ScalarProperty Name="RightID" ColumnName="RightID" />
+                <ScalarProperty Name="BtnCode" ColumnName="BtnCode" />
+                <ScalarProperty Name="BtnScript" ColumnName="BtnScript" />
+                <ScalarProperty Name="BtnIcon" ColumnName="BtnIcon" />
+                <ScalarProperty Name="BtnClass" ColumnName="BtnClass" />
+                <ScalarProperty Name="BtnName" ColumnName="BtnName" />
+                <ScalarProperty Name="BtnID" ColumnName="BtnID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="qrcode">
+            <EntityTypeMapping TypeName="laundry_hotelModel.qrcode">
+              <MappingFragment StoreEntitySet="qrcode">
+                <ScalarProperty Name="IsLock" ColumnName="IsLock" />
+                <ScalarProperty Name="RFIDTagNo" ColumnName="RFIDTagNo" />
+                <ScalarProperty Name="BindingTime" ColumnName="BindingTime" />
+                <ScalarProperty Name="QRCodeValue" ColumnName="QRCodeValue" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="businessdetail">
+            <EntityTypeMapping TypeName="laundry_hotelModel.businessdetail">
+              <MappingFragment StoreEntitySet="businessdetail">
+                <ScalarProperty Name="ExecCount" ColumnName="ExecCount" />
+                <ScalarProperty Name="TextileCount" ColumnName="TextileCount" />
+                <ScalarProperty Name="SizeName" ColumnName="SizeName" />
+                <ScalarProperty Name="SizeID" ColumnName="SizeID" />
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="BNo" ColumnName="BNo" />
+                <ScalarProperty Name="SubType" ColumnName="SubType" />
+                <ScalarProperty Name="InvType" ColumnName="InvType" />
+                <ScalarProperty Name="HotelID" ColumnName="HotelID" />
+                <ScalarProperty Name="BID" ColumnName="BID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="fc_invoice">
+            <EntityTypeMapping TypeName="laundry_hotelModel.fc_invoice">
+              <MappingFragment StoreEntitySet="fc_invoice">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="ResultMsg" ColumnName="ResultMsg" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="No" ColumnName="No" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="pricedetail">
+            <EntityTypeMapping TypeName="laundry_hotelModel.pricedetail">
+              <MappingFragment StoreEntitySet="pricedetail">
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="SizeID" ColumnName="SizeID" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="TemplateID" ColumnName="TemplateID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="pricetemplate">
+            <EntityTypeMapping TypeName="laundry_hotelModel.pricetemplate">
+              <MappingFragment StoreEntitySet="pricetemplate">
+                <ScalarProperty Name="SettlementMode" ColumnName="SettlementMode" />
+                <ScalarProperty Name="DataSources" ColumnName="DataSources" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="SubType" ColumnName="SubType" />
+                <ScalarProperty Name="TemplateType" ColumnName="TemplateType" />
+                <ScalarProperty Name="TemplateName" ColumnName="TemplateName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="scrapdetail">
+            <EntityTypeMapping TypeName="laundry_hotelModel.scrapdetail">
+              <MappingFragment StoreEntitySet="scrapdetail">
+                <ScalarProperty Name="LastUsingArea" ColumnName="LastUsingArea" />
+                <ScalarProperty Name="LastUsingTime" ColumnName="LastUsingTime" />
+                <ScalarProperty Name="CreateUserName" ColumnName="CreateUserName" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="Washtime" ColumnName="Washtime" />
+                <ScalarProperty Name="ScrapName" ColumnName="ScrapName" />
+                <ScalarProperty Name="ScrapID" ColumnName="ScrapID" />
+                <ScalarProperty Name="ResponsibleName" ColumnName="ResponsibleName" />
+                <ScalarProperty Name="ResponsibleID" ColumnName="ResponsibleID" />
+                <ScalarProperty Name="ResponsibleType" ColumnName="ResponsibleType" />
+                <ScalarProperty Name="BrandName" ColumnName="BrandName" />
+                <ScalarProperty Name="BrandID" ColumnName="BrandID" />
+                <ScalarProperty Name="FabricID" ColumnName="FabricID" />
+                <ScalarProperty Name="SizeName" ColumnName="SizeName" />
+                <ScalarProperty Name="SizeID" ColumnName="SizeID" />
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="RFIDTagNo" ColumnName="RFIDTagNo" />
+                <ScalarProperty Name="TextileID" ColumnName="TextileID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="repeatop">
+            <EntityTypeMapping TypeName="laundry_hotelModel.repeatop">
+              <MappingFragment StoreEntitySet="repeatop">
+                <ScalarProperty Name="InvType" ColumnName="InvType" />
+                <ScalarProperty Name="InvID" ColumnName="InvID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="HotelID" ColumnName="HotelID" />
+                <ScalarProperty Name="PreCreateTime" ColumnName="PreCreateTime" />
+                <ScalarProperty Name="PreRegionID" ColumnName="PreRegionID" />
+                <ScalarProperty Name="PreHotelID" ColumnName="PreHotelID" />
+                <ScalarProperty Name="TagNo" ColumnName="TagNo" />
+                <ScalarProperty Name="SizeID" ColumnName="SizeID" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="TextileID" ColumnName="TextileID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="complain">
+            <EntityTypeMapping TypeName="laundry_hotelModel.complain">
+              <MappingFragment StoreEntitySet="complain">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="ComfirmTime" ColumnName="ComfirmTime" />
+                <ScalarProperty Name="ComfirmUserID" ColumnName="ComfirmUserID" />
+                <ScalarProperty Name="Comfirmed" ColumnName="Comfirmed" />
+                <ScalarProperty Name="HotelID" ColumnName="HotelID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="Cause" ColumnName="Cause" />
+                <ScalarProperty Name="HappenTime" ColumnName="HappenTime" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="complainattach">
+            <EntityTypeMapping TypeName="laundry_hotelModel.complainattach">
+              <MappingFragment StoreEntitySet="complainattach">
+                <ScalarProperty Name="AttachContent" ColumnName="AttachContent" />
+                <ScalarProperty Name="AttachType" ColumnName="AttachType" />
+                <ScalarProperty Name="ComplaintID" ColumnName="ComplaintID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="complainmessage">
+            <EntityTypeMapping TypeName="laundry_hotelModel.complainmessage">
+              <MappingFragment StoreEntitySet="complainmessage">
+                <ScalarProperty Name="PublishTime" ColumnName="PublishTime" />
+                <ScalarProperty Name="PublishMessage" ColumnName="PublishMessage" />
+                <ScalarProperty Name="PublishType" ColumnName="PublishType" />
+                <ScalarProperty Name="PublishUserID" ColumnName="PublishUserID" />
+                <ScalarProperty Name="ComplainID" ColumnName="ComplainID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="goods">
+            <EntityTypeMapping TypeName="laundry_hotelModel.goods">
+              <MappingFragment StoreEntitySet="goods">
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Hoting" ColumnName="Hoting" />
+                <ScalarProperty Name="Sort" ColumnName="Sort" />
+                <ScalarProperty Name="Grounding" ColumnName="Grounding" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="UnitName" ColumnName="UnitName" />
+                <ScalarProperty Name="CostPrice" ColumnName="CostPrice" />
+                <ScalarProperty Name="GoodsMoney" ColumnName="GoodsMoney" />
+                <ScalarProperty Name="GoodsLogo" ColumnName="GoodsLogo" />
+                <ScalarProperty Name="CateID" ColumnName="CateID" />
+                <ScalarProperty Name="GoodsName" ColumnName="GoodsName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="goodscate">
+            <EntityTypeMapping TypeName="laundry_hotelModel.goodscate">
+              <MappingFragment StoreEntitySet="goodscate">
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Sort" ColumnName="Sort" />
+                <ScalarProperty Name="CateName" ColumnName="CateName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="goodsorder">
+            <EntityTypeMapping TypeName="laundry_hotelModel.goodsorder">
+              <MappingFragment StoreEntitySet="goodsorder">
+                <ScalarProperty Name="DistributorTel" ColumnName="DistributorTel" />
+                <ScalarProperty Name="Distributor" ColumnName="Distributor" />
+                <ScalarProperty Name="SignTime" ColumnName="SignTime" />
+                <ScalarProperty Name="DistributionTime" ColumnName="DistributionTime" />
+                <ScalarProperty Name="DeliveryTime" ColumnName="DeliveryTime" />
+                <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="ComfirmTime" ColumnName="ComfirmTime" />
+                <ScalarProperty Name="ComfirmUserID" ColumnName="ComfirmUserID" />
+                <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
+                <ScalarProperty Name="OrderState" ColumnName="OrderState" />
+                <ScalarProperty Name="TotalMoney" ColumnName="TotalMoney" />
+                <ScalarProperty Name="TotalQuantity" ColumnName="TotalQuantity" />
+                <ScalarProperty Name="HotelID" ColumnName="HotelID" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="goodsorderdetail">
+            <EntityTypeMapping TypeName="laundry_hotelModel.goodsorderdetail">
+              <MappingFragment StoreEntitySet="goodsorderdetail">
+                <ScalarProperty Name="GoodsName" ColumnName="GoodsName" />
+                <ScalarProperty Name="TotalMoney" ColumnName="TotalMoney" />
+                <ScalarProperty Name="GoodMoney" ColumnName="GoodMoney" />
+                <ScalarProperty Name="GoodsCount" ColumnName="GoodsCount" />
+                <ScalarProperty Name="GoodsID" ColumnName="GoodsID" />
+                <ScalarProperty Name="HotelID" ColumnName="HotelID" />
+                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bag">
+            <EntityTypeMapping TypeName="laundry_hotelModel.bag">
+              <MappingFragment StoreEntitySet="bag">
+                <ScalarProperty Name="Flag" ColumnName="Flag" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="BagRFIDNo" ColumnName="BagRFIDNo" />
+                <ScalarProperty Name="BagNo" ColumnName="BagNo" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="integraldetail">
+            <EntityTypeMapping TypeName="laundry_hotelModel.integraldetail">
+              <MappingFragment StoreEntitySet="integraldetail">
+                <ScalarProperty Name="Points" ColumnName="Points" />
+                <ScalarProperty Name="InvNo" ColumnName="InvNo" />
+                <ScalarProperty Name="SubType" ColumnName="SubType" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="HotelID" ColumnName="HotelID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="invoice">
+            <EntityTypeMapping TypeName="laundry_hotelModel.invoice">
+              <MappingFragment StoreEntitySet="invoice">
+                <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
+                <ScalarProperty Name="ConfirmUserName" ColumnName="ConfirmUserName" />
+                <ScalarProperty Name="ConfirmUserID" ColumnName="ConfirmUserID" />
+                <ScalarProperty Name="ConfirmTime" ColumnName="ConfirmTime" />
+                <ScalarProperty Name="Processed" ColumnName="Processed" />
+                <ScalarProperty Name="Comfirmed" ColumnName="Comfirmed" />
+                <ScalarProperty Name="MacCode" ColumnName="MacCode" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserName" ColumnName="CreateUserName" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="Remrak" ColumnName="Remrak" />
+                <ScalarProperty Name="TaskType" ColumnName="TaskType" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="InvState" ColumnName="InvState" />
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="HotelID" ColumnName="HotelID" />
+                <ScalarProperty Name="DataType" ColumnName="DataType" />
+                <ScalarProperty Name="InvSubType" ColumnName="InvSubType" />
+                <ScalarProperty Name="InvType" ColumnName="InvType" />
+                <ScalarProperty Name="InvNo" ColumnName="InvNo" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="invoicedetail">
+            <EntityTypeMapping TypeName="laundry_hotelModel.invoicedetail">
+              <MappingFragment StoreEntitySet="invoicedetail">
+                <ScalarProperty Name="RentPrice" ColumnName="RentPrice" />
+                <ScalarProperty Name="WashingPrice" ColumnName="WashingPrice" />
+                <ScalarProperty Name="BrandName" ColumnName="BrandName" />
+                <ScalarProperty Name="BrandID" ColumnName="BrandID" />
+                <ScalarProperty Name="InvCreateTime" ColumnName="InvCreateTime" />
+                <ScalarProperty Name="TextileCount" ColumnName="TextileCount" />
+                <ScalarProperty Name="SizeName" ColumnName="SizeName" />
+                <ScalarProperty Name="SizeID" ColumnName="SizeID" />
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="HotelID" ColumnName="HotelID" />
+                <ScalarProperty Name="InvSubType" ColumnName="InvSubType" />
+                <ScalarProperty Name="DataType" ColumnName="DataType" />
+                <ScalarProperty Name="InvType" ColumnName="InvType" />
+                <ScalarProperty Name="InvID" ColumnName="InvID" />
+                <ScalarProperty Name="InvNo" ColumnName="InvNo" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="region_setting">
+            <EntityTypeMapping TypeName="laundry_hotelModel.region_setting">
+              <MappingFragment StoreEntitySet="region_setting">
+                <ScalarProperty Name="RentTime" ColumnName="RentTime" />
+                <ScalarProperty Name="WashingTime" ColumnName="WashingTime" />
+                <ScalarProperty Name="RentPaymentMode" ColumnName="RentPaymentMode" />
+                <ScalarProperty Name="Deposit" ColumnName="Deposit" />
+                <ScalarProperty Name="PaymentMode" ColumnName="PaymentMode" />
+                <ScalarProperty Name="Integral" ColumnName="Integral" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="LimitNumber" ColumnName="LimitNumber" />
+                <ScalarProperty Name="MatchNumber" ColumnName="MatchNumber" />
+                <ScalarProperty Name="SettleType" ColumnName="SettleType" />
+                <ScalarProperty Name="SettleDay" ColumnName="SettleDay" />
+                <ScalarProperty Name="RentID" ColumnName="RentID" />
+                <ScalarProperty Name="WashID" ColumnName="WashID" />
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="truck">
+            <EntityTypeMapping TypeName="laundry_hotelModel.truck">
+              <MappingFragment StoreEntitySet="truck">
+                <ScalarProperty Name="TruckNo" ColumnName="TruckNo" />
+                <ScalarProperty Name="Flag" ColumnName="Flag" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="TruckRFIDNo" ColumnName="TruckRFIDNo" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="v_textile_tag">
+            <EntityTypeMapping TypeName="laundry_hotelModel.v_textile_tag">
+              <MappingFragment StoreEntitySet="v_textile_tag">
+                <ScalarProperty Name="LastReceiveInvID" ColumnName="LastReceiveInvID" />
+                <ScalarProperty Name="PackCount" ColumnName="PackCount" />
+                <ScalarProperty Name="RFIDCostTime" ColumnName="RFIDCostTime" />
+                <ScalarProperty Name="ClassLeft" ColumnName="ClassLeft" />
+                <ScalarProperty Name="RFIDWashtime" ColumnName="RFIDWashtime" />
+                <ScalarProperty Name="LastReceiveRegionID" ColumnName="LastReceiveRegionID" />
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="HotelName" ColumnName="HotelName" />
+                <ScalarProperty Name="HotelID" ColumnName="HotelID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="Washtimes" ColumnName="Washtimes" />
+                <ScalarProperty Name="RegisterTime" ColumnName="RegisterTime" />
+                <ScalarProperty Name="TagNo" ColumnName="TagNo" />
+                <ScalarProperty Name="TextileState" ColumnName="TextileState" />
+                <ScalarProperty Name="BrandSort" ColumnName="BrandSort" />
+                <ScalarProperty Name="BrandName" ColumnName="BrandName" />
+                <ScalarProperty Name="BrandID" ColumnName="BrandID" />
+                <ScalarProperty Name="SizeSort" ColumnName="SizeSort" />
+                <ScalarProperty Name="SizeName" ColumnName="SizeName" />
+                <ScalarProperty Name="SizeID" ColumnName="SizeID" />
+                <ScalarProperty Name="ClassSort" ColumnName="ClassSort" />
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="textilegroup">
+            <EntityTypeMapping TypeName="laundry_hotelModel.textilegroup">
+              <MappingFragment StoreEntitySet="textilegroup">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="TextileTagNo" ColumnName="TextileTagNo" />
+                <ScalarProperty Name="TextileID" ColumnName="TextileID" />
+                <ScalarProperty Name="GroupNo" ColumnName="GroupNo" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="truck_textile">
+            <EntityTypeMapping TypeName="laundry_hotelModel.truck_textile">
+              <MappingFragment StoreEntitySet="truck_textile">
+                <ScalarProperty Name="TextileID" ColumnName="TextileID" />
+                <ScalarProperty Name="TextileTagNo" ColumnName="TextileTagNo" />
+                <ScalarProperty Name="TruckRFIDNo" ColumnName="TruckRFIDNo" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="invoicelog">
+            <EntityTypeMapping TypeName="laundry_hotelModel.invoicelog">
+              <MappingFragment StoreEntitySet="invoicelog">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateType" ColumnName="CreateType" />
+                <ScalarProperty Name="CreateUserName" ColumnName="CreateUserName" />
+                <ScalarProperty Name="BussinessName" ColumnName="BussinessName" />
+                <ScalarProperty Name="TableName" ColumnName="TableName" />
+                <ScalarProperty Name="LogID" ColumnName="LogID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="invoicelogdetail">
+            <EntityTypeMapping TypeName="laundry_hotelModel.invoicelogdetail">
+              <MappingFragment StoreEntitySet="invoicelogdetail">
+                <ScalarProperty Name="CreateType" ColumnName="CreateType" />
+                <ScalarProperty Name="NewValue" ColumnName="NewValue" />
+                <ScalarProperty Name="OldValue" ColumnName="OldValue" />
+                <ScalarProperty Name="PrimaryKeyValue" ColumnName="PrimaryKeyValue" />
+                <ScalarProperty Name="PrimaryKeyColName" ColumnName="PrimaryKeyColName" />
+                <ScalarProperty Name="ColumnText" ColumnName="ColumnText" />
+                <ScalarProperty Name="ColumnName" ColumnName="ColumnName" />
+                <ScalarProperty Name="LogID" ColumnName="LogID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="hotel_detail">
+            <EntityTypeMapping TypeName="laundry_hotelModel.hotel_detail">
+              <MappingFragment StoreEntitySet="hotel_detail">
+                <ScalarProperty Name="HotelImg" ColumnName="HotelImg" />
+                <ScalarProperty Name="HotelTel" ColumnName="HotelTel" />
+                <ScalarProperty Name="HotelProfile" ColumnName="HotelProfile" />
+                <ScalarProperty Name="HotelPoint" ColumnName="HotelPoint" />
+                <ScalarProperty Name="HotelName" ColumnName="HotelName" />
+                <ScalarProperty Name="Logo" ColumnName="Logo" />
+                <ScalarProperty Name="Slogan" ColumnName="Slogan" />
+                <ScalarProperty Name="HotelID" ColumnName="HotelID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="notice">
+            <EntityTypeMapping TypeName="laundry_hotelModel.notice">
+              <MappingFragment StoreEntitySet="notice">
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="End" ColumnName="End" />
+                <ScalarProperty Name="Start" ColumnName="Start" />
+                <ScalarProperty Name="IsFull" ColumnName="IsFull" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="rentmatch">
+            <EntityTypeMapping TypeName="laundry_hotelModel.rentmatch">
+              <MappingFragment StoreEntitySet="rentmatch">
+                <ScalarProperty Name="TextileCount" ColumnName="TextileCount" />
+                <ScalarProperty Name="SizeID" ColumnName="SizeID" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="HotelID" ColumnName="HotelID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

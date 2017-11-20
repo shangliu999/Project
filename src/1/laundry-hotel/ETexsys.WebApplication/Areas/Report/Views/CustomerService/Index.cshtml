@@ -1,0 +1,200 @@
+﻿
+@{
+    Layout = null;
+}
+
+<div class="row wrapper wrapper-content animated fadeInRight" style="padding-top:75px;">
+    <div class="ibox-content">
+        <div class="form-horizontal" style="background:#307ecc;padding:10px;">
+            <label style="color:#FFF">评价投诉列表查看</label>
+        </div>
+        <div class="form-horizontal" style="background:#eff3f8;padding:15px;">
+            <div>
+                <div style="float:left">
+                    <label>处理状态</label>
+                    <select style="height:35px" id="state">
+                        <option>待处理</option>
+                        <option>已处理</option>
+                    </select>
+                    <label>酒店</label>
+                    <select style="height:35px;" id="hotelName">
+                        <option>全部</option>
+                        @{ var regionList = ViewData["regionList"] as List<ETexsys.Model.region>;}
+                        @foreach (var item in regionList)
+                        {
+                            <option>@item.RegionName</option>
+                        }
+                    </select>
+                </div>
+                <div style="float:right">
+                    <label>每页显示</label>
+                    <select style="height:35px" id="count">
+                        <option>30</option>
+                        <option>50</option>
+                        <option>100</option>
+                    </select>
+                    <label>条记录</label>
+                </div>
+            </div>
+            <div id="table1" class="ibox-content" style="margin-top:20px; background:#eff3f8; overflow:hidden;">
+                <table class="table table-striped table-bordered table-hover dataTables-example">
+                    <thead>
+                        <tr>
+                            <th>酒店</th>
+                            <th>提交人</th>
+                            <th>原因</th>
+                            <th>时间</th>
+                            <th>处理状态</th>
+                            <th>备注</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@RenderPage("Detail.cshtml");
+<script>
+
+    var url = "@Url.Action("GetList", "CustomerService")";
+    debugger;
+    $(".dataTables-example").DataTable({
+        bAutoWidth: false,
+        aoColumns: [
+            { "sClass": "center", "mDataProp": "HotelName", "bSortable": false },
+            { "sClass": "center", "mDataProp": "UserName", "bSortable": false },
+            { "sClass": "center", "mDataProp": "Cause", "bSortable": false },
+            {
+                "sClass": "text-center",
+                "data": "CreateTime",
+                "render": function (data, type, full, meta) {
+                    return data_string(data);//date的格
+                },
+                "bSortable": false
+            },
+            { "sClass": "center", "mDataProp": "Comfirmed", "bSortable": false },
+            { "sClass": "center", "mDataProp": "Remarks", "bSortable": false },
+            { "sClass": "center", "mDataProp": "Remarks", "bSortable": false },
+        ],
+        "bServerSide": true,//分页，取数据等等的都放到服务端去
+        "bProcessing": true,//载入数据的时候是否显示“载入中”
+        "aLengthMenu": [30, 50, 100],
+        "bLengthChange": false, //改变每页显示数据数量
+        "bFilter": false, //过滤功能
+        "iDisplayStart": 0,
+        "iDisplayLength": 30,//首次加载的数据条数
+        "bStorable": true,//排序操作在服务端进行，所以可以关了。
+        "sAjaxSource": url,
+        "fnServerData": function (sSource, aoData, fnCallback, bStorable) {
+            debugger;
+            var paramList = {
+                "sEcho": 0,
+                "iDisplayLength": 0,
+                "iDisplayStart": 0,
+                "sSortDir_0": bStorable.aaSorting[0][1],
+                "iSortCol_0": bStorable.aaSorting[0][0],
+                "HotelName": $("#hotelName option:selected").html(),
+                "State": $("#state option:selected").html(),
+                "Count": $("#count option:selected").html(),
+
+            };
+            if (bStorable.aaSorting[0][0] == 0) {
+                paramList.isDesc = true;
+            }
+            for (var i = 0; i < aoData.length; i++) {
+                if (aoData[i].name == "iDisplayStart") {
+                    paramList.iDisplayStart = aoData[i].value;
+                } else if (aoData[i].name == "iDisplayLength") {
+                    paramList.iDisplayLength = aoData[i].value;
+                } else
+                    if (aoData[i].name == "sEcho") {
+                        paramList.sEcho = aoData[i].value;
+                    }
+            }
+            $.ajax({
+                "dataType": 'json',
+                "type": "POST",
+                "url": sSource,
+                "data": paramList,
+                "success": function (resp) {
+                    fnCallback(resp); //服务器端返回的对象的returnObject部分是要求的格式
+                }
+            });
+        },
+        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+            var html = "<a class='ace-icon fa fa-pencil bigger-120' href=\javascript:GetDetail('"+aData.ID+"')></a>"
+            $('td:eq(6)', nRow).html(html);
+            var text = aData.Comfirmed == "false" ? "已处理" : "待处理";
+            $('td:eq(4)', nRow).html(text);
+            var cause = "<label title=" + aData.CompleteCause + ">" + aData.Cause + "</label>"
+            $('td:eq(2)', nRow).html(cause);
+        },
+        dom: '<"html5buttons"B>lTfgitp',
+        buttons: [
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+                }
+            }
+        ],
+        "oLanguage": {
+            "sLengthMenu": "每页显示 _MENU_ 条记录",
+            "sZeroRecords": "抱歉， 没有找到",
+            "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+            "sInfoEmpty": "没有数据",
+            "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+            "oPaginate": {
+                "sFirst": "首页",
+                "sPrevious": "前一页",
+                "sNext": "后一页",
+                "sLast": "尾页"
+            },
+            "sZeroRecords": "没有检索到数据",
+            "sProcessing": "<img src='./loading.gif' />"
+        }
+    })
+    function GetDetail(ID) {
+        debugger;
+        $("#PublishMessage").attr("data-complainID", ID)
+        $("#DetailModel").modal("show");
+    }
+    $("#state").change(function () {
+        $(".dataTables-example").dataTable().fnDraw();
+    })
+    $("#hotelName").change(function () {
+        $(".dataTables-example").dataTable().fnDraw();
+    })
+    $("#count").change(function () {
+        debugger;
+        $(".dataTables-example").dataTable().fnDraw();
+    })
+
+    $("#CustomerService").submit(function () {
+        debugger;
+        var url = "@Url.Action("Handle", "CustomerService")";
+        $.ajax({
+            type:"post",
+            data: { PublishMessage: $("#PublishMessage").val(), ID: $("#PublishMessage").attr("data-complainID") },
+            url: url,
+            success: function (data) {
+                debugger;
+                $('#DetailModel').modal('hide');//关闭模态框
+                document.getElementById("CustomerService").reset();//清空表单
+                $(".dataTables-example").dataTable().fnDraw();//点搜索重新绘制table。
+            }
+        })
+        return false;
+    })
+</script>

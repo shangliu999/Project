@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<info>
+	<version>1.0.0.4</version>
+	<url>http://192.168.1.15:83/app/laundry.apk</url>
+	<description>洗涤维生素有新版本,是否更新？</description>
+	<must></must>
+</info>
+
+ <!-- 说明：《version》 最新apk版本 《url》 apk下载地址 使用时需在IIS中添加MIME application/vnd.android.package-archive 《description》更新提示说明  《must》是否强制更新 任意填为true 不填为false-->

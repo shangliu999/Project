@@ -1,0 +1,395 @@
+﻿body {
+}
+
+@media(max-width:550px) {
+    .imagediv {
+        display: none;
+    }
+    .headdiv{
+        width:90%;
+        margin:0 auto;
+        background: #dcebfe;
+        
+    }
+    .peripheral {
+        margin: 90px auto auto auto;
+        height: 480px;
+    }
+      .inputdiv {
+        margin: 8px auto;
+        background: #f3fcff;
+        width: 95%;
+        height: 414px;
+    }
+
+      .div1{
+          width:100%;
+          margin:0 auto;
+      }
+
+      .img1{
+          width:100%;
+          margin:0 auto;
+      }
+
+    .qrCodeimg {
+        height: 60px;
+        width: 100%;
+    }
+
+    .hedimg{
+        width:100%;
+        margin:0 auto;
+         height: 60px;
+    }
+
+    .uidlable {
+        font-family: '微软雅黑';
+        color: #0294DD;
+        font-size: 18px;
+        margin: 10px 0 0 20px;
+        font-weight: initial;
+    }
+
+    .uiddiv {
+        width: 80%;
+        height: 34px;
+        margin: 30px auto auto auto;
+    }
+
+    .childuiddiv {
+        height: 34px;
+        width:16%;
+        border-top: 1px #CCCCCC solid;
+        border-left: 1px #CCCCCC solid;
+        border-bottom: 1px #CCCCCC solid;
+        float:left;
+    }
+
+    
+    .kkkk{
+        width:100%;
+        height:22px;
+        margin:0 auto;
+    }
+
+    .imgdiv {
+        width: 60%;
+        height: 22px;
+        margin: 5px auto;
+    }
+
+    .uidtxtdiv {
+        border: 1px #CCCCCC solid;
+        height: 34px;
+        width:84%;
+        float:left;
+    }
+
+    .inputtxt {
+        border: 0px none;
+        width: 100%;
+        height: 32px;
+        font-family: 'Microsoft YaHei';
+        font-size: 16px;
+        color: #0294DD;
+        padding-left:10px;
+        
+    }
+
+    .pwddiv {
+        width: 80%;
+        height: 34px;
+        margin: 30px auto auto auto;
+    }
+
+    .childpwddiv {
+        width:16%;
+        height: 34px;
+        float: left;
+        border-top: 1px #CCCCCC solid;
+        border-left: 1px #CCCCCC solid;
+        border-bottom: 1px #CCCCCC solid;
+    }
+
+    .pppp{
+        width:100%;
+        height:22px;
+        margin:0 auto;
+    }
+
+    .imagepwddiv {
+        width: 60%;
+        height: 22px;
+        margin: 5px auto;
+    }
+
+    .inputpwddiv {
+        float: left;
+        width: 84%;
+        border: 1px #CCCCCC solid;
+        height: 34px;
+    }
+
+    .inputtxtpwd {
+        border: 0px none;
+        width:100%;
+        height: 32px;
+        font-family: 'Microsoft YaHei';
+        font-size: 16px;
+        color: #0294DD;
+        padding-left:10px;
+    }
+
+    .userinfodiv {
+        margin: 24px 0 0 20px;
+    }
+
+    .userinfotxt {
+        font-family: 'Microsoft YaHei';
+        font-size: 18px;
+        color: #999999;
+        font-weight: initial;
+    }
+
+    .submitdiv {
+        width: 80%;
+        height: 34px;
+        margin: 34px auto auto auto;
+    }
+
+    .submitbut {
+        vertical-align: central;
+        width: 100%;
+        height: 34px;
+        background-color: #0294DD;
+        font-size: 18px;
+        font-family: 'Microsoft YaHei';
+        font-weight: initial;
+        color: #FFFFFF;
+        border: none;
+
+    }
+
+    .qrcodelogin {
+        margin: 8px auto;
+        background: #FFFFFF;
+        width: 95%;
+        height: 414px;
+        display: none;
+    }
+
+    .Promptdiv {
+        text-align: center;
+        margin: 30px 0 0 0;
+    }
+
+    .qrcodetxt {
+        font-size: 18px;
+        font-family: '微软雅黑';
+        color: #21AF37;
+        font-weight: initial;
+    }
+
+    .qrcodediv {
+        margin-top: 18px;
+        padding-left: 60px;
+    }
+
+    .qrcode1 {
+        width: 280px;
+        height: 280px;
+    }
+
+    .promptdiv2 {
+        margin-top: 18px;
+        text-align: center;
+    }
+    :-ms-input-placeholder {
+        color: #CCCCCC;
+    }
+}
+
+@media(min-width:551px) {
+    .peripheral {
+        margin: 90px auto auto auto;
+        width: 911px;
+        height: 480px;
+    }
+
+    .imagediv {
+        float: left;
+    }
+
+    .headdiv {
+        height: 430.8px;
+        background: #dcebfe;
+        width: 341px;
+        float: right;
+        margin-top: 34.7px;
+    }
+
+    .inputdiv {
+        margin: 8px auto;
+        background: #f3fcff;
+        width: 320px;
+        height: 414px;
+    }
+
+    .qrCodeimg {
+        height: 60px;
+        width: 320px;
+    }
+
+    .uidlable {
+        font-family: '微软雅黑';
+        color: #0294DD;
+        font-size: 18px;
+        margin: 10px 0 0 20px;
+        font-weight: initial;
+    }
+
+    .uiddiv {
+        width: 280px;
+        height: 34px;
+        margin: 30px auto auto auto;
+    }
+
+    .childuiddiv {
+        width: 34px;
+        height: 34px;
+        float: left;
+        border-top: 1px #CCCCCC solid;
+        border-left: 1px #CCCCCC solid;
+        border-bottom: 1px #CCCCCC solid;
+    }
+
+    .imgdiv {
+        width: 22px;
+        height: 22px;
+        margin: 5px auto;
+    }
+
+    .uidtxtdiv {
+        float: right;
+        width: 246px;
+        border: 1px #CCCCCC solid;
+        height: 34px;
+    }
+
+    .inputtxt {
+        border: 0px none;
+        width: 243.5px;
+        height: 32px;
+        font-family: 'Microsoft YaHei';
+        font-size: 16px;
+        color: #0294DD;
+        padding-left: 10px;
+    }
+
+    .pwddiv {
+        width: 280px;
+        height: 34px;
+        margin: 30px auto auto auto;
+    }
+
+    .childpwddiv {
+        width: 34px;
+        height: 34px;
+        float: left;
+        border-top: 1px #CCCCCC solid;
+        border-left: 1px #CCCCCC solid;
+        border-bottom: 1px #CCCCCC solid;
+    }
+
+    .imagepwddiv {
+        width: 22px;
+        height: 22px;
+        margin: 5px auto;
+    }
+
+    .inputpwddiv {
+        float: right;
+        width: 246px;
+        border: 1px #CCCCCC solid;
+        height: 34px;
+    }
+
+    .inputtxtpwd {
+        border: 0px none;
+        width: 243.5px;
+        padding-left: 10px;
+        height: 32px;
+        font-family: 'Microsoft YaHei';
+        font-size: 16px;
+        color: #0294DD;
+    }
+
+    .userinfodiv {
+        margin: 24px 0 0 20px;
+    }
+
+    .userinfotxt {
+        font-family: 'Microsoft YaHei';
+        font-size: 18px;
+        color: #999999;
+        font-weight: initial;
+    }
+
+    .submitdiv {
+        width: 280px;
+        height: 34px;
+        margin: 34px auto auto auto;
+    }
+
+    .submitbut {
+        vertical-align: central;
+        width: 280px;
+        height: 34px;
+        background-color: #0294DD;
+        font-size: 18px;
+        font-family: 'Microsoft YaHei';
+        font-weight: initial;
+        color: #FFFFFF;
+        border: none;
+    }
+
+    .qrcodelogin {
+        margin: 8px auto;
+        background: #FFFFFF;
+        width: 320px;
+        height: 414px;
+        display: none;
+    }
+
+    .Promptdiv {
+        text-align: center;
+        margin: 10px 0 0 0;
+    }
+
+    .qrcodetxt {
+        font-size: 18px;
+        font-family: '微软雅黑';
+        color: #21AF37;
+        font-weight: initial;
+    }
+
+    .qrcodediv {
+        margin-top: 10px;
+        padding-left: 20px;
+    }
+
+    .qrcode1 {
+        width: 280px;
+        height: 280px;
+    }
+
+    .promptdiv2 {
+        margin-top: 18px;
+        text-align: center;
+    }
+
+    :-ms-input-placeholder {
+        color: #CCCCCC;
+    }
+}

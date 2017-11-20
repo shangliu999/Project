@@ -1,0 +1,462 @@
+﻿
+@{
+    Layout = null;
+}
+
+<div class="row wrapper wrapper-content animated fadeInRight" style="padding-top:75px;">
+    <div class="ibox-content" style="margin-top:20px; overflow:hidden; background-color:#ffffff" id="hotelList">
+        <div style="margin-bottom:20px;">
+            @Html.ToolButton(ViewData["BtnList"] as List<ETexsys.Model.sys_right_button>)
+        </div>
+
+        <table class="table table-striped table-bordered table-hover dataTables-example">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>价格表</th>
+                    <th>数据来源</th>
+                    <th>结算方式</th>
+                    <th>是否包含尺寸</th>
+                    <th>创建时间</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    @RenderPage("Add.cshtml")
+    @RenderPage("Detail.cshtml")
+    @RenderPage("Updata.cshtml")
+</div>
+<script>
+    var _url = "@Url.Action("GetWashPriceList", "WashPrice")";
+    $('.dataTables-example').DataTable({
+        bAutoWidth: false,
+        aoColumns: [
+            {
+                "sClass": "text-center",
+                "data": "ID",
+                "render": function (data, type, full, meta) {
+                    return '<input type="radio" name="a"  class="checkchild"  value="' + data + '" />';
+                },
+                "bSortable": false
+            },
+            { "sClass": "center", "mDataProp": "TemplateName", "bSortable": false },
+             { "sClass": "center", "mDataProp": "DataSources", "bSortable": false },
+              { "sClass": "center", "mDataProp": "SettlementMode", "bSortable": false },
+            { "sClass": "center", "mDataProp": "SubType", "bSortable": false },
+            {
+                "sClass": "text-center",
+                "data": "CreateTime",
+                "render": function (data, type, full, meta) {
+                    return data_string(data);//date的格
+                },
+                "bSortable": false
+            },
+
+        ],
+        "bServerSide": true,//分页，取数据等等的都放到服务端去
+        "bProcessing": true,//载入数据的时候是否显示“载入中”
+        "aLengthMenu": [30, 50, 100],
+        "bLengthChange": false, //改变每页显示数据数量
+        "bFilter": false, //过滤功能
+        "iDisplayStart": 0,
+        "iDisplayLength": 30,//首次加载的数据条数
+        "bStorable": true,//排序操作在服务端进行，所以可以关了。
+        "sAjaxSource": _url,
+        "fnServerData": function (sSource, aoData, fnCallback, bStorable) {
+            var paramList = {
+                "sEcho": 0,
+                "iDisplayLength": 0,
+                "iDisplayStart": 0,
+                "sSortDir_0": bStorable.aaSorting[0][1],
+                "iSortCol_0": bStorable.aaSorting[0][0]
+            };
+            if (bStorable.aaSorting[0][0] == 0) {
+                paramList.isDesc = true;
+            }
+            for (var i = 0; i < aoData.length; i++) {
+                if (aoData[i].name == "iDisplayStart") {
+                    paramList.iDisplayStart = aoData[i].value;
+                } else if (aoData[i].name == "iDisplayLength") {
+                    paramList.iDisplayLength = aoData[i].value;
+                } else
+                    if (aoData[i].name == "sEcho") {
+                        paramList.sEcho = aoData[i].value;
+                    }
+            }
+            $.ajax({
+                "dataType": 'json',
+                "type": "POST",
+                "url": sSource,
+                "data": paramList,
+                "success": function (resp) {
+                    fnCallback(resp); //服务器端返回的对象的returnObject部分是要求的格式
+                }
+            });
+        },
+        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+            var html = "<a href=\"javascript:SelectDetail('" + aData.ID + "')\">" + aData.TemplateName + "</a>";
+            $('td:eq(1)', nRow).html(html);
+            var text = aData.SubType == 1 ? "包含" : "不包含";
+            $('td:eq(4)', nRow).html(text);
+            var datasources = aData.DataSources == 1 ? "污物送洗" : (aData.DataSources == 2 ? "净物配送" : "");
+            $('td:eq(2)', nRow).html(datasources);
+            var settle = aData.SettlementMode == 1 ? "按次" : "";
+            $('td:eq(3)', nRow).html(settle);
+        },
+        dom: '<"html5buttons"B>lTfgitp',
+        buttons: [
+            { extend: 'copy' },
+            { extend: 'csv' },
+            { extend: 'excel', title: 'ExampleFile' },
+            { extend: 'pdf', title: 'ExampleFile' },
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+                }
+            }
+        ],
+        "oLanguage": {
+            "sLengthMenu": "每页显示 _MENU_ 条记录",
+            "sZeroRecords": "抱歉， 没有找到",
+            "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+            "sInfoEmpty": "没有数据",
+            "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+            "oPaginate": {
+                "sFirst": "首页",
+                "sPrevious": "前一页",
+                "sNext": "后一页",
+                "sLast": "尾页"
+            },
+            "sZeroRecords": "没有检索到数据",
+            "sProcessing": "<img src='./loading.gif' />"
+        }
+    });
+
+    function AddModule() {
+        $('#addmodal').modal('show');
+    }
+
+    function onSizeChange(obj) {
+        if ($(obj).is(':checked')) {
+            $("#havesize").show();
+            $("#notsize").hide();
+        }
+        else {
+            $("#havesize").hide();
+            $("#notsize").show();
+        }
+    }
+    
+    function CheckName(obj) {
+        var _url = "@Url.Action("CheckName", "WashPrice")";
+        $.ajax({
+            type: "post",
+            data: { name: $("#TemplateName").val() },
+            url: _url,
+            async: false,
+            success: function (result) {
+                if (result) {
+                    $(obj).nextAll().remove();
+                } else {
+                    $(obj).nextAll().remove();
+                    $(obj).after('<p class="help-block"  style="color:red">名称已存在</p>');
+                }
+            }
+        });
+    }
+
+    $("#addWashPriceForm").submit(
+         function () {
+             var subType = $("#cbSubType").is(':checked') == true ? 1 : 2;
+             var textboxlist = new Array();
+             if (subType == 1) {
+                 $("#havesize input[type='text'][data-type='price']").each(function () {
+                     textboxlist.push({ text: $(this).val() });
+                 });
+             }
+             else {
+                 $("#notsize input[type='text'][data-type='price']").each(function () {
+                     textboxlist.push({ text: $(this).val(), });
+                 });
+             }
+
+             var _url = "@Url.Action("AddSubmitValidate", "WashPrice")";
+             $.ajax({
+                 type: "post",
+                 data: { name: $("#TemplateName").val(), Text: textboxlist, TextLength: textboxlist.length },
+                 url: _url,
+                 success: function (result) {
+                     if (result == "true") {
+                         $("#TemplateName").nextAll().remove();
+                         var url = "@Url.Action("AddWashPrice", "WashPrice")";
+                         var priceArray = new Array();
+                         var subType = $("#cbSubType").is(':checked') == true ? 1 : 2;
+                         if (subType == 1) {
+                             $("#havesize input[type='text'][data-type='price']").each(function () {
+                                 priceArray.push({ classId: $(this).attr("data-classId"), sizeId: $(this).attr("data-sizeId"), price: $(this).val() });
+                             });
+                         } else {
+                             $("#notsize input[type='text'][data-type='price']").each(function () {
+                                 priceArray.push({ classId: $(this).attr("data-classId"), price: $(this).val() });
+                             });
+                         }
+                     }
+                     else if (result == "false") {
+                         swal("提示", "已添加此酒店.");
+                         return false;
+                     }
+                     else {
+                         swal("提示", "请在文本框内输入整数或者小数.");
+                         return false;
+                     }
+                     $.ajax({
+                         type: "post",
+                         data: {
+                             TemplateName: $("#TemplateName").val(),
+                             SubType: subType,
+                             DataSources: $("#datasources").val(),
+                             SettlementMode: $("#settlementMode").val(),
+                             PriceArray: priceArray,
+                             DataLength: priceArray.length,
+                         },
+                         url: url,
+                         async: false,
+                         success: function (result) {
+                             if (result.ResultCode == "0") {
+                                 $('#addmodal').modal('hide');//关闭模态框
+                                 document.getElementById("addWashPriceForm").reset();//清空表单
+                                 $(".dataTables-example").dataTable().fnDraw();//点搜索重新绘制table。
+                             } else {
+                                 swal({
+                                     title: "提示",
+                                     text: "添加失败 "
+                                 });
+                             }
+                         }
+                     });
+                 }
+             });
+             return false;
+         });
+    function SelectDetail(id) {
+        var url = "@Url.Action("GetDetail", "WashPrice")";
+        $.ajax({
+            type: "post",
+            data: { ID: id },
+            url: url,
+            async: false,
+            success: function (data) {
+                if (data.Result == null) {
+                    swal("提示", "没有详细信息.");
+                    return false;
+                }
+                var d = data.Result
+                if (data.ResultCode == 0) {
+                    $("#HotelName").html(d.TemplateName);
+                    $("#DataSources").html(d.DataSources == 1 ? "污物送洗" : (d.DataSources == 2 ? "净物配送" : ""));
+                    $("#SettlementMode").html(d.SettlementMode == 1 ? "按次" : "");
+
+                    $("#rent-table-detail tbody").empty();
+                    var detail = data.OtherResult;
+                    $.each(detail, function (i, item) {
+                        var tr = $('<tr></tr>');
+                        var typetd = $('<td></td>');
+                        $(typetd).html(item.ClassName).appendTo(tr);
+                        var sizetd = $('<td></td>');
+                        $(sizetd).html(item.SizeName).appendTo(tr);
+                        var pricetd = $('<td></td>');
+                        $(pricetd).html(item.Price).appendTo(tr);
+                        $(tr).appendTo($("#rent-table-detail tbody"));
+                    })
+                    $('#detailModal').modal('show');
+                }
+            }
+        })
+    }
+    function UpdateModule(id) {
+        var val = $(".dataTables-example input[type='radio']:checked").val();
+        if (val == null) {
+            swal("提示", "请先选择操作对象.");
+            return false;
+        }
+        $("#updatamodal").modal('show')
+        var url = "@Url.Action("UpdataRentPriceForm", "WashPrice")";
+        $.ajax({
+            type: "post",
+            data: { ID: val },
+            url: url,
+            success: function (data) {
+                if (data instanceof Array) {
+                    $("#hotelname").val(data[0].TemplateName);
+                    $("#udatasources").val(data[0].DataSources);
+                    $("#usettlementMode").val(data[0].SettlementMode);
+
+                    var getvalue = function (a, b) {
+                        for (var i = 0; i < data.length; i++) {
+                            if (data[i].ClassId == a && data[i].SizeId == b) {
+                                return data[i].Price;
+                            }
+                        }
+                    };
+
+                    var classid, sizeid;
+                    if (data[0].SubType == 1) {
+                        $("#cbSubType").attr("checked", "checked");
+                        $("#havesize").css("display", "block");
+                        $("#notsize").css("display", "none");
+                        $("#havesize input[type='text'][data-type='price1']").each(function () {
+                            classid = parseInt($(this).attr("data-classId"));
+                            if ($(this).attr("data-sizeId") == "" || $(this).attr("data-sizeId") == undefined || $(this).attr("data-sizeId") == null) {
+                                sizeid = 0;
+                            } else {
+                                sizeid = parseInt($(this).attr("data-sizeId"));
+                            }
+                            $(this).val(getvalue(classid, sizeid));
+                        });
+                    } else {
+                        $("#cbSubType").removeAttr("checked");
+                        $("#havesize").css("display", "none");
+                        $("#notsize").css("display", "block");
+                        $("#notsize input[type='text'][data-type='price1']").each(function () {
+                            classid = parseInt($(this).attr("data-classId"));
+                            if ($(this).attr("data-sizeId") == "" || $(this).attr("data-sizeId") == undefined || $(this).attr("data-sizeId") == null) {
+                                sizeid = 0;
+                            } else {
+                                sizeid = parseInt($(this).attr("data-sizeId"));
+                            }
+                            $(this).val(getvalue(classid, sizeid));
+                        });
+                    }
+
+                    //var length = data.length;
+                    //if (data != null) {
+                    //    $.each(data, function (i) {
+                    //        if (data[i].SizeName != "") {
+                    //            var content = "<div class='form-group'>" +
+                    //                               "<label class='col-lg-3 control-label'> " + data[i].ClassName + "-" + data[i].SizeName + " </label>" +
+                    //                               "<div class='col-lg-3'>" +
+                    //        "<input type='text' data-type='price1' data-sizeId='" + data[i].SizeId + "' data-classId='" + data[i].ClassId + "' class='form-control'  value='" + data[i].Price + "' />" +
+                    //    "</div>" +
+                    //        "</div>";
+                    //            $("#updataContent").append(content);
+                    //        }
+                    //        else {
+                    //            var content = "<div class='form-group'>" +
+                    //                               "<label class='col-lg-3 control-label'> " + data[i].ClassName + " </label>" +
+                    //                               "<div class='col-lg-3'>" +
+                    //        "<input type='text' data-type='price1' data-classId='" + data[i].ClassId + "' class='form-control'  value='" + data[i].Price + "' />" +
+                    //    "</div>" +
+                    //        "</div>";
+                    //            $("#updataContent").append(content);
+                    //        }
+                    //    })
+                    //}
+                }
+                else {
+                    $("#hotelname").val(data.TemplateName);
+                    $("#udatasources").val(data.DataSources);
+                    $("#usettlementMode").val(data.SettlementMode);
+                }
+            }
+        });
+    }
+
+    function DeleteModule() {
+        var val = $(".dataTables-example input[type='radio']:checked").val();
+        if (val == null) {
+            swal("提示", "请先选择操作对象.");
+            return false;
+        }
+        var url = "@Url.Action("DeleteRentPriceForm", "WashPrice")";
+        $.ajax({
+            type: "post",
+            data: { Id: val },
+            url: url,
+            success: function (result) {
+                if (result.Result != "0") {
+                    $(".dataTables-example").dataTable().fnDraw();//点搜索重新绘制table。
+                }
+                else {
+                    swal({
+                        title: "提示",
+                        text: "删除失败 "
+                    });
+                }
+            }
+        })
+    }
+    $("#updataBrandForm").submit(function () {
+        var patrn = /^([\d]+|([\d]+[.]?|[\d]+[.]?[\d]+))$/;
+        var txt, errorcount = 0;
+        var textboxlist = new Array();
+        $("#updataContent input[type='text'][data-type='price1']").each(function () {
+            txt = $(this).val();
+            if (txt != "" && txt != undefined && txt != null) {
+                if (!patrn.exec(txt)) {
+                    $(this).css("border", "1px solid red");
+                    errorcount++;
+                    return false;
+                } else {
+                    $(this).css("border", "none");
+                    textboxlist.push({ text: $(this).val() });
+                }
+            }
+        });
+        if (errorcount > 0) {
+            swal("提示", "请在文本框内输入数字或者小数");
+            return false;
+        }
+
+        var url = "@Url.Action("IsDouble", "WashPrice")";
+        $.ajax({
+            type: "post",
+            data: { Text: textboxlist, TextLength: textboxlist.length },
+            url: url,
+            success: function (data) {
+                if (data != "true") {
+                    swal("提示", "请在文本框内输入数字或者小数")
+                    return false;
+                }
+                else {
+                    var arr = new Array();
+                    var val = $(".dataTables-example input[type='radio']:checked").val();
+                    $("#updataContent input[type='text'][data-type='price1']").each(function () {
+                        arr.push({ classId: $(this).attr("data-classId"), sizeId: $(this).attr("data-sizeId"), price: $(this).val() })
+                    })
+                    var _url = "@Url.Action("UpdataRentPrice", "WashPrice")";
+                    $.ajax({
+                        type: "post",
+                        data: {
+                            ID: val, TemplateName: $("#hotelname").val(), DataSources: $("#udatasources").val(),
+                            SettlementMode: $("#usettlementMode").val(), arr: arr, arrlength: arr.length
+                        },
+                        url: _url,
+                        async: false,
+                        success: function (data) {
+                            if (data.Result != "0" && data.OtherResult != "0") {
+                                $("#updatamodal").modal('hide');
+                                document.getElementById("updataBrandForm").reset();//清空表单
+                                $(".dataTables-example").dataTable().fnDraw();//点搜索重新绘制table。
+                            }
+                            else {
+                                swal({
+                                    title: "提示",
+                                    text: "修改失败"
+                                });
+                            }
+                        }
+                    })
+                }
+            }
+        })
+        return false;
+    })
+</script>

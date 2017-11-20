@@ -1,0 +1,178 @@
+﻿<Window x:Class="ETextsys.Terminal.View.Warehouse.RFIDReplace"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ETextsys.Terminal.View.Warehouse" 
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+        xmlns:lw="clr-namespace:ETextsys.Terminal.View.Choose"
+        mc:Ignorable="d" Style="{DynamicResource FuncWindow}" WindowStartupLocation="CenterScreen"
+        Title="RFIDReplace" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="126"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="92"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="{DynamicResource Headerbg}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Border Name="ReaderBorder" HorizontalAlignment="Left" Margin="25,0,0,0" Width="110" Height="110" CornerRadius="115" Tag="{Binding Model.ReaderState}">
+                <Border.Background>
+                    <VisualBrush>
+                        <VisualBrush.Visual>
+                            <MediaElement Name="ReaderME" Cursor="Hand" UnloadedBehavior="Manual" Source="{Binding Model.ReaderLight}" >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MediaEnded">
+                                        <i:InvokeCommandAction Command="{Binding MediaEndedCommand}" CommandParameter="{Binding ElementName=ReaderME}"></i:InvokeCommandAction>
+                                    </i:EventTrigger>
+
+                                </i:Interaction.Triggers>
+                            </MediaElement>
+                        </VisualBrush.Visual>
+                    </VisualBrush>
+                </Border.Background>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="PreviewMouseDown">
+                        <i:InvokeCommandAction Command="{Binding ReaderStateChanged}" CommandParameter="{Binding ElementName=ReaderBorder}"></i:InvokeCommandAction>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Border>
+            <TextBlock Grid.Column="1" Style="{DynamicResource FuncTitle}" Margin="0,0,0,25" Text="芯片更换"></TextBlock>
+            <Button Grid.Column="2" Style="{DynamicResource BackBtn}" Command="{Binding CloseModal}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,15,15,0"></Button>
+        </Grid>
+        <Grid Grid.Row="1" Margin="20,0,20,5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"></RowDefinition>
+                <RowDefinition Height="80"></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="250"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="110"></ColumnDefinition>
+                <ColumnDefinition Width="600"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0" Style="{DynamicResource FuncAttrTitle}" Text="旧芯片码："></TextBlock>
+            <TextBlock Grid.Column="0" Grid.Row="1" Style="{DynamicResource FuncAttrTitle}" Text="新芯片码："></TextBlock>
+            <Border Grid.Column="1" Grid.Row="0" Margin="5,0,0,0" Width="509" Height="38" Style="{StaticResource borderstyle1}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBox  Style="{StaticResource txtstyle1}" Width="439" Height="38" Text="{Binding Model.OldRFIDTagNo,UpdateSourceTrigger=PropertyChanged}" InputMethod.IsInputMethodEnabled="False" ></TextBox>
+                    <Button Width="70" Height="38" IsDefault="True" Command="{Binding QRCodeScanCommand}">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border BorderThickness="1,0,0,0" BorderBrush="#288DFF">
+                                    <Image Source="{DynamicResource ReplaceSreach}" Width="30" Height="30"></Image>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </StackPanel>
+            </Border>
+            <Image Visibility="{Binding Model.OldIconVIsibled}" Source="{DynamicResource SRightIcon}" Width="46" Height="46" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,30,0"></Image>
+            <Border Visibility="{Binding Model.OldReaderIconVisibled}" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,30,0" Width="46" Height="46" CornerRadius="0">
+                <Border.Background>
+                    <VisualBrush>
+                        <VisualBrush.Visual>
+                            <MediaElement Name="OldReader" Cursor="Hand" UnloadedBehavior="Manual" Source="../../Skins/Default/Images/jiazai.gif" >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MediaEnded">
+                                        <i:InvokeCommandAction Command="{Binding MediaEndedCommand}" CommandParameter="{Binding ElementName=OldReader}"></i:InvokeCommandAction>
+                                    </i:EventTrigger>
+
+                                </i:Interaction.Triggers>
+                            </MediaElement>
+                        </VisualBrush.Visual>
+                    </VisualBrush>
+                </Border.Background> 
+            </Border>
+            <Border Grid.Column="1" Grid.Row="1" Margin="5,0,0,0" Width="509" Height="38"  Style="{StaticResource borderstyle1}">
+                <TextBox  Style="{StaticResource txtstyle1}" Width="509" Height="38"  Text="{Binding Model.NewRFIDTagNo}" InputMethod.IsInputMethodEnabled="False" ></TextBox>
+            </Border>
+            <Image Visibility="{Binding Model.NewIconVIsibled}" Source="{DynamicResource SRightIcon}" Width="46" Height="46" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,30,0"></Image>
+            <Border Visibility="{Binding Model.NewReaderIconVisibled}" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" Margin="0,0,30,0" Width="46" Height="46" CornerRadius="0">
+                <Border.Background>
+                    <VisualBrush>
+                        <VisualBrush.Visual>
+                            <MediaElement Name="NewReader" Cursor="Hand" UnloadedBehavior="Manual" Source="../../Skins/Default/Images/jiazai.gif" >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MediaEnded">
+                                        <i:InvokeCommandAction Command="{Binding MediaEndedCommand}" CommandParameter="{Binding ElementName=NewReader}"></i:InvokeCommandAction>
+                                    </i:EventTrigger>
+
+                                </i:Interaction.Triggers>
+                            </MediaElement>
+                        </VisualBrush.Visual>
+                    </VisualBrush>
+                </Border.Background>
+            </Border>
+            <Button Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Command="{Binding ReplaceCommand}" IsEnabled="{Binding Model.ReplaceBtnEnable}" Style="{DynamicResource ReplaceBtn}" Content="更换"></Button>
+
+            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Model.Prompt}" VerticalAlignment="Top" FontSize="20" FontFamily="微软雅黑" Foreground="#FD0606"></TextBlock>
+            
+            <StackPanel Grid.Row="3" Grid.ColumnSpan="3" Grid.Column="0" Orientation="Horizontal">
+                <StackPanel Background="{DynamicResource ReplaceBG}" Width="462" Height="244">
+                    <TextBlock FontSize="20" FontFamily="Microsoft YaHei" Foreground="#288DFF" Text="布草信息" Margin="20,10,0,5"></TextBlock>
+                    <Line X1="0" X2="420" Height="1" Stroke="#CCC" StrokeThickness="1" Margin="20,0,0,0"></Line>
+                    <Grid Margin="20,10,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="35"></RowDefinition>
+                            <RowDefinition Height="35"></RowDefinition>
+                            <RowDefinition Height="35"></RowDefinition>
+                            <RowDefinition Height="35"></RowDefinition>
+                            <RowDefinition Height="35"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Style="{DynamicResource FuncAttrTitle}" FontSize="18" Text="名称："></TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Style="{DynamicResource FuncAttrTitle}" FontSize="18" Text="尺寸："></TextBlock>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Style="{DynamicResource FuncAttrTitle}" FontSize="18" Text="流通："></TextBlock>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Style="{DynamicResource FuncAttrTitle}" FontSize="18" Text="洗涤次数："></TextBlock>
+                        <TextBlock Grid.Row="4" Grid.Column="0" Style="{DynamicResource FuncAttrTitle}" FontSize="18" Text="预计寿命："></TextBlock>
+
+                        <TextBlock Grid.Row="0" Grid.Column="1" FontFamily="Microsoft YaHei" FontSize="18" VerticalAlignment="Center" Text="{Binding Model.ClassName}"></TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="1" FontFamily="Microsoft YaHei" FontSize="18" VerticalAlignment="Center" Text="{Binding Model.SizeName}"></TextBlock>
+                        <TextBlock Grid.Row="2" Grid.Column="1" FontFamily="Microsoft YaHei" FontSize="18" VerticalAlignment="Center" Text="{Binding Model.BrandName}"></TextBlock>
+                        <TextBlock Grid.Row="3" Grid.Column="1" FontFamily="Microsoft YaHei" FontSize="18" VerticalAlignment="Center" Text="{Binding Model.WashingTime}"></TextBlock>
+                        <TextBlock Grid.Row="4" Grid.Column="1" FontFamily="Microsoft YaHei" FontSize="18" VerticalAlignment="Center" Text="{Binding Model.Left}"></TextBlock>
+                    </Grid>
+                </StackPanel>
+                <StackPanel Background="{DynamicResource ReplaceBG}" Width="462" Height="244" Margin="60,0,0,0">
+                    <TextBlock FontSize="20" FontFamily="Microsoft YaHei" Foreground="#288DFF" Text="旧芯片信息" Margin="20,10,0,5"></TextBlock>
+                    <Line X1="0" X2="420" Height="1" Stroke="#CCC" StrokeThickness="1" Margin="20,0,0,0"></Line>
+                    <Grid Margin="20,10,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="35"></RowDefinition>
+                            <RowDefinition Height="35"></RowDefinition>
+                            <RowDefinition Height="35"></RowDefinition>
+                            <RowDefinition Height="35"></RowDefinition>
+                            <RowDefinition Height="35"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Style="{DynamicResource FuncAttrTitle}" FontSize="18" Text="投入时间："></TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Style="{DynamicResource FuncAttrTitle}" FontSize="18" Text="洗涤次数："></TextBlock>
+
+                        <TextBlock Grid.Row="0" Grid.Column="1" FontFamily="Microsoft YaHei" FontSize="18" VerticalAlignment="Center" Text="{Binding Model.CostTime}"></TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="1" FontFamily="Microsoft YaHei" FontSize="18" VerticalAlignment="Center" Text="{Binding Model.RFIDWashingTime}"></TextBlock>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="2" Grid.ColumnSpan="3" VerticalAlignment="Bottom" Background="{DynamicResource ToolsBottom}" Height="92">
+
+            <Grid Width="500" HorizontalAlignment="Right" Margin="0,0,20,0">
+                <Button Style="{DynamicResource ReScanBtn}" IsEnabled="{Binding Model.CancelEnabled}" Command="{Binding CancelCommand}" HorizontalAlignment="Right" Margin="0,0,0,0"></Button>
+           
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
+

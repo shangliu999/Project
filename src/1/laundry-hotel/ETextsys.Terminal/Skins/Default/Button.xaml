@@ -1,0 +1,990 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:cvn="clr-namespace:ETextsys.Terminal.Utilities">
+
+    <BitmapImage x:Key="BackIcon" UriSource="Images\icon_btn_back.png"></BitmapImage>
+    <ImageBrush x:Key="HBackbg" ImageSource="Images\btn--header-back-h.png"></ImageBrush>
+    <ImageBrush x:Key="DBackbg" ImageSource="Images\btn--header-back-d.png"></ImageBrush>
+
+    <BitmapImage x:Key="SubmitIcon" UriSource="Images\icon_btn_queding.png"></BitmapImage>
+    <BitmapImage x:Key="SubmitDisableIcon" UriSource="Images\icon_btn_queding2.png"></BitmapImage>
+
+    <BitmapImage x:Key="PrintIcon" UriSource="Images\icon_btn_dayin-2.png"></BitmapImage>
+    <BitmapImage x:Key="PrintDisableIcon" UriSource="Images\icon_btn_dayin.png"></BitmapImage>
+
+    <BitmapImage x:Key="UndoIcon" UriSource="Images\icon_btn_chexiao2.png"></BitmapImage>
+    <BitmapImage x:Key="UndoDisableIcon" UriSource="Images\icon_btn_chexiao.png"></BitmapImage>
+
+    <BitmapImage x:Key="RevokeIcon" UriSource="Images\icon_btn_chexiao2.png"></BitmapImage>
+    <BitmapImage x:Key="RevokeDisableIcon" UriSource="Images\icon_btn_chexiao.png"></BitmapImage>
+
+    <ImageBrush x:Key="DefalutBtnbg" ImageSource="Images\btn-denglu-d.png"></ImageBrush>
+    <ImageBrush x:Key="DefalutBtnbg_Click" ImageSource="Images\btn-denglu-h.png"></ImageBrush>
+
+    <ImageBrush x:Key="DisableBtnbg" ImageSource="Images\btn-dengji-no-d.png"></ImageBrush>
+    <ImageBrush x:Key="DisableBtnbg_Click" ImageSource="Images\btn-dengji-no-h.png"></ImageBrush>
+
+    <ImageBrush x:Key="WarnBtnbg" ImageSource="Images\btn-dengji-zhuyi-d.png"></ImageBrush>
+    <ImageBrush x:Key="WarnBtnbg_Click" ImageSource="Images\btn-dengji-zhuyi-h.png"></ImageBrush>
+
+    <ImageBrush x:Key="CiyaoBtnbg" ImageSource="Images\btn-dengji-ciyao-d.png"></ImageBrush>
+    <ImageBrush x:Key="CiyaoBtnbg_Click" ImageSource="Images\btn-dengji-ciyao-h.png"></ImageBrush>
+
+    <ImageBrush x:Key="iconchoice" ImageSource="Images\icon_login_choice.png"></ImageBrush>
+    <ImageBrush x:Key="iconselected" ImageSource="Images\icon_login_selected.png"></ImageBrush>
+
+    <ImageBrush x:Key="btndenglu" ImageSource="Images\btn-denglu-d.png"></ImageBrush>
+    <ImageBrush x:Key="btndenglu_Click" ImageSource="Images/btn-denglu-h.png"></ImageBrush>
+
+    <ImageBrush x:Key="btntuichu" ImageSource="Images\btn-tuichu-d.png"></ImageBrush>
+    <ImageBrush x:Key="btntuichu_Click" ImageSource="Images\btn-tuichu-h.png"></ImageBrush>
+
+    <BitmapImage x:Key="wuxiao" UriSource="Images\wuxiao.png"></BitmapImage>
+
+    <ImageBrush x:Key="QRCodePrintBg" ImageSource="Images\btn-suyuanmadayini-d.png"></ImageBrush>
+    <ImageBrush x:Key="QRCodePrintBg_Click" ImageSource="Images\btn-suyuanmadayini-h.png"></ImageBrush>
+    <ImageBrush x:Key="PrintBgDisable" ImageSource="Images\btn-suyuanmadayini-n.png"></ImageBrush>
+    <BitmapImage x:Key="QRCodeIcon" UriSource="Images\icon_suyuanmadayin.png"></BitmapImage>
+    <BitmapImage x:Key="ReplaceIcon" UriSource="Images\icon_home_xinpingenghuan1.png"></BitmapImage>
+
+    <!--返回按钮-->
+    <Style TargetType="Button" x:Key="BackBtn">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border BorderThickness="1" CornerRadius="5">
+                        <StackPanel x:Name="sp" Orientation="Horizontal" Width="126" Height="56" VerticalAlignment="Center" Background="{DynamicResource DBackbg}">
+                            <Image Width="36" Height="30" Source="{StaticResource BackIcon}" Margin="15,0,0,0"></Image>
+                            <TextBlock FontSize="24" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="10,0,0,10" Text="返回" Foreground="#288dff" FontFamily="Microsoft YaHei"></TextBlock>
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="{DynamicResource HBackbg}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--页面选择条件按钮-->
+    <Style TargetType="Button" x:Key="ChooseBtn">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Foreground" Value="#333333"></Setter>
+        <Setter Property="FontSize" Value="20"></Setter>
+        <Setter Property="BorderThickness" Value="1"></Setter>
+        <Setter Property="Background" Value="#fff"></Setter>
+        <Setter Property="BorderBrush" Value="#CCCCCC"></Setter>
+        <Setter Property="Height" Value="38"></Setter>
+        <Setter Property="Width" Value="220"></Setter>
+        <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        <Setter Property="Margin" Value="5,0,0,0"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="#fff" BorderBrush="{TemplateBinding Control.BorderBrush}" CornerRadius="2" BorderThickness="1">
+                        <ContentPresenter Margin="10,0,0,0" Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--确定按钮-->
+    <Style TargetType="Button" x:Key="SubmitBtn">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Width" Value="114"></Setter>
+        <Setter Property="Height" Value="54"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <StackPanel x:Name="sp" Orientation="Horizontal" Width="114" Height="54" VerticalAlignment="Center" Background="{DynamicResource DefalutBtnbg}">
+                        <Image x:Name="img" Width="30" Height="30" Source="{StaticResource SubmitIcon}" Margin="12,0,0,0"></Image>
+                        <TextBlock FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="8,0,0,0" Text="确定" Foreground="#FFF" FontFamily="Microsoft YaHei"></TextBlock>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="{DynamicResource DefalutBtnbg_Click}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="{DynamicResource DisableBtnbg}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--重新扫描按钮-->
+    <Style TargetType="Button" x:Key="ReScanBtn">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Width" Value="114"></Setter>
+        <Setter Property="Height" Value="54"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <StackPanel x:Name="sp" Orientation="Horizontal" Width="114" Height="54" VerticalAlignment="Center" Background="{DynamicResource DefalutBtnbg}">
+                        <TextBlock FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0,0,0" Text="重新扫描" Foreground="#FFF" FontFamily="Microsoft YaHei"></TextBlock>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="{DynamicResource DefalutBtnbg_Click}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="{DynamicResource DisableBtnbg}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Button" x:Key="DetailsBtn">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Width" Value="114"></Setter>
+        <Setter Property="Height" Value="54"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <StackPanel x:Name="sp" Orientation="Horizontal" Width="114" Height="54" VerticalAlignment="Center" Background="{DynamicResource DefalutBtnbg}">
+                        <TextBlock FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0,0,0" Text="{TemplateBinding Content}" Foreground="#FFF" FontFamily="Microsoft YaHei"></TextBlock>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="{DynamicResource DefalutBtnbg_Click}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="{DynamicResource DisableBtnbg}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--启动暂停扫描-->
+    <Style TargetType="Button" x:Key="StartBtn">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Width" Value="114"></Setter>
+        <Setter Property="Height" Value="54"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <StackPanel x:Name="sp" Orientation="Horizontal" Width="114" Height="54" VerticalAlignment="Center" HorizontalAlignment="Center" Background="{DynamicResource DefalutBtnbg}">
+                        <TextBlock Name="txtInfo" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="35,0,0,0" Text="{TemplateBinding Content}" Foreground="#FFF" FontFamily="Microsoft YaHei"></TextBlock>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="{DynamicResource DefalutBtnbg_Click}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="{DynamicResource DisableBtnbg}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                        <DataTrigger Binding="{Binding Model.ReaderState}" Value="1">
+                            <Setter TargetName="txtInfo" Property="Text" Value="暂停"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Model.ReaderState}" Value="0">
+                            <Setter TargetName="txtInfo" Property="Text" Value="启动"></Setter>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--导出按钮-->
+    <Style TargetType="Button" x:Key="ExportBtn">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Width" Value="114"></Setter>
+        <Setter Property="Height" Value="54"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <StackPanel x:Name="sp" Orientation="Vertical" Width="114" Height="54" VerticalAlignment="Center" Background="{DynamicResource DefalutBtnbg}">
+                        <TextBlock FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,10,0,0" Text="导出" Foreground="#FFF" FontFamily="Microsoft YaHei"></TextBlock>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="{DynamicResource DefalutBtnbg_Click}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="{DynamicResource DisableBtnbg}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--二维码打印按钮-->
+    <Style TargetType="Button" x:Key="QRCodePrintBtn">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Width" Value="224"></Setter>
+        <Setter Property="Height" Value="94"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <StackPanel x:Name="sp" Orientation="Horizontal" Width="224" Height="94" VerticalAlignment="Center" Background="{DynamicResource QRCodePrintBg}">
+                        <Image Name="icon" Width="54" Height="54" Margin="40,0,0,0" Source="{DynamicResource QRCodeIcon}"></Image>
+                        <TextBlock Name="lbl" FontSize="32" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20,0,0,0" Text="{TemplateBinding Content}" Foreground="#FFF" FontFamily="Microsoft YaHei"></TextBlock>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="{DynamicResource QRCodePrintBg_Click}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--打印按钮-->
+    <Style TargetType="Button" x:Key="PrintBtn">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Width" Value="114"></Setter>
+        <Setter Property="Height" Value="54"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <StackPanel x:Name="sp" Orientation="Horizontal" Width="114" Height="54" VerticalAlignment="Center" Background="{DynamicResource CiyaoBtnbg}">
+                        <Image Name="icon" Width="30" Height="30" Margin="10,0,0,0" Source="{DynamicResource PrintIcon}"></Image>
+                        <TextBlock Name="lbl" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0,0,0" Text="{TemplateBinding Content}" Foreground="#0069f9" FontFamily="Microsoft YaHei"></TextBlock>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="{DynamicResource CiyaoBtnbg_Click}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="{DynamicResource DisableBtnbg}"></Setter>
+                                <Setter TargetName="icon" Property="Source" Value="{DynamicResource PrintDisableIcon}"></Setter>
+                                <Setter TargetName="lbl" Property="Foreground" Value="#FFF"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--更换按钮-->
+    <Style TargetType="Button" x:Key="ReplaceBtn">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Width" Value="224"></Setter>
+        <Setter Property="Height" Value="94"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <StackPanel x:Name="sp" Orientation="Horizontal" Width="224" Height="94" VerticalAlignment="Center" Background="{DynamicResource QRCodePrintBg}">
+                        <Image Name="icon" Width="54" Height="54" Margin="40,0,0,0" Source="{DynamicResource ReplaceIcon}"></Image>
+                        <TextBlock Name="lbl" FontSize="32" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20,0,0,0" Text="{TemplateBinding Content}" Foreground="#FFF" FontFamily="Microsoft YaHei"></TextBlock>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="{DynamicResource QRCodePrintBg_Click}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="{DynamicResource PrintBgDisable}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <!--撤销按钮-->
+    <Style TargetType="Button" x:Key="UndoBtn">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Width" Value="114"></Setter>
+        <Setter Property="Height" Value="54"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <StackPanel x:Name="sp" Orientation="Horizontal" Width="114" Height="54" VerticalAlignment="Center" Background="{DynamicResource CiyaoBtnbg}">
+                        <Image Name="icon" Width="30" Height="30" Margin="10,0,0,0" Source="{DynamicResource UndoIcon}"></Image>
+                        <TextBlock Name="lbl" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0,0,0" Text="{TemplateBinding Content}" Foreground="#0069f9" FontFamily="Microsoft YaHei"></TextBlock>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="{DynamicResource CiyaoBtnbg_Click}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="{DynamicResource DisableBtnbg}"></Setter>
+                                <Setter TargetName="icon" Property="Source" Value="{DynamicResource UndoDisableIcon}"></Setter>
+                                <Setter TargetName="lbl" Property="Foreground" Value="#FFF"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--酒店模态窗体选择按钮-->
+    <Style TargetType="Button" x:Key="HotelModalChooseBtn">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Width" Value="220"></Setter>
+        <Setter Property="Height" Value="80"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="sp"  Width="220" Height="80" VerticalAlignment="Center" Background="#FFF" CornerRadius="6" BorderBrush="#99CCFF" BorderThickness="1">
+                        <TextBlock FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0" Text="{TemplateBinding Content}" Foreground="#333333" FontFamily="Microsoft YaHei"></TextBlock>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="#A3CEFF"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--出库任务模态窗体选择按钮-->
+    <Style TargetType="Button" x:Key="DeliveryModalChooseBtn">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Width" Value="220"></Setter>
+        <Setter Property="Height" Value="100"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="sp"  Width="220" Height="100" VerticalAlignment="Center" Background="#FFF" CornerRadius="6" BorderBrush="#99CCFF" BorderThickness="1">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0" Text="{TemplateBinding Content}" Foreground="#333333" FontFamily="Microsoft YaHei"></TextBlock>
+                            <TextBlock FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0" Text="{Binding No}" Foreground="#333333" FontFamily="Microsoft YaHei"></TextBlock>
+                            <TextBlock FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0" Text="{Binding TaskCount}" Foreground="#333333" FontFamily="Microsoft YaHei"></TextBlock>
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="#A3CEFF"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <cvn:BasisSendConverter x:Key="BasisSendConverter"/>
+    <Style TargetType="Button" x:Key="TaskModalChooseBtn">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Width" Value="220"></Setter>
+        <Setter Property="Height" Value="80"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="sp" Width="220" Height="80" VerticalAlignment="Center" Background="#FFF" CornerRadius="6" BorderBrush="#99CCFF" BorderThickness="1">
+                        <StackPanel Orientation="Vertical" Margin="5 0 0 0">
+                            <StackPanel>
+                                <TextBlock FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,3,0,0" Foreground="#333333" FontFamily="Microsoft YaHei" Text="{Binding HotelName}"></TextBlock>
+                                <TextBlock FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,3,0,0" Foreground="#333333" FontFamily="Microsoft YaHei" Text="{Binding RegionName}" ></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="24" VerticalAlignment="Bottom" HorizontalAlignment="Center" Foreground="#333333" FontFamily="Arial" Text="{Binding ChooseName}"></TextBlock>
+                                <TextBlock FontSize="24" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="10,0,0,0" Foreground="#333333" FontFamily="Arial" Text="("></TextBlock>
+                                <TextBlock FontSize="24" VerticalAlignment="Bottom" HorizontalAlignment="Center" Foreground="#333333" FontFamily="Arial" Text="{Binding TaskCount}"></TextBlock>
+                                <TextBlock FontSize="24" VerticalAlignment="Bottom" HorizontalAlignment="Center" Foreground="#333333" FontFamily="Arial" Text=")"></TextBlock>
+                            </StackPanel>
+                            <TextBlock Text="{Binding BasisOnSend,Converter={StaticResource BasisSendConverter}}" FontSize="10" Margin="185,-70,0,0">
+                                <TextBlock.RenderTransform>
+                                    <RotateTransform Angle="45"></RotateTransform>
+                                </TextBlock.RenderTransform>
+                            </TextBlock>                            
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="#A3CEFF"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                        <DataTrigger Binding="{Binding IsChoose}" Value="1">
+                            <Setter TargetName="sp" Property="BorderBrush" Value="Red"></Setter>
+                            <Setter TargetName="sp" Property="BorderThickness" Value="2"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsChoose}" Value="0">
+                            <Setter TargetName="sp" Property="BorderBrush" Value="#99CCFF"></Setter>
+                            <Setter TargetName="sp" Property="BorderThickness" Value="1"></Setter>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--下方模态窗体选择按钮-->
+    <Style TargetType="Button" x:Key="ModalChooseBtn">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Width" Value="250"></Setter>
+        <Setter Property="Height" Value="46"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="sp"  Width="250" Height="46" VerticalAlignment="Center" Background="#FFF" CornerRadius="2" BorderBrush="#CCC" BorderThickness="1">
+                        <TextBlock FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{TemplateBinding Content}" Foreground="#333333" FontFamily="Microsoft YaHei"></TextBlock>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="#A3CEFF"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--下方模态窗体关闭按钮-->
+    <BitmapImage x:Key="ModalCloseIcon" UriSource="Images\icon_tanchu_quxiao.png"></BitmapImage>
+    <Style TargetType="Button" x:Key="ModalCloseBtn">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Width" Value="56"></Setter>
+        <Setter Property="Height" Value="56"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Image Source="{DynamicResource ModalCloseIcon}"></Image>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--登录界面开始-->
+    <!--登录界面复选框-->
+    <Style TargetType="Button" x:Key="iconchoicebut">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <StackPanel x:Name="sp" Orientation="Horizontal" Width="40" Height="40" VerticalAlignment="Center" Background="{StaticResource iconselected}">
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="Button" x:Key="iconselectedbut">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <StackPanel x:Name="is" Width="40" Orientation="Horizontal" Height="40" Background="{StaticResource iconchoice}">
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--登录界面登录按钮-->
+    <Style TargetType="Button" x:Key="denglubut">
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <StackPanel x:Name="bd" Width="100" Height="50" Background="{StaticResource btndenglu}" >
+                        <TextBlock Text="登 录" Style="{StaticResource denglu}" HorizontalAlignment="Center" Margin="0,8,0,0" ></TextBlock>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="{StaticResource btndenglu_Click}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--登录界面退出按钮-->
+    <Style TargetType="Button" x:Key="quxiaobut">
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <StackPanel x:Name="bt" Width="100" Height="50" Background="{StaticResource btntuichu}" >
+                        <TextBlock Text="退 出" Style="{StaticResource tuichu}" HorizontalAlignment="Center" Margin="0,8,0,0" ></TextBlock>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="bt" Property="Background" Value="{StaticResource btntuichu_Click}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--登录界面结束-->
+
+    <ImageBrush x:Key="select" ImageSource="Images/btn-chauxn-d.png"></ImageBrush>
+    <ImageBrush x:Key="select_Click" ImageSource="Images/btn-chauxn-h.png"></ImageBrush>
+
+    <!--查询按钮-->
+    <Style TargetType="Button" x:Key="selectbut">
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Foreground" Value="#ffffff"></Setter>
+        <Setter Property="FontSize" Value="20"></Setter>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <StackPanel x:Name="sb" Width="142" Height="98" Background="{StaticResource select}">
+                        <TextBlock Style="{StaticResource selecttxt}" Text="查询"></TextBlock>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.Setters>
+                                <Setter TargetName="sb" Property="Background" Value="{StaticResource select_Click}"/>
+                            </Trigger.Setters>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Button" x:Key="select2but">
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Foreground" Value="#ffffff"></Setter>
+        <Setter Property="FontSize" Value="20"></Setter>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <StackPanel x:Name="sb" Width="142" Height="98" Background="{StaticResource select}">
+                        <TextBlock Text="查询" Margin="30,12,0,0"></TextBlock>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.Setters>
+                                <Setter TargetName="sb" Property="Background" Value="{StaticResource select_Click}"/>
+                            </Trigger.Setters>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <BitmapImage x:Key="icondayin" UriSource="Images\icon_btn_dayin-2.png"></BitmapImage>
+    <!--打印按钮-->
+    <Style TargetType="Button" x:Key="dayinbtn">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <StackPanel x:Name="sp" Background="{DynamicResource CiyaoBtnbg}">
+                        <Canvas>
+                            <Image Name="icon" Source="{StaticResource icondayin}" Width="35" Height="35" HorizontalAlignment="Left" Margin="10,30,0,0"></Image>
+                            <TextBlock x:Name="lbl"  FontSize="30" FontFamily="微软雅黑"  Margin="50,25,0,0" Foreground="#0069f9" Text="打印"  HorizontalAlignment="Right"></TextBlock>
+                        </Canvas>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="{DynamicResource CiyaoBtnbg_Click}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="{DynamicResource DisableBtnbg}"></Setter>
+                                <Setter TargetName="icon" Property="Source" Value="{DynamicResource PrintDisableIcon}"></Setter>
+                                <Setter TargetName="lbl" Property="Foreground" Value="#FFF"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <BitmapImage x:Key="MainQuery" UriSource="Images/bg_classify_all.png"/>
+
+    <ImageBrush x:Key="ExecutedBG" ImageSource="Images/btn-yipeisong-d.png"></ImageBrush>
+    <ImageBrush x:Key="ExecutedClickBG" ImageSource="Images/btn-yipeisong-h.png"></ImageBrush>
+    <!--已送洗-->
+    <Style TargetType="Button" x:Key="BtnReceived">
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Foreground" Value="#333333"></Setter>
+        <Setter Property="FontSize" Value="20"></Setter>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <StackPanel Name="sp" Background="{DynamicResource ExecutedBG}" Width="142" Height="98" Orientation="Vertical">
+                        <TextBlock FontFamily="Microsoft YaHei" FontSize="20" Foreground="#333333" Text="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" Margin="0,15,0,0"></TextBlock>
+                        <TextBlock FontFamily="Microsoft YaHei" FontSize="25" Foreground="#333333" Text="{Binding Model.ReceivedTotal }" HorizontalAlignment="Center" Margin="0,10,0,0"></TextBlock>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="{DynamicResource ExecutedClickBG}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--架子车-->
+    <Style TargetType="Button" x:Key="BtnTruck">
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Foreground" Value="#333333"></Setter>
+        <Setter Property="FontSize" Value="20"></Setter>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <StackPanel Name="sp" Background="{DynamicResource ExecutedBG}" Width="142" Height="98" Orientation="Vertical">
+                        <TextBlock FontFamily="Microsoft YaHei" FontSize="20" Foreground="#333333" Text="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" Margin="0,15,0,0"></TextBlock>
+                        <TextBlock FontFamily="Microsoft YaHei" FontSize="25" Foreground="#333333" Text="{Binding Model.TruckTotal }" HorizontalAlignment="Center" Margin="0,10,0,0"></TextBlock>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="{DynamicResource ExecutedClickBG}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--已入库-->
+    <Style TargetType="Button" x:Key="BtnStoraged">
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Foreground" Value="#333333"></Setter>
+        <Setter Property="FontSize" Value="20"></Setter>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <StackPanel Name="sp" Background="{DynamicResource ExecutedBG}" Width="142" Height="98" Orientation="Vertical">
+                        <TextBlock FontFamily="Microsoft YaHei" FontSize="20" Foreground="#333333" Text="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" Margin="0,15,0,0"></TextBlock>
+                        <TextBlock FontFamily="Microsoft YaHei" FontSize="25" Foreground="#333333" Text="{Binding Model.StoragedTotal }" HorizontalAlignment="Center" Margin="0,10,0,0"></TextBlock>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="{DynamicResource ExecutedClickBG}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--已出库-->
+    <Style TargetType="Button" x:Key="BtnDeliveryed">
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Foreground" Value="#333333"></Setter>
+        <Setter Property="FontSize" Value="20"></Setter>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <StackPanel Name="sp" Background="{DynamicResource ExecutedBG}" Width="142" Height="98" Orientation="Vertical">
+                        <TextBlock FontFamily="Microsoft YaHei" FontSize="20" Foreground="#333333" Text="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" Margin="0,15,0,0"></TextBlock>
+                        <TextBlock FontFamily="Microsoft YaHei" FontSize="25" Foreground="#333333" Text="{Binding Model.DeliveryedTotal }" HorizontalAlignment="Center" Margin="0,10,0,0"></TextBlock>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.Setters>
+                                <Setter TargetName="sp" Property="Background" Value="{DynamicResource ExecutedClickBG}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <BitmapImage x:Key="LeftIcon" UriSource="Images/btn-left-h.png"></BitmapImage>
+    <BitmapImage x:Key="LeftIconDisable" UriSource="Images/btn-left-d.png"></BitmapImage>
+    <BitmapImage x:Key="RightIcon" UriSource="Images/btn-right-h.png"></BitmapImage>
+    <BitmapImage x:Key="RightIconDisable" UriSource="Images/btn-right-d.png"></BitmapImage>
+
+    <!--分页左按钮-->
+    <Style TargetType="Button" x:Key="LeftBtn">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Width" Value="64"></Setter>
+        <Setter Property="Height" Value="64"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Image Source="{DynamicResource LeftIcon}" Name="icon"></Image>
+                    <ControlTemplate.Triggers>
+
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Trigger.Setters>
+                                <Setter TargetName="icon" Property="Source" Value="{DynamicResource LeftIconDisable}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--分页右按钮-->
+    <Style TargetType="Button" x:Key="RightBtn">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Width" Value="64"></Setter>
+        <Setter Property="Height" Value="64"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Image Source="{DynamicResource RightIcon}" Name="icon"></Image>
+                    <ControlTemplate.Triggers>
+
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Trigger.Setters>
+                                <Setter TargetName="icon" Property="Source" Value="{DynamicResource RightIconDisable}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <BitmapImage x:Key="BusinessSettingIcon" UriSource="Images/bg_set_yewu.png"></BitmapImage>
+    <Style TargetType="Button" x:Key="BusinessSettingBtn">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Width" Value="130"></Setter>
+        <Setter Property="Height" Value="110"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="sp"  Width="130" Height="110" VerticalAlignment="Center" Background="#FFF" CornerRadius="0,55,55,0" BorderBrush="#CCC" BorderThickness="1">
+                        <StackPanel>
+                            <Image Source="{DynamicResource BusinessSettingIcon}" Width="60" Height="60" Margin="0,10,0,0"></Image>
+                            <TextBlock FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0" Text="业务" Foreground="#333333" FontFamily="Microsoft YaHei"></TextBlock>
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Model.BusinessBtnState}" Value="1">
+                            <Setter TargetName="sp" Property="BorderBrush" Value="Red"></Setter>
+                            <Setter TargetName="sp" Property="BorderThickness" Value="2"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Model.BusinessBtnState}" Value="0">
+                            <Setter TargetName="sp" Property="BorderBrush" Value="#CCC"></Setter>
+                            <Setter TargetName="sp" Property="BorderThickness" Value="1"></Setter>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <BitmapImage x:Key="bgSettingIcon" UriSource="Images/bg_set_beijing.png"></BitmapImage>
+    <Style TargetType="Button" x:Key="BGSettingBtn">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Width" Value="130"></Setter>
+        <Setter Property="Height" Value="110"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="sp"  Width="130" Height="110" VerticalAlignment="Center" Background="#FFF" CornerRadius="0,55,55,0" BorderBrush="#CCC" BorderThickness="1">
+                        <StackPanel>
+                            <Image Source="{DynamicResource bgSettingIcon}" Width="60" Height="60" Margin="0,10,0,0"></Image>
+                            <TextBlock FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0" Text="背景" Foreground="#333333" FontFamily="Microsoft YaHei"></TextBlock>
+                        </StackPanel>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Model.BgBtnState}" Value="1">
+                            <Setter TargetName="sp" Property="BorderBrush" Value="Red"></Setter>
+                            <Setter TargetName="sp" Property="BorderThickness" Value="2"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Model.BgBtnState}" Value="0">
+                            <Setter TargetName="sp" Property="BorderBrush" Value="#CCC"></Setter>
+                            <Setter TargetName="sp" Property="BorderThickness" Value="1"></Setter>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <BitmapImage x:Key="ReaderSettingIcon" UriSource="Images/bg_set_duxieqi.png"></BitmapImage>
+    <Style TargetType="Button" x:Key="ReaderSettingBtn">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Width" Value="130"></Setter>
+        <Setter Property="Height" Value="110"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="sp"  Width="130" Height="110" VerticalAlignment="Center" Background="#FFF" CornerRadius="0,55,55,0" BorderBrush="#CCC" BorderThickness="1">
+                        <StackPanel>
+                            <Image Source="{DynamicResource ReaderSettingIcon}" Width="60" Height="60" Margin="0,10,0,0"></Image>
+                            <TextBlock FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0" Text="读写器" Foreground="#333333" FontFamily="Microsoft YaHei"></TextBlock>
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Model.ReaderBtnState}" Value="1">
+                            <Setter TargetName="sp" Property="BorderBrush" Value="Red"></Setter>
+                            <Setter TargetName="sp" Property="BorderThickness" Value="2"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Model.ReaderBtnState}" Value="0">
+                            <Setter TargetName="sp" Property="BorderBrush" Value="#CCC"></Setter>
+                            <Setter TargetName="sp" Property="BorderThickness" Value="1"></Setter>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <BitmapImage x:Key="SystemSettingIcon" UriSource="Images/bg_set_xitong.png"></BitmapImage>
+    <Style TargetType="Button" x:Key="SystemSettingBtn">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Width" Value="130"></Setter>
+        <Setter Property="Height" Value="110"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="sp"  Width="130" Height="110" VerticalAlignment="Center" Background="#FFF" CornerRadius="0,55,55,0" BorderBrush="#CCC" BorderThickness="1">
+                        <StackPanel>
+                            <Image Source="{DynamicResource SystemSettingIcon}" Width="60" Height="60" Margin="0,10,0,0"></Image>
+                            <TextBlock FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0" Text="系统" Foreground="#333333" FontFamily="Microsoft YaHei"></TextBlock>
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Model.SystemBtnState}" Value="1">
+                            <Setter TargetName="sp" Property="BorderBrush" Value="Red"></Setter>
+                            <Setter TargetName="sp" Property="BorderThickness" Value="2"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Model.SystemBtnState}" Value="0">
+                            <Setter TargetName="sp" Property="BorderBrush" Value="#CCC"></Setter>
+                            <Setter TargetName="sp" Property="BorderThickness" Value="1"></Setter>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <BitmapImage x:Key="mainleftd" UriSource="Images/icon_home_left-d.png"/>
+    <BitmapImage x:Key="mainleftn" UriSource="Images/icon_home_left-n.png"/>
+    <BitmapImage x:Key="mainlefth" UriSource="Images/icon_home_left-h.png"/>
+    <!--主界面页面切换按钮 左-->
+    <Style TargetType="Button" x:Key="MainLeftBtn">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Width" Value="66"></Setter>
+        <Setter Property="Height" Value="66"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Image Source="{DynamicResource mainleftd}" Name="icon"></Image>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.Setters>
+                                <Setter TargetName="icon" Property="Source" Value="{DynamicResource mainlefth}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Trigger.Setters>
+                                <Setter TargetName="icon" Property="Source" Value="{DynamicResource mainleftn}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <BitmapImage x:Key="mainrightd" UriSource="Images/icon_home_right-d.png"/>
+    <BitmapImage x:Key="mainrightn" UriSource="Images/icon_home_right-n.png"/>
+    <BitmapImage x:Key="mainrighth" UriSource="Images/icon_home_right-h.png"/>
+    <!--主界面页面切换按钮 左-->
+    <Style TargetType="Button" x:Key="MainRightBtn">
+        <Setter Property="Cursor" Value="Hand"></Setter>
+        <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+        <Setter Property="Width" Value="66"></Setter>
+        <Setter Property="Height" Value="66"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Image Source="{DynamicResource mainrightd}" Name="icon"></Image>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.Setters>
+                                <Setter TargetName="icon" Property="Source" Value="{DynamicResource mainrighth}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Trigger.Setters>
+                                <Setter TargetName="icon" Property="Source" Value="{DynamicResource mainrightn}"></Setter>
+                            </Trigger.Setters>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

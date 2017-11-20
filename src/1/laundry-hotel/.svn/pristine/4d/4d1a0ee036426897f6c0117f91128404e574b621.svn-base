@@ -1,0 +1,176 @@
+﻿@{
+    Layout = null;
+}
+@using ETexsys.Model
+@using ETexsys.WebApplication.Areas.Customer.Models
+@model List<OrderDetailsModel>
+<div class="row wrapper wrapper-content animated fadeInRight" style="padding-top:75px;">
+    <div class="ibox-content">
+        <div>
+            <h1>网上订单</h1>
+        </div>
+        <div class="ibox-content">
+            <form class="form-horizontal" id="OrderForm">
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">酒店：</label>
+                    <div class="col-lg-2">
+                        <select class="form-control" name="HotelID" id="HotelID" onchange="onCusChange()">
+                            @foreach (var item in ViewData["HotelList"] as List<region>)
+                            {
+                                <option value="@item.ID">@item.RegionName</option>
+                            }
+                        </select>
+                    </div>
+                    <label class="col-lg-2 control-label">区域：</label>
+                    <div class="col-lg-2">
+                        <select class="form-control" name="RegionID" id="RegionID"></select>
+                    </div>
+                </div>
+
+                @for (int i = 0; i < Model.Count; i += 2)
+                {
+                    OrderDetailsModel item1 = Model[i];
+                    if (i + 1 > Model.Count - 1)
+                    {
+                        <div class="form-group">
+                            <div class="col-lg-2 control-label">
+                                @item1.TextileName @item1.SizeName
+                            </div>
+                            <div class="col-lg-2">
+                                <input type="text" id="@item1.AreaID|@item1.SizeID" name="@item1.AreaID|@item1.SizeID" data-area="@item1.TextileName" data-size="@item1.SizeName" value="@item1.Count" />
+                            </div>
+                        </div>
+                        break;
+                    }
+                    else
+                    {
+                        <div class="form-group">
+                            <div class="col-lg-2 control-label">
+                                @item1.TextileName @item1.SizeName
+                            </div>
+                            <div class="col-lg-2">
+                                <input type="text" id="@item1.AreaID|@item1.SizeID" name="@item1.AreaID|@item1.SizeID" data-area="@item1.TextileName" data-size="@item1.SizeName" value="@item1.Count" />
+                            </div>
+                            @{ OrderDetailsModel item2 = Model[i + 1];
+                            }
+                            <div class="col-lg-2 control-label">
+                                @item2.TextileName @item2.SizeName
+                            </div>
+                            <div class="col-lg-2">
+                                <input type="text" id="@item2.AreaID|@item2.SizeID" name="@item2.AreaID|@item2.SizeID" data-area="@item2.TextileName" data-size="@item2.SizeName" value="@item2.Count" />
+                            </div>
+                        </div>
+                    }
+                }
+                <br />
+
+                <div class="form-group">
+                    <label class="col-lg-2 control-label" style="text-align: right;">备注：</label>
+                    <div class="col-lg-5">
+                        <textarea name="note" id="note" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group" style="text-align:center;">
+                    <button class="btn btn-success" type="button" id="btnSubmit"><i class="fa fa-save"></i>提交</button>
+                    <button class="btn btn-danger" type="button" id="btnCancel"><i class="fa fa-remove"></i>取消</button>
+                    <input type="hidden" name="InvID" id="InvID" value="@ViewData["ID"]" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    function onCusChange(type) {
+        var hotelId = $("#HotelID").val();
+        var url = "@Url.Action("GetRegionList", "Order")";
+        if (!!hotelId) {
+            $.ajax({
+                type: "post",
+                data: { hotelID: hotelId },
+                url: url,
+                success: function (result) {
+                    reigonList = result.Data;
+
+                    $("#RegionID").children().remove();
+                    var options = '';
+                    $.each(result, function (i, item) {
+                        options += '<option value="' + item.ID + '">' + item.RegionName + '</option>';
+                    });
+                    $("#RegionID").append(options);
+
+                    $("#RegionID").val("@ViewData["RegionID"]");
+                    var id = $("#InvID").val();
+                    if (id != null && id != "" && id != undefined) {
+                        $("#HotelID,#RegionID").attr("disabled", "disabled");
+                    }
+                }
+            });
+        }
+    }
+
+    $(function () {
+        $("#HotelID").val("@ViewData["HotelID"]");
+        $("#HotelID").change();
+    });
+
+    $("#btnSubmit").click(function () {
+        var hotelId = $("#HotelID").val();
+        var regionId = $("#RegionID").val();
+        var info, item, txt, total = 0, temp = [], array = [];
+
+        if (hotelId == undefined || hotelId == 0) {
+            swal("提示", "请选择酒店.");
+            return false;
+        }
+
+        if (regionId == undefined || regionId == 0) {
+            swal("提示", "请选择楼层.");
+            return false;
+        }
+
+        $("#OrderForm input[type='text']").each(function (i, item) {
+            txt = parseInt($(item).val());
+            if (txt > 0) {
+                info = $(item).attr("id");
+                temp = info.split("|");
+                item = { "AreaID": temp[0], "SizeID": temp[1], "TextileName": $(item).data("area"), "SizeName": $(item).data("size"), "Count": txt };
+                array.push(item);
+                total += txt;
+            }
+        });
+        if (total == 0) {
+            swal("提示", "请输入数量后再提交.");
+            return false;
+        }
+      
+        var url = "@Url.Action("Add", "Order")";
+        var v = { "HotelID": hotelId, "RegionID": regionId, "Quantity": total, "Remrak": $("#note").val(), "Data": array };
+
+        var id = $("#InvID").val();
+        if (id != null && id != "" && id != undefined) {
+            url = "@Url.Action("Update", "Order")";
+            v.ID = id;
+        }
+
+        
+        $.ajax({
+            type: "post",
+            data: v,
+            dataType: "json",
+            url: url,
+            success: function (result) {
+                if (result.ResultCode == 0) {
+                    swal("提示", "提交成功.");
+                } else {
+                    swal("提示", "提交失败.");
+                }
+                return false;
+            }
+        });
+    });
+
+    $("#btnCancel").click(function () {
+        $("#OrderForm input").val("");
+    });
+</script>

@@ -1,0 +1,126 @@
+﻿@model ETexsys.Model.region
+
+<div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">酒店</h4>
+            </div>
+            <form class="form-horizontal" id="addHotelForm">
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        @Html.HiddenFor(m => m.ID)
+                        <label class="col-lg-2 control-label">简称</label>
+                        <div class="col-lg-10">
+                            @Html.TextBoxFor(m => m.RegionName, new { @class = "form-control", @required = "", @onblur = "CheckHotelName(this)" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">全称</label>
+                        <div class="col-lg-10">
+                            @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", @required = "" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">所在仓库</label>
+                        <div class="col-lg-10">
+                            <select class="form-control" required="" id="StoreID">
+                                @{ var regList = ViewData["RegionList"] as List<ETexsys.Model.region>;}
+                                @for (var i = 0; i < regList.Count; i++)
+                                {
+                                    var item = regList[i];
+                                    if (i == 0)
+                                    {
+                                        <option value="@item.ID" selected="selected">@item.RegionName</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.ID">@item.RegionName</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">流通</label>
+                            <div class="col-lg-10">
+                                <select class="form-control" required="" id="BrandID">
+                                    @{ var brandList1 = ViewData["BrandList"] as List<ETexsys.Model.brandtype>;}
+                                    @foreach (var item in brandList1)
+                                    {
+                                        <option value="@item.ID">@item.BrandName</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">配货方式</label>
+                            <div class="col-lg-10" id="SendModel">
+                                <div class="i-checks" style="float:left;"><label> <input type="radio" value="1" name="a"> <i></i>门店</label></div>
+                                <div class="i-checks" style="float:left; margin-left:5px;"><label> <input type="radio" checked="" value="2" name="a"> <i></i>楼层</label></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">收货扫描确认</label>
+                            <div class="col-lg-4" id="HandConfirm">
+                                <div class="i-checks"><label><input type="checkbox" value="1" name="HandComfirm"> <i></i>是</label></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">联系人</label>
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(m => m.LinkMan, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">电话</label>
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(m => m.Tel, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">地址</label>
+                            <div class="col-lg-10">
+                                @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">经度</label>
+                            <div class="col-lg-4">
+                                @Html.TextBoxFor(m => m.Lng, new { @class = "form-control" })
+                            </div>
+                            <label class="col-lg-2 control-label">纬度</label>
+                            <div class="col-lg-4">
+                                @Html.TextBoxFor(m => m.Lat, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">Logo</label>
+                            @Html.HiddenFor(m => m.LogoUrl)
+                            <div class="col-lg-8" id="preview" onclick="ClickLogo()">
+                                @if (Model != null && Model.LogoUrl != null && Model.LogoUrl != "")
+                                {
+                                    <img id="imgaddhead" src="@Url.Content("~/"+@Model.LogoUrl)" alt="LOGO" style="max-width: 150px; max-height: 80px;" />
+                                }
+                                else
+                                {
+                                    <img id="imgaddhead" src="@Url.Content("~/Images/placeholder.png")" alt="LOGO" style="max-width: 150px; max-height: 80px;" />
+                                }
+                            </div>
+                        </div>
+
+                        <input type="file" id="flogo" name="flogo" style="display: none;" accept=".jpg,.png,.png,.jpeg" onchange="previewImage(this)" />
+
+
+                    </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

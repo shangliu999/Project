@@ -1,0 +1,303 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4D2F2C59-A94C-4A5E-B7C9-76559D6641C2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ETexsys.Model</RootNamespace>
+    <AssemblyName>ETexsys.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MySql.Data.Entity.EF6, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.Entity.6.9.9\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="bag.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="brandtype.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="businessdetail.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="businessinvoice.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="car.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="category.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="classsize.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="color.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="complain.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="complainattach.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="complainmessage.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="dataversion.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fabric.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fc_invoice.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="goods.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="goodscate.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="goodsorder.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="goodsorderdetail.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="hotel_detail.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="integraldetail.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="inventory.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="invoice.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="invoiceattach.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="invoicedetail.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="invoicelog.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="invoicelogdetail.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="invoicerfid.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LaundryModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LaundryModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LaundryModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="LaundryModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LaundryModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="notice.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="organise.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="personnelplace.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="pricedetail.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="pricetemplate.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="qrcode.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="region.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="region_setting.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="rentmatch.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="repeatop.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="rfidreplace.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="rfidtag.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="scrap.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="scrapdetail.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="size.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sys_admin.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sys_application.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sys_customer.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sys_customer_right.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sys_privilege.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sys_right.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sys_right_button.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sys_role.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sys_user.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sys_user_dataview.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sys_user_role.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="task.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="textile.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="textilebrandarea.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="textileclass.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="textilegroup.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="truck.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="truck_textile.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="unit.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="V_TextileTag.cs" />
+    <Compile Include="v_textile_tag.cs">
+      <DependentUpon>LaundryModel.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <EntityDeploy Include="LaundryModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>LaundryModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="LaundryModel.edmx.diagram">
+      <DependentUpon>LaundryModel.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="LaundryModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>LaundryModel.edmx</DependentUpon>
+      <LastGenOutput>LaundryModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="LaundryModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>LaundryModel.edmx</DependentUpon>
+      <LastGenOutput>LaundryModel.cs</LastGenOutput>
+    </Content>
+    <Content Include="Note.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

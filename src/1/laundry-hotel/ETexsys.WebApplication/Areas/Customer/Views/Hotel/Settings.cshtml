@@ -1,0 +1,150 @@
+﻿@{
+    Layout = null;
+}
+@using ETexsys.Model
+@model List<region>
+
+<link href="@Url.Content("~/Content/plugins/clockpicker/clockpicker.css")" rel="stylesheet">
+<script src="@Url.Content("~/Scripts/plugins/clockpicker/clockpicker.js")"></script>
+<div class="row wrapper wrapper-content animated fadeInRight" style="padding-top:75px;">
+    <div class="ibox-content">
+        <div>
+            <h1>送达时间设置</h1>
+        </div>
+        <div class="ibox-content">
+            <form class="form-horizontal" id="SettingsForm">
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">送达时间：</label>
+                    <div class="col-lg-2 input-group clockpicker" data-autoclose="true">
+                        <input id="txttime" type="text" class="form-control" value="09:30">
+                        <span class="input-group-addon">
+                            <span class="fa fa-clock-o"></span>
+                        </span>
+                    </div>
+                    <div class="col-lg-6">
+                        <button class="btn btn-success" type="button" id="btnall">
+                            <i class="fa fa-paint-brush"></i>
+                            批量填入
+                        </button>
+                        <button class="btn btn-success" type="button" id="btnuncheck">
+                            <i class="fa fa-undo"></i>
+                            取消
+                        </button>
+                    </div>
+                </div>
+
+                @for (int i = 0; i < Model.Count; i += 3)
+            {
+                region item1 = Model[i];
+
+                    <div class="form-group">
+                        <div class="col-lg-2 control-label">
+                            <input type="checkbox" data-val="@item1.ID" />  @item1.RegionName
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="input-group clockpicker" data-autoclose="true">
+                                <input type="text" class="form-control" id="@item1.ID" value="@item1.DeliveryTime">
+                                <span class="input-group-addon">
+                                    <span class="fa fa-clock-o"></span>
+                                </span>
+                            </div>
+                        </div>
+
+                        @{
+                            if (i + 1 > Model.Count - 1)
+                            {
+                                break;
+                            }
+                            region item2 = Model[i + 1];
+                        }
+                        <div class="col-lg-2 control-label">
+                            <input type="checkbox" data-val="@item2.ID" /> @item2.RegionName
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="input-group clockpicker" data-autoclose="true">
+                                <input type="text" class="form-control" id="@item2.ID" value="@item2.DeliveryTime">
+                                <span class="input-group-addon">
+                                    <span class="fa fa-clock-o"></span>
+                                </span>
+                            </div>
+                        </div>
+
+                        @{
+                            if (i + 2 > Model.Count - 1)
+                            {
+                                break;
+                            }
+                            region item3 = Model[i + 2];
+                        }
+                        <div class="col-lg-2 control-label">
+                            <input type="checkbox" data-val="@item3.ID" /> @item3.RegionName
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="input-group clockpicker" data-autoclose="true">
+                                <input type="text" class="form-control" id="@item3.ID" value="@item3.DeliveryTime">
+                                <span class="input-group-addon">
+                                    <span class="fa fa-clock-o"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                            }
+
+                <div class="form-group">
+                    <div class="col-lg-2">
+                        <button class="btn btn-success" type="button" id="btnSubmit">
+                            <i class="fa fa-save"></i>
+                            提交
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $('.clockpicker').clockpicker();
+
+    $("#btnall").click(function () {
+        var time = $("#txttime").val();
+        $("#SettingsForm input:checked").each(function (i, item) {
+            var id = $(item).data("val");
+            $("#" + id).val(time);
+        });
+    });
+
+    $("#btnuncheck").click(function () {
+        $("#SettingsForm input").removeAttr("checked");
+    });
+
+    $("#btnSubmit").click(function () {
+        var txt, id, array = [];
+        $("#SettingsForm input").each(function (i, item) {
+            if (i > 0) {
+                txt = $(item).val();
+                if (!!txt && txt.length > 2) {
+                    id = $(item).attr("id");
+                    item = { "ID": id, "DeliveryTime": txt };
+                    array.push(item);
+                }
+            }
+        });
+
+        var v = { "HotelID": "1", "Data": array };
+        var url = "@Url.Action("UpdateSettings", "Hotel")";
+        $.ajax({
+            type: "post",
+            data: v,
+            dataType: "json",
+            url: url,
+            success: function (result) {
+                if (result.ResultCode == 0) {
+                    swal("提示", "提交成功.");
+                } else {
+                    swal("提示", "提交失败.");
+                }
+                return false;
+            }
+        });
+    });
+</script>

@@ -1,0 +1,546 @@
+﻿
+@{
+    Layout = null;
+}
+<link href="@Url.Content("~/Content/plugins/daterangepicker/daterangepicker.css")" rel="stylesheet" />
+
+<div class="row wrapper wrapper-content animated fadeInRight" style="padding-top:75px;">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+            <div class="form-group" style="margin-left:10px">
+                <label class="control-label">单据类型：</label>
+                <label name="class" class="btn btn-sm active" style="background-color:#e6cf1b;border-bottom:1px #ff6a00 solid">污物送洗单<input checked value="1" name="class" class="type" type="radio" style="display:none" /></label>
+                <label name="class" class="btn btn-sm active" style="background-color:#e6cf1b">净物配送单<input value="2" name="class" class="type" type="radio" style="display:none" /></label>
+                <label name="class" class="btn btn-sm active" style="background-color:#e6cf1b">入库单<input value="3" name="class" class="type" type="radio" style="display:none" /></label>
+                <label name="class" class="btn btn-sm active" style="background-color:#e6cf1b">出库单<input value="4" name="class" class="type" type="radio" style="display:none" /></label>
+                <label name="class" class="btn btn-sm active" style="background-color:#e6cf1b">入厂<input value="5" name="class" class="type" type="radio" style="display:none" /></label>
+                <label name="class" class="btn btn-sm active" style="background-color:#e6cf1b">订单<input value="6" name="class" class="type" type="radio" style="display:none" /></label>
+                <label name="class" class="btn btn-sm active" style="background-color:#e6cf1b">退回<input value="7" name="class" class="type" type="radio" style="display:none"></label>
+                <label name="class" class="btn btn-sm active" style="background-color:#e6cf1b">工厂返洗<input value="8" name="class" class="type" type="radio" style="display:none" /></label>
+            </div>
+
+            <div class="form-group" style="margin-left:35px">
+                <label class="control-label">时间：</label>
+                <label name="time" class="btn btn-sm active" style="background-color:#e6cf1b;border-bottom:1px #ff6a00 solid">日<input checked name="time" type="radio" value="1" style="display:none" /></label>
+                <label name="time" class="btn btn-sm active" style="background-color:#e6cf1b">周<input name="time" type="radio" value="2" style="display:none" /></label>
+                <label name="time" class="btn btn-sm active" style="background-color:#e6cf1b">月<input name="time" type="radio" value="3" style="display:none" /></label>
+                <label name="time" class="btn btn-sm active" style="background-color:#e6cf1b">高级<input name="time" type="radio" value="4" style="display:none" /></label>
+            </div>
+
+            <div id="senior" class="form-group" style="margin-left:35px;display:none">
+                <label style="font-family: 微软雅黑; float:left;margin-top:10px">酒店：</label>
+                <div class="col-lg-2">
+                    <select id="queryHotelId" class="form-control">
+                        <option value="0" selected="selected">所有</option>
+                        @{ var hotelList = ViewData["HotelList"] as List<ETexsys.Model.region>;}
+                        @foreach (var item in hotelList)
+                        {
+                            <option value="@item.ID">@item.RegionName</option>
+                        }
+                    </select>
+                </div>
+                <label style="font-family: 微软雅黑;  float:left;margin-top:10px">区域</label>
+                <div class="col-lg-2">
+                    <select id="queryFloor" class="form-control"></select>
+                </div>
+                <div class="col-lg-3">
+                    <div class="input-group" style="width: 240px;">
+                        <input type="text" class="form-control date-picker" id="dateTimeRange" value="" />
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar bigger-110"></i>
+                        </span>
+                        <input type="hidden" name="beginTime" id="beginTime" value="" />
+                        <input type="hidden" name="endTime" id="endTime" value="" />
+                    </div>
+                </div>
+                <div>
+                    <label class="btn btn-sm active" style="background-color:#e6cf1b" id="btnselect">查询</label>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-left:10px">
+                <label class="control-label">查询方式：</label>
+                <label name="select" class="btn btn-sm active" style="background-color:#e6cf1b;border-bottom:1px #ff6a00 solid">列表<input checked name="select" type="radio" value="1" style="display:none" /></label>
+                <label name="select" class="btn btn-sm active" style="background-color:#e6cf1b">汇总<input name="select" type="radio" value="2" style="display:none" /></label>
+            </div>
+        </div>
+    </div>
+
+    <div id="table1" class="ibox-content" style="margin-top:20px; overflow:hidden;">
+        <table class="table table-striped table-bordered table-hover dataTables-example table1">
+            <thead>
+                <tr>
+                    <th>单据号</th>
+                    <th>位置</th>
+                    <th>区域</th>
+                    <th>制单人</th>
+                    <th>制单时间</th>
+                    <th>数量</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <div id="table2" class="ibox-content" style="margin-top:20px; overflow:hidden;display:none">
+        <table class="table table-striped table-bordered table-hover dataTables-example table2">
+            <thead>
+                <tr>
+                    <th>类型</th>
+                    <th>尺寸</th>
+                    <th>数量</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+@RenderPage("Detail.cshtml");
+
+<script src="@Url.Content("~/Scripts/plugins/daterangepicker/moment.js")"></script>
+<script src="@Url.Content("~/Scripts/plugins/daterangepicker/daterangepicker.js")"></script>
+<script>
+
+
+    $(document).ready(function () {
+
+        $('#dateTimeRange').daterangepicker({
+            applyClass: 'btn-sm btn-success',
+            cancelClass: 'btn-sm btn-default',
+            locale: {
+                applyLabel: '确认',
+                cancelLabel: '取消',
+                fromLabel: '起始时间',
+                toLabel: '结束时间',
+                customRangeLabel: '自定义',
+                firstDay: 1
+            },
+            ranges: {
+                '今日': [moment().startOf('day'), moment()],
+                '昨日': [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')],
+                '最近7日': [moment().subtract('days', 6), moment()],
+                '最近30日': [moment().subtract('days', 29), moment()],
+                '本月': [moment().startOf("month"), moment().endOf("month")],
+                '上个月': [moment().subtract(1, "month").startOf("month"), moment().subtract(1, "month").endOf("month")]
+            },
+            startDate: moment().startOf("month"),
+            endDate: moment().endOf("month"),
+            opens: 'right',    // 日期选择框的弹出位置
+            separator: ' 至 ',
+            showWeekNumbers: false,     // 是否显示第几周
+            locale: {
+                applyLabel: '确定',
+                cancelLabel: '取消',
+                fromLabel: '起始时间',
+                toLabel: '结束时间',
+                customRangeLabel: '自定义',
+                daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+                        '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                firstDay: 1
+            },
+
+            format: 'YYYY/MM/DD'
+
+        }, function (start, end, label) { // 格式化日期显示框
+            $('#beginTime').val(start.format('YYYY-MM-DD'));
+            $('#endTime').val(end.format('YYYY-MM-DD'));
+        })
+       .next().on('click', function () {
+           $(this).prev().focus();
+       });
+    });
+
+    var judge1 = 0;
+    var judge2 = 0;
+
+    function GetTable1() {
+        var url = "@Url.Action("GetBillInquiryList", "BillInquiry")";
+        judge1 = 1;
+        $(".table1").DataTable({
+            bAutoWidth: false,
+            aoColumns: [
+                { "sClass": "center", "mDataProp": "InvNo", "bSortable": false },
+                { "sClass": "center", "mDataProp": "HotelName", "bSortable": false },
+                { "sClass": "center", "mDataProp": "Floorparam", "bSortable": false },
+                { "sClass": "center", "mDataProp": "CreateUserName", "bSortable": false },
+                {
+                    "sClass": "text-center",
+                    "data": "CreateTime",
+                    "render": function (data, type, full, meta) {
+                        return data_string(data);//date的格
+                    },
+                    "bSortable": false
+                },
+                { "sClass": "center", "mDataProp": "Count", "bSortable": false },
+
+
+            ],
+            "bServerSide": true,//分页，取数据等等的都放到服务端去
+            "bProcessing": true,//载入数据的时候是否显示“载入中”
+            "aLengthMenu": [30, 50, 100],
+            "bLengthChange": false, //改变每页显示数据数量
+            "bFilter": false, //过滤功能
+            "iDisplayStart": 0,
+            "iDisplayLength": 30,//首次加载的数据条数
+            "bStorable": true,//排序操作在服务端进行，所以可以关了。
+            "sAjaxSource": url,
+            "fnServerData": function (sSource, aoData, fnCallback, bStorable) {
+                var paramList = {
+                    "sEcho": 0,
+                    "iDisplayLength": 0,
+                    "iDisplayStart": 0,
+                    "sSortDir_0": bStorable.aaSorting[0][1],
+                    "iSortCol_0": bStorable.aaSorting[0][0],
+                    "InvType": $("input:radio:checked[name='class']").val(),
+                    "Time": $("input:radio:checked[name='time']").val(),
+                    "Hotel": $("#queryHotelId option:selected").html(),
+                    "Floor": $("#queryFloor option:selected").html(),
+                    "BeginTime": $("#beginTime").val(),
+                    "EndTime": $("#endTime").val(),
+                    "InquiryMode": $("input:radio:checked[name='select']").val(),
+                    "HotelId": $("#queryHotelId option:selected").val()
+                };
+                if (bStorable.aaSorting[0][0] == 0) {
+                    paramList.isDesc = true;
+                }
+                for (var i = 0; i < aoData.length; i++) {
+                    if (aoData[i].name == "iDisplayStart") {
+                        paramList.iDisplayStart = aoData[i].value;
+                    } else if (aoData[i].name == "iDisplayLength") {
+                        paramList.iDisplayLength = aoData[i].value;
+                    } else
+                        if (aoData[i].name == "sEcho") {
+                            paramList.sEcho = aoData[i].value;
+                        }
+                }
+                $.ajax({
+                    "dataType": 'json',
+                    "type": "POST",
+                    "url": sSource,
+                    "data": paramList,
+                    "success": function (resp) {
+                        fnCallback(resp); //服务器端返回的对象的returnObject部分是要求的格式
+                    }
+                });
+            },
+            "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+                debugger;
+                var html = "<a href=\javascript:SelectDetail('" + aData.InvNo + "','" + aData.Floorparam + "','" + aData.CreateTime + "','" + aData.CreateUserName + "','" + aData.HotelName + "')>" + aData.InvNo + "</a>"
+                $('td:eq(0)', nRow).html(html);
+            },
+            dom: '<"html5buttons"B>lTfgitp',
+            buttons: [
+                { extend: 'copy' },
+                { extend: 'csv' },
+                { extend: 'excel', title: 'ExampleFile' },
+                { extend: 'pdf', title: 'ExampleFile' },
+                {
+                    extend: 'print',
+                    customize: function (win) {
+                        $(win.document.body).addClass('white-bg');
+                        $(win.document.body).css('font-size', '10px');
+
+                        $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                    }
+                }
+            ],
+            "oLanguage": {
+                "sLengthMenu": "每页显示 _MENU_ 条记录",
+                "sZeroRecords": "抱歉， 没有找到",
+                "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                "sInfoEmpty": "没有数据",
+                "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "前一页",
+                    "sNext": "后一页",
+                    "sLast": "尾页"
+                },
+                "sZeroRecords": "没有检索到数据",
+                "sProcessing": "<img src='./loading.gif' />"
+            }
+        })
+    }
+
+    function GetTable2() {
+    var _url = "@Url.Action("GetSummaryList", "BillInquiry")";
+        judge2 = 1;
+        $(".table2").DataTable({
+            bAutoWidth: false,
+            aoColumns: [
+                { "sClass": "center", "mDataProp": "className", "bSortable": false },
+                { "sClass": "center", "mDataProp": "sizeName", "bSortable": false },
+                { "sClass": "center", "mDataProp": "textileCount", "bSortable": false },
+
+            ],
+            "bServerSide": true,//分页，取数据等等的都放到服务端去
+            "bProcessing": true,//载入数据的时候是否显示“载入中”
+            "aLengthMenu": [30, 50, 100],
+            "bLengthChange": false, //改变每页显示数据数量
+            "bFilter": false, //过滤功能
+            "iDisplayStart": 0,
+            "iDisplayLength": 30,//首次加载的数据条数
+            "bStorable": true,//排序操作在服务端进行，所以可以关了。
+            "sAjaxSource": _url,
+            "fnServerData": function (sSource, aoData, fnCallback, bStorable) {
+                var paramList = {
+                    "sEcho": 0,
+                    "iDisplayLength": 0,
+                    "iDisplayStart": 0,
+                    "sSortDir_0": bStorable.aaSorting[0][1],
+                    "iSortCol_0": bStorable.aaSorting[0][0],
+                    "InvType": $("input:radio:checked[name='class']").val(),
+                    "Time": $("input:radio:checked[name='time']").val(),
+                    "Hotel": $("#queryHotelId option:selected").html(),
+                    "Floor": $("#queryFloor option:selected").html(),
+                    "BeginTime": $("#begintime").val(),
+                    "EndTime": $("#endtime").val(),
+                    "InquiryMode": $("input:radio:checked[name='select']").val(),
+                    "HotelId": $("#queryHotelId option:selected").val()
+
+                };
+                if (bStorable.aaSorting[0][0] == 0) {
+                    paramList.isDesc = true;
+                }
+                for (var i = 0; i < aoData.length; i++) {
+                    if (aoData[i].name == "iDisplayStart") {
+                        paramList.iDisplayStart = aoData[i].value;
+                    } else if (aoData[i].name == "iDisplayLength") {
+                        paramList.iDisplayLength = aoData[i].value;
+                    } else
+                        if (aoData[i].name == "sEcho") {
+                            paramList.sEcho = aoData[i].value;
+                        }
+                }
+                $.ajax({
+                    "dataType": 'json',
+                    "type": "POST",
+                    "url": sSource,
+                    "data": paramList,
+                    "success": function (resp) {
+                        fnCallback(resp); //服务器端返回的对象的returnObject部分是要求的格式
+                    }
+                });
+            },
+            "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+
+            },
+            dom: '<"html5buttons"B>lTfgitp',
+            buttons: [
+                { extend: 'copy' },
+                { extend: 'csv' },
+                { extend: 'excel', title: 'ExampleFile' },
+                { extend: 'pdf', title: 'ExampleFile' },
+                {
+                    extend: 'print',
+                    customize: function (win) {
+                        $(win.document.body).addClass('white-bg');
+                        $(win.document.body).css('font-size', '10px');
+
+                        $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                    }
+                }
+            ],
+            "oLanguage": {
+                "sLengthMenu": "每页显示 _MENU_ 条记录",
+                "sZeroRecords": "抱歉， 没有找到",
+                "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                "sInfoEmpty": "没有数据",
+                "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "前一页",
+                    "sNext": "后一页",
+                    "sLast": "尾页"
+                },
+                "sZeroRecords": "没有检索到数据",
+                "sProcessing": "<img src='./loading.gif' />"
+            }
+        })
+    }
+
+    $("label[name='class']").click(function () {
+  
+        var q = judge1;
+        $(".btn[name='class']").css("border-bottom", "1px #ff6a00 none");
+        var val = $(this).index();
+        $(".btn[name='class']").eq(val - 1).css("border-bottom", "1px #ff6a00 solid");
+        if ($("input:radio:checked[name='select']").val() == 1) {
+            if (judge1==1) {
+                $(".table1").dataTable().fnDraw();
+            }
+            else {
+                GetTable1();
+            }
+        }
+        if ($("input:radio:checked[name='select']").val() == 2) {
+            if (judge2 == 1) {
+                $(".table2").dataTable().fnDraw();
+            }
+            else {
+                GetTable2();
+            }
+        }
+    })
+
+    $("label[name='time']").click(function () {
+      
+        $("#senior").css("display", "none")
+        $(".btn[name='time']").css("border-bottom", "1px #ff6a00 none");
+        var val = $(this).index();
+        $(".btn[name='time']").eq(val - 1).css("border-bottom", "1px #ff6a00 solid");
+        if (val == 4) {
+            $("#senior").css("display", "block")
+        }
+        else {
+            if ($("input:radio:checked[name='select']").val() == 1) {
+                if (judge1 == 1) {
+                    $(".table1").dataTable().fnDraw();
+                }
+                else {
+                    GetTable1();
+                }
+            }
+            if ($("input:radio:checked[name='select']").val() == 2) {
+                if (judge2 == 1) {
+                    $(".table2").dataTable().fnDraw();
+                }
+                else {
+                    GetTable2();
+                }
+            }
+        }
+    })
+
+    $("label[name='select']").click(function () {
+     
+        $(".btn[name='select']").css("border-bottom", "1px #ff6a00 none");
+        var val = $(this).index();
+        $(".btn[name='select']").eq(val - 1).css("border-bottom", "1px #ff6a00 solid");
+        if (val == 2) {
+            $("#table1").css("display", "none")
+            $("#table2").css("display", "block")
+            if (judge2 == 1) {
+                $(".table2").dataTable().fnDraw();
+            }
+            else {
+                GetTable2();
+            }
+        }
+        if (val == 1) {
+            $("#table1").css("display", "block")
+            $("#table2").css("display", "none")
+            if (judge1 == 1) {
+                $(".table1").dataTable().fnDraw();
+            }
+            else {
+                GetTable1();
+            }
+        }
+
+    })
+
+    $("#queryHotelId").change(function () {
+        var url = "@Url.Action("GetFloor", "BillInquiry")";
+        var val = $("#queryHotelId option:selected").val();
+        $.ajax({
+            type: "post",
+            data: { HotelId: val },
+            url: url,
+            success: function (data) {
+                $("#queryFloor").html("");
+                $.each(data, function (i) {
+                    var content = "<option value=" + data[i].ID + ">" + data[i].RegionName + "</option>"
+                    $("#queryFloor").append(content);
+                })
+            }
+        })
+    })
+
+    $("#btnselect").click(function () {
+        var val = $("input:radio:checked[name='class']").val();
+        if (val==undefined) {
+            swal("提示", "请选择单据类型");
+            return false;
+        }
+        if ($("input:radio:checked[name='select']").val() == 1) {
+            if (judge1 == 1) {
+                $(".table1").dataTable().fnDraw();
+            }
+            else {
+                GetTable1();
+            }
+        }
+        if ($("input:radio:checked[name='select']").val() == 2) {
+            if (judge2 == 1) {
+                $(".table2").dataTable().fnDraw();
+            }
+            else {
+                GetTable2();
+            }
+        }
+    })
+
+    function SelectDetail(InvNo, Floorparam, CreateTime, CreateUserName, HotelName) {
+        
+        var url = "@Url.Action("GetDetail", "BillInquiry")";
+        $.ajax({
+            type: "post",
+            data: { InvNo: InvNo, Floorparam: Floorparam },
+            url: url,
+            success: function (data) {
+
+                debugger;
+                var invno = data.OtherResult.InvNo;
+                $("#InvNoId").html(data.OtherResult.InvNo);
+                if (data.ResultCode == 0) {
+                    $("#select-table-detail tbody").empty();
+                    var detail = data.Result;
+                    var sum = 0;
+                    var ConfirmTime = "";
+                    var ConfirmUserName = "";
+                    $.each(detail, function (i, item) {
+                        var tr = $('<tr></tr>');
+                        var typetd = $('<td></td>');
+                        $(typetd).html(item.ClassName).appendTo(tr);
+                        var sizetd = $('<td></td>');
+                        $(sizetd).html(item.SizeName).appendTo(tr);
+                        var count = $('<td></td>');
+                        $(count).html(item.TextileCount).appendTo(tr);
+                        $(tr).appendTo($("#select-table-detail tbody"));
+                        sum = parseInt($(count).html()) + parseInt(sum);
+
+                        ConfirmUserName = item.ConfirmUserName;
+                        ConfirmTime = item.ConfirmTime;
+                    })
+                    var endtr = $('<tr></tr>');
+                    var Total = $('<td></td>');
+                    $(Total).html("合计").appendTo(endtr);
+                    var td = $('<td></td>');
+                    $(td).html("").appendTo(endtr);
+                    var sumcount = $('<td></td>');
+                    $(sumcount).html(sum).appendTo(endtr);
+                    $(endtr).appendTo($("#select-table-detail tbody"));
+              
+                    var titel = $("input:radio:checked[name='class']").val();
+                    titel = titel == 8 ? "工厂反洗" : titel == 2 ? "净物配送单" : titel == 3 ? "入库单" : titel == 4 ? "出库单" : titel == 5 ? "入厂" : titel == 6 ? "订单" : titel == 7 ? "退回" : "污物送洗单";
+                    $("#DetailTitle").html(titel);
+                    $("#CreatUser").html(CreateUserName);
+                    $("#CreatTime").html(data_string(CreateTime));
+                    $("#Hotel").html(HotelName);
+                    $("#Floor").html(Floorparam);
+                    $("#ConfirmUserName").html(ConfirmUserName);
+                    $("#ConfirmTime").html(data_string(ConfirmTime));
+                    $("#DetailModel").modal('show');
+                }
+            }
+        })
+    }
+
+</script>

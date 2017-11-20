@@ -1,0 +1,254 @@
+﻿@{
+    Layout = null;
+}
+<style type="text/css">
+    .cusdiv {
+        float: left;
+        border: 1px solid #E5E5E5;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 180px;
+        height: 130px;
+        background-color: #FFF;
+        margin: 5px;
+        text-align: center;
+    }
+
+        .cusdiv:hover {
+            float: left;
+            border: 2px solid blue;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 180px;
+            height: 130px;
+            background-color: #FFF;
+            margin: 5px;
+            text-align: center;
+        }
+</style>
+<script src="@Url.Content("~/Scripts/ajaxfileupload.js")"></script>
+<div class="row wrapper wrapper-content animated fadeInRight" style="padding-top:75px;">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-lg-1 control-label" style="font-weight: bold; font-family: 微软雅黑;text-align:left;">流通类型</label>
+                <div class="col-lg-2">
+                    <select id="queryBrandId" class="form-control">
+                        <option value="0" selected="selected">所有</option>
+                        @{ var brandList = ViewData["BrandList"] as List<ETexsys.Model.brandtype>;}
+                        @foreach (var item in brandList)
+                        {
+                            <option value="@item.ID">@item.BrandName</option>
+                        }
+                    </select>
+                </div>
+                <label class="col-lg-1 control-label" style="font-weight: bold; font-family: 微软雅黑;">关键字</label>
+                <div class="col-lg-2">
+                    <input class="form-control" id="txtSearch" type="text" placeholder="请输入酒店名称" />
+                </div>
+                <button class="btn btn-success" onclick="Search()"><i class="fa fa-search"></i>搜索</button>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="ibox-content" style="margin-top:20px; overflow:hidden;" id="hotelList">
+        <div style="margin-bottom:20px;">
+            @Html.ToolButton((ViewData["BtnList"] as List<ETexsys.Model.sys_right_button>).Where(v => v.BtnCode == "Add").ToList())
+        </div>
+
+    </div>
+
+    @RenderPage("Detail.cshtml")
+</div>
+<script>
+    $(document).ready(function () {
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+
+        LoadHotelList();
+    });
+
+    function LoadHotelList() {
+        var rightId = "@ViewData["RightID"]";
+        $("#hotelList>div:eq(0)").siblings("div").remove();
+        var url = "@Url.Action("GetHotelList", "Hotel")";
+        $.ajax({
+            type: "post",
+            data: {},
+            url: url,
+            success: function (result) {
+                if (result.ResultCode == "0") {
+                    var u = "@Url.Content("~/Customer/Hotel/BasicData")";
+                    $.each(result.Result, function (i, item) {
+                        var div = $("<div></div>").addClass("cusdiv").attr("data-brand", item.BrandID).attr("data-name", item.RegionName).attr("onclick", "SubClickFunc('" + u + "?CusID=" + item.ID + "'," + rightId + ")");
+                        var logodiv = $("<div></div>").css("height", "100px");
+                        var img = $("<img></img>").css({ "margin-top": "10px", "max-width": "150px", "max-height": "80px" });
+                        if (item.LogoUrl == null || item.LogoUrl == "") {
+                            $(img).attr("src", "@Url.Content("~/Images/placeholder.png")");
+                        } else {
+                            $(img).attr("src", "@Url.Content("~/")" + item.LogoUrl);
+                        }
+                        logodiv.append(img);
+                        var namediv = $("<div></div>").css("height", "25px");
+                        var a = $("<a></a>").css({ "padding-top": "10px", "font-size": "14px", "text-decoration": "none" }).html(item.RegionName);
+                        namediv.append(a);
+                        div.append(logodiv).append(namediv);
+                        $("#hotelList").append(div);
+                    });
+                }
+            }
+        });
+    }
+
+    function Search() {
+        var searchText = $.trim($("#txtSearch").val());
+        var brandId = $("#queryBrandId").val();
+        if (searchText == "") {
+            if (brandId == 0) {
+                $(".cusdiv").show();
+            } else {
+                $(".cusdiv").hide();
+                $(".cusdiv[data-brand='" + brandId + "']").show();
+            }
+        } else {
+            if (brandId == 0) {
+                $(".cusdiv").hide();
+                $(".cusdiv[data-name*='" + searchText + "']").show();
+            } else {
+                $(".cusdiv").hide();
+                $(".cusdiv[data-brand='" + brandId + "'][data-name*='" + searchText + "']").show();
+            }
+        }
+    }
+
+    function AddModule() {
+        $("#RegionName").nextAll().remove();
+        $("#ID").val("0");
+        document.getElementById("addHotelForm").reset();
+        $(".modal-title").html("酒店添加");
+        $("#imgaddhead").attr("src", "@Url.Content("~/Images/placeholder.png")");
+        $('#myModal').modal('show');
+    }
+
+    function CheckHotelName(obj) {
+        var url = "@Url.Action("CheckHotelName", "Hotel")";
+        $.ajax({
+            type: "post",
+            data: { HotelID: $("#ID").val(), HotelName: $("#RegionName").val() },
+            url: url,
+            async: false,
+            success: function (result) {
+                if (result) {
+                    $(obj).nextAll().remove();
+                } else {
+                    $(obj).nextAll().remove();
+                    $(obj).after('<p class="help-block"  style="color:red">名称已存在</p>');
+                }
+            }
+        });
+    }
+
+    $("#addHotelForm").submit(function () {
+        var _url = "@Url.Action("CheckHotelName", "Hotel")";
+        $.ajax({
+            type: "post",
+            data: { HotelID: $("#ID").val(), HotelName: $("#RegionName").val() },
+            url: _url,
+            success: function (result) {
+                if (result) {
+                    $("#RegionName").nextAll().remove();
+
+                    var url = "@Url.Action("AddHotel","Hotel")";
+                    if ($("#ID").val() != "0") {
+                        url = "@Url.Action("UpdateHotel", "Hotel")";
+                    }
+
+                    var handcomfirm = $("#HandConfirm input:checked").length > 0 ? true : false;
+                    $.ajaxFileUpload({
+                        type: "post",
+                        data: {
+                            ID: $("#ID").val(), RegionName: $("#RegionName").val(), FullName: $("#FullName").val(), RegionMode: $("#SendModel").find("[type='radio']:checked").val(),
+                            BrandID: $("#BrandID").val(), Tel: $("#Tel").val(), LinkMan: $("#LinkMan").val(), Address: $("#Address").val(),
+                            Lng: $("#Lng").val(), Lat: $("#Lat").val(), LogoUrl: $("#LogoUrl").val(), HandConfirm: handcomfirm, StoreID: $("#StoreID").val()
+                        },
+                        url: url,
+                        async: false,
+                        secureuri: false, //是否需要安全协议，一般设置为false
+                        fileElementId: 'flogo', //文件上传域的ID
+                        success: function (responseText) {
+                            var data = JSON.parse(responseText.body.innerText);
+                            if (data.ResultCode == "0") {
+                                $('#myModal').modal('hide');//关闭模态框
+                                document.getElementById("addHotelForm").reset();//清空表单
+                                LoadHotelList();
+                            } else {
+                                swal({ title: "提示", text: "添加失败" });
+                            }
+                        }
+                    });
+                } else {
+                    $("#RegionName").nextAll().remove();
+                    $("#RegionName").after('<p class="help-block"  style="color:red">名称已存在</p>');
+                }
+            }
+        });
+        return false;
+    });
+
+    function ClickLogo() {
+        $("#flogo").click();
+    }
+    function previewImage(file) {
+        var MAXWIDTH = 100;
+        var MAXHEIGHT = 100;
+        var div = document.getElementById('preview');
+        if (file.files && file.files[0]) {
+            div.innerHTML = '<img id=imgaddhead>';
+            var img = document.getElementById('imgaddhead');
+            img.onload = function () {
+                var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+                img.width = rect.width;
+                img.height = rect.height;
+                img.style.marginLeft = rect.left + 'px';
+                img.style.marginTop = rect.top + 'px';
+            }
+            var reader = new FileReader();
+            reader.onload = function (evt) { img.src = evt.target.result; }
+            reader.readAsDataURL(file.files[0]);
+        }
+        else {
+            var sFilter = 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+            file.select();
+            var src = document.selection.createRange().text;
+            div.innerHTML = '<img id=imgaddhead>';
+            var img = document.getElementById('imgaddhead');
+            img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+            var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+            status = ('rect:' + rect.top + ',' + rect.left + ',' + rect.width + ',' + rect.height);
+            div.innerHTML = "<div id=divhead style='width:" + rect.width + "px;height:" + rect.height + "px;margin-top:" + rect.top + "px;margin-left:" + rect.left + "px;" + sFilter + src + "\"'></div>";
+        }
+    }
+
+    function clacImgZoomParam(maxWidth, maxHeight, width, height) {
+        var param = { top: 0, left: 0, width: width, height: height };
+        if (width > maxWidth || height > maxHeight) {
+            rateWidth = width / maxWidth;
+            rateHeight = height / maxHeight;
+
+            if (rateWidth > rateHeight) {
+                param.width = maxWidth;
+                param.height = Math.round(height / rateWidth);
+            } else {
+                param.width = Math.round(width / rateHeight);
+                param.height = maxHeight;
+            }
+        }
+
+        param.left = Math.round((maxWidth - param.width) / 2);
+        param.top = Math.round((maxHeight - param.height) / 2);
+        return param;
+    }
+</script>

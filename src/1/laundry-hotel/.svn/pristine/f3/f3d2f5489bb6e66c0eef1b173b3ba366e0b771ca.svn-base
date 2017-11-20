@@ -1,0 +1,36 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <BitmapImage x:Key="logo" UriSource="Images\logo.png"></BitmapImage>
+    <BitmapImage x:Key="Logo" UriSource="Images\img-logo.png"></BitmapImage>
+    <BitmapImage x:Key="wangzhan" UriSource="Images\img-about-wangzhan.png"></BitmapImage>
+    <BitmapImage x:Key="dianhua" UriSource="Images\img-about-tel.png"></BitmapImage>
+    <BitmapImage x:Key="youxiang" UriSource="Images\img-about-youxiang-.png"></BitmapImage>
+    <BitmapImage x:Key="btnright" UriSource="Images\btn-right-h.png"></BitmapImage>
+    <BitmapImage x:Key="btnleft" UriSource="Images\btn-left-h.png"></BitmapImage>
+    <BitmapImage x:Key="imgkatong" UriSource="Images\img-katong.png"></BitmapImage>
+    <BitmapImage x:Key="iconxiala" UriSource="Images\icon-xiala.png"></BitmapImage>
+    <BitmapImage x:Key="iconlei" UriSource="Images\icon_form_leixing1.png"></BitmapImage>
+    <BitmapImage x:Key="iconchi" UriSource="Images\icon_form_chicun.png"></BitmapImage>
+    <BitmapImage x:Key="icondanju" UriSource="Images\icon_form_danjuhao.png"></BitmapImage>
+    <BitmapImage x:Key="iconweizhi" UriSource="Images\icon_form_zuihoudadadi.png"></BitmapImage>
+    <BitmapImage x:Key="iconjiudian" UriSource="Images\icon_form_shiyongfang.png"></BitmapImage>
+    <BitmapImage x:Key="iconshuliang" UriSource="Images\icon_form_shulaing1.png"></BitmapImage>
+    <BitmapImage x:Key="iconshijian" UriSource="Images\icon_form_tourushijian.png"></BitmapImage>
+    <BitmapImage x:Key="iconzhidan" UriSource="Images\icon_form_zhidanren.png"></BitmapImage>
+    <BitmapImage x:Key="icolouceng" UriSource="Images\icon_form_louceng.png"></BitmapImage>
+    <BitmapImage x:Key="icondin" UriSource="Images\icon_form_dingdanshu.png"></BitmapImage>
+    <BitmapImage x:Key="iconfan" UriSource="Images\icon_form_fanxishu.png"></BitmapImage>
+    <BitmapImage x:Key="iconliu" UriSource="Images\icon_form_liutongleibei.png"></BitmapImage>
+    <BitmapImage x:Key="iconshi" UriSource="Images\icon_form_shifashu.png"></BitmapImage>
+    <BitmapImage x:Key="iconlogin" UriSource="Images\icon_login_code.png"></BitmapImage>
+    <BitmapImage x:Key="iconname" UriSource="Images\icon_login_name.png"></BitmapImage>
+    <BitmapImage x:Key="iconback" UriSource="Images\icon_btn_back.png"></BitmapImage>
+    <ImageBrush x:Key="bgShouye" ImageSource="Images\bg_shouye_10.png"></ImageBrush>
+    <ImageBrush x:Key="bgLogin" ImageSource="Images\bg-login.png"></ImageBrush>
+    <ImageBrush x:Key="iconselect" ImageSource="Images\icon_login_selected.png"></ImageBrush>
+    <ImageBrush x:Key="bgheader" ImageSource="Images\bg-header.png"></ImageBrush>
+    <ImageBrush x:Key="bgneiye" ImageSource="Images\bg-neiye2.png"></ImageBrush>
+    <ImageBrush x:Key="ToolsBottom" ImageSource="Images\bg-table-di.png"></ImageBrush>
+    <ImageBrush x:Key="bgneiye3" ImageSource="Images\bg-neiye3.png"></ImageBrush>
+</ResourceDictionary>
+    

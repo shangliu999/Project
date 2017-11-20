@@ -1,0 +1,47 @@
+﻿
+<div class="modal inmodal" id="detailModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">洗涤价格</h4>
+            </div>
+            <form class="form-horizontal">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">酒店</label>
+                        <div class="col-lg-4">
+                            <label id="HotelName" class="control-label" style="font-weight:normal;"></label>
+                        </div>
+                    </div>
+                    <label class="col-lg-2 control-label">数据来源</label>
+                    <div class="col-lg-4">
+                        <label id="DataSources" class="control-label" style="font-weight:normal;"></label>
+                    </div>
+                    <label class="col-lg-2 control-label">结算方式</label>
+                    <div class="col-lg-4">
+                        <label id="SettlementMode" class="control-label" style="font-weight:normal;"></label>
+                    </div>
+                    <div class="form-group">
+                        <div class="table-responsive dataTables_wrapper" style="margin-left:20px;margin-right:20px;">
+                            <table id="rent-table-detail" class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>类型</th>
+                                        <th>尺寸</th>
+                                        <th>价格</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

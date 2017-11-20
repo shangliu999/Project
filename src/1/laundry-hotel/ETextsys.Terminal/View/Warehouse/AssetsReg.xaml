@@ -1,0 +1,288 @@
+﻿<Window x:Class="ETextsys.Terminal.View.Warehouse.AssetsReg"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ETextsys.Terminal.View.Warehouse" 
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+        xmlns:lw="clr-namespace:ETextsys.Terminal.View.Choose"
+        mc:Ignorable="d" Style="{DynamicResource FuncWindow}" WindowStartupLocation="CenterScreen"
+        Title="Register" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="126"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="92"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="{DynamicResource Headerbg}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Border Name="ReaderBorder" HorizontalAlignment="Left" Margin="25,0,0,0" Width="110" Height="110" CornerRadius="115" Tag="{Binding Model.ReaderState}">
+                <Border.Background>
+                    <VisualBrush>
+                        <VisualBrush.Visual>
+                            <MediaElement Name="ReaderME" Cursor="Hand" UnloadedBehavior="Manual" Source="{Binding Model.ReaderLight}" >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MediaEnded">
+                                        <i:InvokeCommandAction Command="{Binding MediaEndedCommand}" CommandParameter="{Binding ElementName=ReaderME}"></i:InvokeCommandAction>
+                                    </i:EventTrigger>
+
+                                </i:Interaction.Triggers>
+                            </MediaElement>
+                        </VisualBrush.Visual>
+                    </VisualBrush>
+                </Border.Background>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="PreviewMouseDown">
+                        <i:InvokeCommandAction Command="{Binding ReaderStateChanged}" CommandParameter="{Binding ElementName=ReaderBorder}"></i:InvokeCommandAction>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Border>
+
+
+            <TextBlock Grid.Column="1" Style="{DynamicResource FuncTitle}" Margin="0,0,0,25" Text="资产登记"></TextBlock>
+            <Button Grid.Column="2" Style="{DynamicResource BackBtn}" Command="{Binding CloseModal}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,15,15,0"></Button>
+        </Grid>
+        <Grid Grid.Row="1" Margin="20,0,20,5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"></RowDefinition>
+                <RowDefinition Height="60"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition Width="10"></ColumnDefinition>
+                <ColumnDefinition Width="270"></ColumnDefinition>
+                <ColumnDefinition Width="50"></ColumnDefinition>
+                <ColumnDefinition Width="10"></ColumnDefinition>
+                <ColumnDefinition Width="250"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="10"></ColumnDefinition>
+                <ColumnDefinition Width="230"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Style="{DynamicResource FuncAttrTitle}" Text="资产类型:"></TextBlock>
+            <!--<Button Grid.Row="0" Grid.Column="2" Style="{DynamicResource ChooseBtn}" Content="{Binding Model.AssetsTypeName}" Command="{Binding ChooseAttrChanged}" CommandParameter="AssetsType"></Button>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="*" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Red" FontWeight="Bold" FontSize="20"></TextBlock>-->
+            <StackPanel Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="4" VerticalAlignment="Center" Orientation="Horizontal">
+                <Button Margin="0,0,0,0" Command="{Binding TabCommand}" CommandParameter="Bag" Cursor="Hand">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="sp" Width="140" Height="50"  CornerRadius="5" VerticalAlignment="Center" Background="#FFF" BorderThickness="2" BorderBrush="Red">
+                                <Canvas>
+                                    <TextBlock Name="lbl" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="38,10" Text="布草包" Foreground="#000" FontFamily="Microsoft YaHei"></TextBlock>
+                                    <Image Name="img" Visibility="Visible" Source="{DynamicResource IconChoose}" Width="42" Height="42" HorizontalAlignment="Right" Margin="95,5,0,0"></Image>
+                                </Canvas>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <DataTrigger Binding="{Binding Model.AssetsType}" Value="1">
+                                    <Setter TargetName="sp" Property="BorderThickness" Value="2"></Setter>
+                                    <Setter TargetName="sp" Property="BorderBrush" Value="red"></Setter>
+                                    <Setter TargetName="img" Property="Visibility" Value="Visible"></Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Model.AssetsType}" Value="2">
+                                    <Setter TargetName="sp" Property="BorderThickness" Value="1"></Setter>
+                                    <Setter TargetName="sp" Property="BorderBrush" Value="#A3CEFF"></Setter>
+                                    <Setter TargetName="img" Property="Visibility" Value="Collapsed"></Setter>
+                                </DataTrigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Margin="50,0,0,0" Command="{Binding TabCommand}" CommandParameter="Truck" Cursor="Hand">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="sp" Width="140" Height="50"  CornerRadius="5" VerticalAlignment="Center" Background="#FFF" BorderThickness="1" BorderBrush="#A3CEFF">
+                                <Canvas>
+                                    <TextBlock Name="lbl" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="38,10" Text="架子车" Foreground="#000" FontFamily="Microsoft YaHei"></TextBlock>
+                                    <Image Name="img" Source="{DynamicResource IconChoose}" Visibility="Collapsed" Width="42" Height="42" HorizontalAlignment="Right" Margin="95,5,0,0"></Image>
+                                </Canvas>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <DataTrigger Binding="{Binding Model.AssetsType}" Value="2">
+                                    <Setter TargetName="sp" Property="BorderThickness" Value="2"></Setter>
+                                    <Setter TargetName="sp" Property="BorderBrush" Value="red"></Setter>
+                                    <Setter TargetName="img" Property="Visibility" Value="Visible"></Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Model.AssetsType}" Value="1">
+                                    <Setter TargetName="sp" Property="BorderThickness" Value="1"></Setter>
+                                    <Setter TargetName="sp" Property="BorderBrush" Value="#A3CEFF"></Setter>
+                                    <Setter TargetName="img" Property="Visibility" Value="Collapsed"></Setter>
+                                </DataTrigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </StackPanel>
+            <TextBlock Grid.Row="1" Grid.Column="0" Style="{DynamicResource FuncAttrTitle}" Text="编码:"></TextBlock>
+            <Border Grid.Column="2" Grid.Row="1" Margin="0,0,0,0" Style="{StaticResource borderstyle1}">
+                <TextBox  Style="{StaticResource txtstyle1}" Text="{Binding Model.Code,UpdateSourceTrigger=PropertyChanged}" MaxLength="20" InputMethod.IsInputMethodEnabled="False" ></TextBox>
+            </Border>
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="*" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Red" FontWeight="Bold" FontSize="20"></TextBlock>
+            <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="9">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="310"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="460"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="460"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Style="{DynamicResource GridOutTitle}" Text="未登记显示表" VerticalAlignment="Bottom" Margin="0,0,0,5"></TextBlock>
+                <Border Grid.Row="1" Grid.Column="0"  BorderBrush="#A3CEFF" CornerRadius="6" BorderThickness="6">
+                    <DataGrid Style="{DynamicResource DefaultGrid}" Height="300" ItemsSource="{Binding}" DataContext="{Binding Model.UnRegTable}">
+                        <DataGrid.RowStyle>
+                            <Style TargetType="{x:Type DataGridRow}">
+                                <Style.Triggers>
+                                    <Trigger Property="ItemsControl.AlternationIndex"  Value="0">
+                                        <Setter Property="Background" Value="#FFF" />
+                                    </Trigger>
+                                    <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                        <Setter Property="Background" Value="#F0F7FF" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="Background" Value="#FD0606"/>
+                                <Setter Property="Foreground" Value="#FFF" />
+                                <Setter Property="Height" Value="34" />
+                                <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+                                <Setter Property="FontSize" Value="18"></Setter>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn   Width="*">
+                                <DataGridTemplateColumn.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{DynamicResource IconRFID_White}" Width="26" Height="26" Margin="10,0,10,0"></Image>
+                                        <TextBlock Text="芯片码"></TextBlock>
+                                    </StackPanel>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock  Text="{Binding Path=RFID}" Margin="5,0,0,0" FontFamily="微软雅黑" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="120" Visibility="Collapsed">
+                                <DataGridTemplateColumn.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{DynamicResource IconWashingCount_White}" Width="26" Height="26" Margin="0,0,10,0"></Image>
+                                        <TextBlock Text="洗涤次数"></TextBlock>
+                                    </StackPanel>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=RFIDWashingTime}" FontFamily="Arial" FontSize="18"  HorizontalAlignment="Right" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="LightBlue"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.CellStyle>
+                    </DataGrid>
+                </Border>
+
+
+                <TextBlock Grid.Row="0" Grid.Column="2" Style="{DynamicResource GridOutTitle}" Text="已登记汇总表" VerticalAlignment="Bottom" Margin="0,0,0,5"></TextBlock>
+                <Border Grid.Row="1" Grid.Column="2"  BorderBrush="#A3CEFF" CornerRadius="6" BorderThickness="6">
+                    <DataGrid Style="{DynamicResource DefaultGrid}" Height="300" ItemsSource="{Binding}" DataContext="{Binding Model.RegTable}">
+                        <DataGrid.RowStyle>
+                            <Style TargetType="{x:Type DataGridRow}">
+                                <Style.Triggers>
+                                    <Trigger Property="ItemsControl.AlternationIndex"  Value="0">
+                                        <Setter Property="Background" Value="#FFF" />
+                                    </Trigger>
+                                    <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                        <Setter Property="Background" Value="#F0F7FF" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="Background" Value="#D4E8FF"/>
+                                <Setter Property="Foreground" Value="#0069F9" />
+                                <Setter Property="Height" Value="34" />
+                                <Setter Property="FontFamily" Value="Microsoft YaHei"></Setter>
+                                <Setter Property="FontSize" Value="18"></Setter>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Width="*">
+                                <DataGridTemplateColumn.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{DynamicResource IconClass}" Width="26" Height="26" Margin="10,0,10,0"></Image>
+                                        <TextBlock Text="资产类型"></TextBlock>
+                                    </StackPanel>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock  Text="{Binding Path=ClassName}" Margin="5,0,0,0" FontFamily="微软雅黑" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Width="100">
+                                <DataGridTemplateColumn.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{DynamicResource IconTextileCount}" Width="26" Height="26" Margin="20,0,10,0"></Image>
+                                        <TextBlock Text="数量"></TextBlock>
+                                    </StackPanel>
+                                </DataGridTemplateColumn.Header>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=TextileCount}" FontFamily="Arial" FontSize="18" Margin="0,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+
+                        </DataGrid.Columns>
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="LightBlue"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.CellStyle>
+                    </DataGrid>
+                </Border>
+
+
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="2" VerticalAlignment="Bottom" Background="{DynamicResource ToolsBottom}" Height="92">
+            <StackPanel Width="400" Orientation="Horizontal"  HorizontalAlignment="Left" Margin="20,0,0,0">
+                <Image Source="{DynamicResource IconUnRegister}" Width="30" Height="30"></Image>
+                <TextBlock Text="未登记：" Style="{DynamicResource UnRegister}"></TextBlock>
+                <TextBlock Style="{DynamicResource UnRegister}" Text="{Binding Model.UnRegisterTotal}" Margin="0,0,20,0"></TextBlock>
+                <Image Source="{DynamicResource IconRegisted}" Width="30" Height="30"></Image>
+                <TextBlock Text="已登记：" Style="{DynamicResource Registed}"></TextBlock>
+                <TextBlock Style="{DynamicResource Registed}" Text="{Binding Model.TextileCount}"></TextBlock>
+            </StackPanel>
+            <Grid Width="500" HorizontalAlignment="Right" Margin="0,0,20,0">
+                <Button Style="{DynamicResource ReScanBtn}" IsEnabled="{Binding Model.CancelEnabled}" Command="{Binding CancelCommand}" HorizontalAlignment="Right" Margin="0,0,154,0"></Button>
+                <Button Style="{DynamicResource SubmitBtn}" HorizontalAlignment="Right" IsEnabled="{Binding Model.SubmitEnabled}" Command="{Binding SubmitCommand}"></Button>
+            </Grid>
+        </Grid>
+        <lw:LoadingWait Grid.RowSpan="3" Visibility="{Binding Model.WaitVisibled}" Tag="{Binding Model.WaitContent}"></lw:LoadingWait>
+    </Grid>
+</Window>

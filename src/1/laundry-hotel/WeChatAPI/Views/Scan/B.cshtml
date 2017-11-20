@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户绑定</title>
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/modernizr-2.6.2.js")"></script>
+    <script type="text/javascript" src="https://cdn.goeasy.io/goeasy.js"></script>
+    <script src="@Url.Content("~/Scripts/ConfigureJs.js")"></script>
+</head>
+<body>
+
+
+    <div class="container body-content" style="margin:auto 0;text-align:center;">
+        <div id="cg" style="display:none;">
+            <img src="@Url.Content("../../Images/icon-chenggong.png")" style="width:120px;height:120px;" />
+            <div style="font-size:25px;color:#21af37;padding-top:20px;font-family:'Microsoft YaHei';">关联成功</div>
+            <div style="font-size:18px;color:#666;padding-top:20px;font-family:'Microsoft YaHei';">如您还未关注此公众号<br />长按下方二维码可快速关注</div>
+            <img src="@Url.Content("../../Images/weichat.png")" style="width:200px;height:200px;" />
+            <div style="padding-top:20px;"><a href="JavaScript:WeixinJSBridge.call('closeWindow');" style="display:inline-block;background-color:#21af37;width:90%; height:45px; border:0;border-radius:6px;color:#FFF;font-size:20px;padding-top:8px;">关闭窗口</a></div>
+
+        </div>
+        <div id="sx" style="display:none;">
+            <img src="@Url.Content("../../Images/icon-wuquanxian.png")" style="width:120px;height:120px;" />
+            <div style="font-size:25px;color:#ffc10a;padding-top:20px;font-family:'Microsoft YaHei';">当前二维码已失效</div>
+            <div style="font-size:18px;color:#666;padding-top:20px;font-family:'Microsoft YaHei';">如您还未关注此公众号<br />长按下方二维码可快速关注</div>
+            <img src="@Url.Content("../../Images/weichat.png")" style="width:200px;height:200px;" />
+            <div style="padding-top:20px;"><a href="JavaScript:WeixinJSBridge.call('closeWindow');" style="display:inline-block;background-color:#21af37;width:90%; height:45px; border:0;border-radius:6px;color:#FFF;font-size:20px;padding-top:8px;">关闭窗口</a></div>
+        </div>
+        <div id="yg" style="display:none;">
+            <img src="@Url.Content("../../Images/icon-wuquanxian.png")" style="width:120px;height:120px;" />
+            <div style="font-size:25px;color:#ffc10a;padding-top:20px;font-family:'Microsoft YaHei';">当前微信已经关联其他账号</div>
+            <div style="font-size:18px;color:#666;padding-top:20px;font-family:'Microsoft YaHei';">如您还未关注此公众号<br />长按下方二维码可快速关注</div>
+            <img src="@Url.Content("../../Images/weichat.png")" style="width:200px;height:200px;" />
+            <div style="padding-top:20px;"><a href="JavaScript:WeixinJSBridge.call('closeWindow');" style="display:inline-block;background-color:#21af37;width:90%; height:45px; border:0;border-radius:6px;color:#FFF;font-size:20px;padding-top:8px;">关闭窗口</a></div>
+
+        </div>
+    </div>
+
+    <script src="@Url.Content("~/Scripts/jquery-1.10.2.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+    <script>
+        function GetQueryString(name) {
+            var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) {
+                return unescape(r[2]);
+            }
+            return null;
+        }
+
+        $(function () {
+            if ("@ViewData["effective"]" == "0") {
+                $("#sx").show();
+            } else {
+                var access_code = GetQueryString('code');
+                if (access_code == null || access_code == "") {
+                    var fromurl = location.href;
+                    var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + '@ViewData["AppId"]' + '&redirect_uri=' + encodeURIComponent(fromurl) + '&response_type=code&scope=snsapi_base&state=etexsys&connect_redirect=1#wechat_redirect';
+                    location.href = url;
+                }
+                else {
+                    _url = "@Url.Action("BindingCallback", "Scan")";
+                    var userId = "@ViewData["UserId"]";
+                    var code = "@ViewData["Code"]";
+                    $.ajax({
+                        type: 'POST',
+                        url: _url,
+                        data: { access_code: access_code, userId: userId, code: code },
+                        dataType: 'json',
+                        cache: false,
+                        success: function (data) {
+                            if (data.ResultCode == 1) {
+                                alert("绑定失败.");
+                            } else {
+                                if (data.OtherCode == "1") {
+                                    $("#yg").show();
+                                } else {
+                                    var goEasy = new GoEasy({
+                                        appkey: config.goEasyAppKey
+                                    });
+                                    goEasy.publish({
+                                        channel: "bindingChannel_" + code + "_" + userId,
+                                        message: "OK"
+                                    });
+                                    $("#cg").show();
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

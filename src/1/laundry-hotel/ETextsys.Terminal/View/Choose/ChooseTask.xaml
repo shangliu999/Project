@@ -1,0 +1,81 @@
+﻿<Window x:Class="ETextsys.Terminal.View.Choose.ChooseTask"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ETextsys.Terminal.View.Choose"
+       xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+        xmlns:lw="clr-namespace:ETextsys.Terminal.View.Choose"
+        mc:Ignorable="d" Style="{DynamicResource FuncWindow}" WindowStartupLocation="CenterScreen"
+        Title="依据选择">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="126"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="92"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="{DynamicResource Headerbg}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="1" Style="{DynamicResource FuncTitle}" Margin="0,0,0,25" Text="{Binding Model.Title}"></TextBlock>
+            <Button Grid.Column="2" Style="{DynamicResource BackBtn}" Command="{Binding CloseModal}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,15,15,0"></Button>
+        </Grid>
+        <WrapPanel Grid.Row="1">
+            <ListBox Name="myListBox" ItemsSource="{Binding Model.ChooseList}" Background="Transparent" BorderThickness="0">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="4"></UniformGrid>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <Button Margin="17,22,17,22" Style="{DynamicResource TaskModalChooseBtn}" Tag="{Binding IsChoose}"
+                                    Command="{Binding DataContext.SelectionChangedCmd, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window}}"
+                                    CommandParameter="{Binding ChooseID}">
+                                <Button.InputBindings>
+                                    <MouseBinding Command="{Binding DataContext.SubmitCommand, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window}}" MouseAction="LeftDoubleClick"/>
+                                </Button.InputBindings>
+                                <!--<i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseDoubleClick">
+                                        <i:InvokeCommandAction Command="{Binding DataContext.SubmitAction, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window}}" CommandParameter="{Binding ChooseID}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>-->
+                            </Button>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <!-- 设置控件模板 -->
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <Border Background="{TemplateBinding Background}">
+                                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                 TextBlock.Foreground="{TemplateBinding Foreground}"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
+        </WrapPanel>
+        <Grid Grid.Row="2" VerticalAlignment="Bottom" Background="{DynamicResource ToolsBottom}" Height="92">
+            <StackPanel Width="1000" Orientation="Horizontal"  HorizontalAlignment="Left" Margin="20,0,20,0">
+                <Button Style="{DynamicResource LeftBtn}" IsEnabled="{Binding Model.LeftEnabled}" Command="{Binding LeftCommand}"></Button>
+                <TextBlock Text="{Binding Model.Page}" Style="{DynamicResource Page}" Margin="20,0,20,0"></TextBlock>
+                <Button Style="{DynamicResource RightBtn}" IsEnabled="{Binding Model.RightEnabled}" Command="{Binding RightCommand}"></Button>
+            </StackPanel>
+            <Grid Width="600" HorizontalAlignment="Right" Margin="0,0,20,0">
+                <Button Style="{DynamicResource PrintBtn}" Content="打印" IsEnabled="{Binding Model.PrintEnabled}" Command="{Binding PrintCommand}" HorizontalAlignment="Right" Margin="0,0,150,0"></Button>
+                <Button Style="{DynamicResource SubmitBtn}" HorizontalAlignment="Right" IsEnabled="{Binding Model.SubmitEnabled}" Command="{Binding SubmitCommand}"></Button>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

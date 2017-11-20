@@ -1,0 +1,70 @@
+﻿@model List<ETexsys.Model.sys_right>
+<nav class="navbar-default navbar-static-side" role="navigation" style="position: fixed;top: auto;float: none !important;z-index: 1027;">
+    <div class="sidebar-collapse full-height-scroll" style="padding-bottom:5rem;">
+        <ul class="nav metismenu" id="side-menu">
+            @if (Model.Count > 0)
+            {
+                var oneMenu = Model.Where(v => v.RightParentID == null && v.ShowInMainMenu == true).OrderBy(v => v.RightSort).ThenBy(v => v.RightName).ToList();
+
+                foreach (var oneItem in oneMenu)
+                {
+                    var twoMenu = Model.Where(v => v.RightParentID == oneItem.RightID && v.ShowInMainMenu == true).OrderBy(v => v.RightSort).ThenBy(v => v.RightName).ToList();
+                    if (twoMenu.Count > 0)
+                    {
+                        <li>
+                            <a href="#"><i class="@oneItem.RightIcon"></i> <span class="nav-label">@oneItem.RightName</span><span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+                                @foreach (var twoItem in twoMenu)
+                                {
+                                    var threeMenu = Model.Where(v => v.RightParentID == twoItem.RightID && v.ShowInMainMenu == true).OrderBy(v => v.RightSort).ThenBy(v => v.RightName).ToList();
+                                    if (threeMenu.Count > 0)
+                                    {
+                                        <li>
+                                            <a href="#">@twoItem.RightName</a>
+                                            <ul class="nav nav-third-level">
+                                                @foreach (var threeItem in threeMenu)
+                                                {
+                                                    string u = "";
+                                                    if (threeItem.RightUrl != null && threeItem.RightUrl != "")
+                                                    {
+                                                        u = Url.Content("~" + threeItem.RightUrl);
+                                                    }
+                                                    <li>
+                                                        <a href="#" onclick="ClickFunc('@u',this,@threeItem.RightID)">@threeItem.RightName</a>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        string u = "";
+                                        if (twoItem.RightUrl != null && twoItem.RightUrl != "")
+                                        {
+                                            u = Url.Content("~" + twoItem.RightUrl);
+                                        }
+                                        <li><a href="#" onclick="ClickFunc('@u',this,@twoItem.RightID)">@twoItem.RightName</a></li>
+                                    }
+                                }
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        string u = "";
+                        if (oneItem.RightUrl != null && oneItem.RightUrl != "")
+                        {
+                            u = Url.Content("~" + oneItem.RightUrl);
+                        }
+                        <li>
+
+                            <a href="#" onclick="ClickFunc('@u',this,@oneItem.RightID)"><i class="@oneItem.RightIcon"></i> <span class="nav-label">@oneItem.RightName</span></a>
+                        </li>
+                    }
+                }
+            }
+
+        </ul>
+
+    </div>
+</nav>

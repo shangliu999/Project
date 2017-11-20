@@ -1,0 +1,103 @@
+﻿@model ETexsys.Model.pricetemplate
+<div class="modal inmodal" id="updatamodal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">租赁价格修改</h4>
+            </div>
+            <form class="form-horizontal" id="updataBrandForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        @Html.HiddenFor(m => m.ID)
+                        <label class="col-lg-3 control-label">酒店名称</label>
+                        <div class="col-lg-7">
+                            <input type="text" class="form-control" required="required" id="hotelname" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">数据来源</label>
+                        <div class="col-lg-7">
+                            <select class="form-control" id="udatasources" onchange="udatasourcesChange()">
+                                <option value="1">租赁配置数</option>
+                                <option value="2">下单</option>
+                                <option value="3">污物送洗</option>
+                                <option value="4">净物配送</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">结算方式</label><div class="col-lg-7">
+                            <select class="form-control" id="usettlementMode">
+                                @*<option value="1">按次</option>
+                                <option value="2">按天</option>*@
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">包含尺寸</label>
+                        <div class="col-lg-4" id="HandConfirm">
+                            <div class="i-checks"><label><input type="checkbox" onclick="onSizeChange(this)" value="1" id="cbSubType" name="HandComfirm"> <i></i>是</label></div>
+                        </div>
+                    </div>
+                    @{ var classList = ViewData["ClassList"] as List<ETexsys.Model.textileclass>;
+                        var sizeList = ViewData["SizeList"] as List<ETexsys.Model.size>;
+                        var classSizeList = ViewData["ClassSizeList"] as List<ETexsys.Model.classsize>;
+                    }
+                    <div id="updataContent">
+                        <div id="havesize" style="display:none">
+                            @foreach (var item in classList)
+                            {
+                                var q = from s in sizeList
+                                        join cs in classSizeList on s.ID equals cs.SizeID
+                                        where cs.ClassID == item.ID
+                                        select new { s.ID, s.SizeName };
+                                var sList = q.ToList();
+                                if (sList.Count > 0)
+                                {
+                                    foreach (var i in sList)
+                                    {
+                                        <div class="form-group">
+                                            <label class="col-lg-3 control-label">@item.ClassName-@i.SizeName</label>
+                                            <div class="col-lg-3">
+                                                <input type="text" data-type="price1" class="form-control" data-sizeId="@i.ID" data-classId="@item.ID" />
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    //不存在尺寸
+                                    <div class="form-group">
+                                        <label class="col-lg-3 control-label">@item.ClassName</label>
+                                        <div class="col-lg-3">
+                                            <input type="text" data-type="price1" class="form-control" data-classId="@item.ID" />
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+
+                        <div id="notsize">
+                            @foreach (var item in classList)
+                            {
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label">@item.ClassName</label>
+                                    <div class="col-lg-3">
+                                        <input type="text" data-type="price1" class="form-control" data-classId="@item.ID" />
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c326a730b3d5476590185cacf8ba377c" Name="Diagram1" ZoomLevel="72">
+        <EntityTypeShape EntityType="laundry_hotelModel.bag" Width="1.5" PointX="0.75" PointY="5.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.brandtype" Width="1.5" PointX="2.75" PointY="5.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.businessdetail" Width="1.5" PointX="5.75" PointY="4.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.businessinvoice" Width="1.5" PointX="7.75" PointY="0.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.car" Width="1.5" PointX="7.75" PointY="5.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.category" Width="1.5" PointX="4.75" PointY="8.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.classsize" Width="1.5" PointX="9.75" PointY="0.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.color" Width="1.5" PointX="0.75" PointY="9.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.complain" Width="1.5" PointX="9.75" PointY="3.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.complainattach" Width="1.5" PointX="6.75" PointY="9.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.complainmessage" Width="1.5" PointX="9.75" PointY="7.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.dataversion" Width="1.5" PointX="8.75" PointY="10.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.fabric" Width="1.5" PointX="10.75" PointY="10.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.fc_invoice" Width="1.5" PointX="11.75" PointY="0.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.goods" Width="1.5" PointX="11.75" PointY="3.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.goodscate" Width="1.5" PointX="2.75" PointY="12.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.goodsorder" Width="1.5" PointX="4.75" PointY="12.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.goodsorderdetail" Width="1.5" PointX="12.75" PointY="8.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.hotel_detail" Width="1.5" PointX="12.75" PointY="12.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.integraldetail" Width="1.5" PointX="13.75" PointY="0.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.inventory" Width="1.5" PointX="13.75" PointY="3.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.invoice" Width="1.5" PointX="6.75" PointY="13.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.invoiceattach" Width="1.5" PointX="14.75" PointY="7.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.invoicedetail" Width="1.5" PointX="14.75" PointY="10.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.invoicelog" Width="1.5" PointX="15.75" PointY="0.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.invoicelogdetail" Width="1.5" PointX="15.75" PointY="3.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.invoicerfid" Width="1.5" PointX="8.75" PointY="15.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.notice" Width="1.5" PointX="0.75" PointY="16.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.organise" Width="1.5" PointX="16.75" PointY="7.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.personnelplace" Width="1.5" PointX="10.75" PointY="16.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.pricedetail" Width="1.5" PointX="16.75" PointY="11.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.pricetemplate" Width="1.5" PointX="12.75" PointY="16.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.qrcode" Width="1.5" PointX="16.75" PointY="14.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.region" Width="1.5" PointX="17.75" PointY="0.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.region_setting" Width="1.5" PointX="14.75" PointY="17.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.rentmatch" Width="1.5" PointX="16.75" PointY="17.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.repeatop" Width="1.5" PointX="2.75" PointY="18.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.rfidreplace" Width="1.5" PointX="18.75" PointY="7.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.rfidtag" Width="1.5" PointX="18.75" PointY="11.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.scrap" Width="1.5" PointX="18.75" PointY="14.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.scrapdetail" Width="1.5" PointX="18.75" PointY="18.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.size" Width="1.5" PointX="19.75" PointY="0.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.sys_admin" Width="1.5" PointX="19.75" PointY="4.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.sys_application" Width="1.5" PointX="0.75" PointY="1.5" />
+        <EntityTypeShape EntityType="laundry_hotelModel.sys_customer" Width="1.5" PointX="4.75" PointY="19.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.sys_customer_right" Width="1.5" PointX="6.75" PointY="20.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.sys_privilege" Width="1.5" PointX="20.75" PointY="7.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.sys_right" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="laundry_hotelModel.sys_right_button" Width="1.5" PointX="5.25" PointY="1.375" />
+        <EntityTypeShape EntityType="laundry_hotelModel.sys_role" Width="1.5" PointX="8.75" PointY="20.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.sys_user" Width="1.5" PointX="20.75" PointY="10.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.sys_user_dataview" Width="1.5" PointX="10.75" PointY="20.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.sys_user_role" Width="1.5" PointX="20.75" PointY="16.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.task" Width="1.5" PointX="20.75" PointY="20.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.textile" Width="1.5" PointX="21.75" PointY="0.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.textilebrandarea" Width="1.5" PointX="22.75" PointY="6.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.textileclass" Width="1.5" PointX="22.75" PointY="10.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.textilegroup" Width="1.5" PointX="12.75" PointY="22.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.truck" Width="1.5" PointX="14.75" PointY="22.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.truck_textile" Width="1.5" PointX="22.75" PointY="15.75" />
+        <EntityTypeShape EntityType="laundry_hotelModel.unit" Width="1.5" PointX="22.75" PointY="18.75" />
+        <AssociationConnector Association="laundry_hotelModel.right_appid_key" />
+        <AssociationConnector Association="laundry_hotelModel.right_btn_key" />
+        <EntityTypeShape EntityType="laundry_hotelModel.v_textile_tag" Width="1.5" PointX="0.75" PointY="23.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

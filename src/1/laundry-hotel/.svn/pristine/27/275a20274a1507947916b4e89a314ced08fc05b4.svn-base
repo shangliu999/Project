@@ -1,0 +1,263 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title>登录</title>
+    <meta name="description" content="用户登录" />
+    <meta name="keywords" content="RFID,RFID洗涤,纺织品洗涤,纺织品租赁,酒店洗涤" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <link type="image/x-icon" rel="shortcut icon" href="@Url.Content("favicon.ico")">
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/bootstrap.min.css")" />
+    <link href="@Url.Content("~/Content/font-awesome.min.css")" type="text/css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/animate.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/style.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/Login.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/plugins/sweetalert/sweetalert.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Scripts/ConfigJs.js")"></script>
+    <script type="text/javascript" src="https://cdn.goeasy.io/goeasy.js"></script>
+</head>
+
+<body style="background:#0294dd" id="bodybac">
+    <div class="peripheral">
+        <div>
+            <div class="imagediv">
+                <img src="@Url.Content("~/Images/img-zhanshi.png")" />
+            </div>
+            <div class="headdiv">
+                <div class="inputdiv" id="inputLogin">
+                    <div class="qrCodeimg">
+                        <img src="@Url.Content("~/Images/img-saomadenglu.png")" id="btnQrCode" class="hedimg" style="cursor:pointer" />
+                    </div>
+                    <label class="uidlable">账号登录</label>
+                    <form id="login">
+                        <div class="uiddiv">
+                            <div class="childuiddiv">
+                                <div class="imgdiv">
+                                    <img src="@Url.Content("~/Images/icon-name.png")" class="kkkk" />
+                                </div>
+                            </div>
+                            <div class="uidtxtdiv">
+                                <input type="text" id="userName" name="name" class="inputtxt" value="@ViewData["uid"].ToString()" placeholder="登录名" />
+                            </div>
+                        </div>
+                        <div class="pwddiv">
+                            <div class="childpwddiv">
+                                <div class="imagepwddiv">
+                                    <img src="@Url.Content("~/Images/icon-code.png")" class="pppp" />
+                                </div>
+                            </div>
+                            <div class="inputpwddiv">
+                                <input type="password" id="passWord" name="name" value="" class="inputtxtpwd" placeholder="密码" />
+                            </div>
+                        </div>
+                        <div class="userinfodiv">
+                            <input type="checkbox" name="name" value="" id="checkid" checked="checked" />
+                            <label class="userinfotxt">保留用户信息</label>
+                        </div>
+                        <div class="submitdiv">
+                            <input type="submit" value="登录" class="submitbut" />
+                        </div>
+                    </form>
+                </div>
+                <!--二维码登录-->
+                <div class="qrcodelogin" id="qrcodeLogin">
+                    <div class="div1">
+                        <img src="@Url.Content("~/Images/img-zhanghaodenglu.png")" style="cursor:pointer" class="img1" id="btnInput" />
+                    </div>
+                    <div class="Promptdiv">
+                        <label class="qrcodetxt">微信扫码，安全登录</label>
+                    </div>
+                    <div class="qrcodediv">
+                        <div id="qrcode" class="qrcode1"></div>
+                    </div>
+                    <div class="promptdiv2">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Mainly scripts -->
+    <script src="@Url.Content("~/Scripts/jquery-1.10.2.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/plugins/sweetalert/sweetalert.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.md5.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.qrcode.min.js")"></script>
+    <script type="text/javascript">
+
+        function newGuid() {
+            var guid = "";
+            for (var i = 1; i <= 32; i++) {
+                var n = Math.floor(Math.random() * 16.0).toString(16);
+                guid += n;
+                if ((i == 8) || (i == 12) || (i == 16) || (i == 20))
+                    guid += "-";
+            }
+            return guid;
+        }
+
+
+
+        $("#btnQrCode").on("click", function () {
+            if (
+                $("#qrcodeLogin").css("display") == 'none') {
+                $("#inputLogin").css("display", 'none')
+                $("#qrcodeLogin").css("display", 'block')
+                $("#bodybac").css("background", "#B6DAFF");
+                QrCode()
+            }
+            else {
+                $("#inputLogin").show();
+                $("#qrcodeLogin").hide();
+                $("#btnSwitch").val("微信登录");
+            }
+        });
+        $("#btnInput").on('click', function () {
+            if ($("#inputLogin").css("display") == 'none') {
+                $("#qrcodeLogin").css("display", 'none')
+                $("#inputLogin").css("display", 'block')
+                $("#bodybac").css("background", "#0294dd");
+            }
+        })
+
+        function QrCode() {
+            $("#qrcode").empty();
+            var timestamp = Date.parse(new Date());
+            timestamp = timestamp / 1000;
+            var code = "@ViewData["Code"].ToString()";
+            var guid = newGuid().toUpperCase();
+            var txt = config.wxAuthorizeUrl + "Scan/L/?scode=" + code + "&GUID=" + guid + "&t=" + timestamp;
+            console.log(txt);
+            $("#qrcode").qrcode({
+                render: "table",
+                width: 280,
+                height: 280,
+                text: txt
+            });
+            var goeasy = new GoEasy({
+                appkey: config.goEasyAppKey
+            });
+
+            goeasy.subscribe({
+                channel: "bindingChannel_" + code + "_" + guid,
+                onMessage: function (message) {
+                    console.log(message);
+                    var msg = JSON.parse(message.content);
+                    if (msg.Flag == "OK") {
+
+                        goeasy.unsubscribe({
+                            channel: "bindingChannel_" + code + "_" + guid
+                        });
+
+                        var data = msg.Result.split("|");
+                        var _url = "@Url.Action("CheckLogin","Login")";
+                        $.ajax({
+                            type: "POST",
+                            url: _url,
+                            data: { LoginName: data[0], LoginPwd: data[1] },
+                            dataType: "json",
+                            complete: function () {
+                            },
+                            success: function (data) {
+                                if (data.ResultCode == 1) {
+                                    swal({
+                                        title: "登录提示",
+                                        text: data.ResultMsg
+                                    });
+                                } else {
+
+                                    location.href = "@Url.Action("Index","Home",new { area=""})";
+                                }
+                            }
+                        });
+                    } else {
+                        goeasy.unsubscribe({
+                            channel: "bindingChannel_" + code + "_" + guid
+                        });
+                        //认证失败，需要刷新二维码
+                        QrCode();
+                    }
+                }
+            });
+        }
+
+        function GetUrlRelativePath() {
+            var url = document.location.toString();
+            var arrUrl = url.split("//");
+
+            var start = arrUrl[1].indexOf("/");
+            var relUrl = arrUrl[1].substring(start);//stop省略，截取从start开始到结尾的所有字符
+
+            if (relUrl.indexOf("?") != -1) {
+                relUrl = relUrl.split("?")[0];
+            }
+            return relUrl;
+        }
+        //var url = GetUrlRelativePath(); 
+        
+        //if ("/" != url && "/Login/Index".toUpperCase() != url) {
+        //    top.location = self.location.host;
+        //}
+
+        $("#login").submit(function () {
+            var check = $('#checkid').is(':checked')
+            var _url = "@Url.Action("CheckLogin","Login")";
+            $.ajax({
+                type: "POST",
+                url: _url,
+                data: { LoginName: $("#userName").val(), LoginPwd: $.md5($("#passWord").val()) },
+                dataType: "json",
+                complete: function () {
+                },
+                success: function (data) {
+                    if (data.ResultCode == 1) {
+                        swal({
+                            title: "登录提示",
+                            text: data.ResultMsg
+                        });
+                    }
+                    else {
+                        if (check == true) {
+                            setCookie("userName", $("#userName").val());
+                            console.log(getCookie("userName"));
+                        }
+                        else {
+                            delCookie("userName")
+                            console.log(getCookie("userName" + "123456"));
+                        }
+                        location.href = "@Url.Action("Index","Home",new { area=""})";
+                    }
+                }
+            });
+            return false;
+        });
+
+        function getCookie(name) {
+            var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+            if (arr = document.cookie.match(reg)) return unescape(arr[2]);
+            else return null;
+        }
+        function setCookie(name, value) {
+            var Days = 30;
+            var exp = new Date();
+            exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
+            document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
+        }
+        function delCookie(name) {
+            var exp = new Date();
+            exp.setTime(exp.getTime() - 1);
+            var cval = getCookie(name);
+            if (cval != null) document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
+        }
+        if (getCookie("userName") != null) {
+            $("#userName").val(getCookie("userName"))
+            $('#checkid').attr("checked", true);
+            console.log(getCookie("userName"));
+        }
+
+    </script>
+</body>
+</html>

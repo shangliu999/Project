@@ -1,0 +1,485 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    ViewBag.Tag = "Index";
+}
+<link href="@Url.Content("~/Content/plugins/fileinput/fileinput.min.css")" rel="stylesheet" />
+<script src="@Url.Content("~/Scripts/plugins/fileinput/fileinput.min.js")"></script>
+<script src="@Url.Content("~/Scripts/plugins/fileinput/zh.js")"></script>
+<script src="@Url.Content("~/Scripts/ajaxfileupload.js")"></script>
+
+<link href="@Url.Content("~/Content/plugins/treegrid/jquery.treegrid.css")" rel="stylesheet" />
+<script src="@Url.Content("~/Scripts/plugins/treegrid/jquery.treegrid.min.js")"></script>
+<script src="@Url.Content("~/Scripts/plugins/treegrid/jquery.treegrid.bootstrap3.js")"></script>
+<script src="@Url.Content("~/Scripts/plugins/treegrid/jquery.treegrid.extension.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery.md5.js")"></script>
+
+<div class="ibox-content">
+    <div style="margin-bottom:20px;">
+
+        <button class="btn btn-primary " id="btnAdd" type="button" onclick="Add()"><i class="fa fa-plus"></i>&nbsp;添加</button>
+        <button class="btn btn-warning " type="button" onclick="Modify()"><i class="fa fa-pencil"></i>&nbsp;修改</button>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover dataTables-example">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Logo</th>
+                    <th>客户名称</th>
+                    <th>联系人</th>
+                    <th>联系电话</th>
+                    <th>客服电话</th>
+                    <th>地址</th>
+                    <th>系统名称</th>
+                    <th>编码</th>
+                    <th>设置</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+
+        </table>
+    </div>
+
+</div>
+
+
+<div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">客户信息</h4>
+            </div>
+            <form class="form-horizontal" id="addSysCusForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="hidden" id="ID" value="0" />
+                        <label class="col-lg-2 control-label">客户名称</label>
+                        <div class="col-lg-10"><input type="text" id="SysCusName" class="form-control" required="" /></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">客户全称</label>
+                        <div class="col-lg-10"><input type="text" id="FullName" class="form-control" /></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">系统名称</label>
+                        <div class="col-lg-10"><input type="text" id="SystemTitle" class="form-control" /></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">系统Logo:</label>
+                        <div class="col-lg-10">
+                            <input type="hidden" id="hidPic" value="" />
+                            <input type="file" class="file" id="file-logo" name="file-logo" />
+                            <p class="help-block">支持jpg、jpeg、png格式，大小不超过2.0M</p>
+                            <img id="logo" src="" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">联系人</label>
+                        <div class="col-lg-10"><input type="text" id="LinkMan" class="form-control" /></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">电话</label>
+                        <div class="col-lg-10"><input type="text" id="Phone" class="form-control" /></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">客服电话</label>
+                        <div class="col-lg-10"><input type="text" id="ServiceTel" class="form-control" /></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">地址</label>
+                        <div class="col-lg-10"><input type="text" id="Address" class="form-control" /></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">编码</label>
+                        <div class="col-lg-10"><input type="text" id="Code" class="form-control" /></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">介绍</label>
+                        <div class="col-lg-10">
+                            <textarea id="Introduce" rows="4" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal inmodal" id="myUserModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">添加管理</h4>
+            </div>
+            <form class="form-horizontal" id="addUserForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="hidden" id="UserCusID" value="0" />
+                        <label class="col-lg-2 control-label">用户名</label>
+                        <div class="col-lg-10"><input type="text" id="LoginUser" class="form-control" required="" onblur="checkUserName(this)" /></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">密码</label>
+                        <div class="col-lg-10"><input type="text" id="LoginPwd" class="form-control" required="" /></div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal inmodal" id="myRightModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">权限分配</h4>
+            </div>
+            <form class="form-horizontal" id="addSysCusForm">
+                <div class="modal-body">
+                    <input type="hidden" id="addSysCusRightID" />
+                    <table id="tb"></table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="selectedItem()">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $("#file-logo").fileinput({
+        showUpload: false,
+        showRemove: false,
+        language: 'zh',
+        removeFromPreviewOnError: true,
+        allowedPreviewTypes: ['image'],
+        allowedFileExtensions: ['jpg', 'png', 'jpeg'],
+        maxFileSize: 2000,
+    });
+
+    $("#addUserForm").submit(function () {
+        var _url = "@Url.Action("CheckUserName", "SysAdmin")";
+        $.ajax({
+            type: "post",
+            data: { loginName: $("#LoginUser").val() },
+            url: _url,
+            success: function (result) {
+                if (result) {
+                    $("#LoginUser").nextAll().remove();
+
+                    var url = "@Url.Action("AddUser","SysAdmin")";
+                    $.ajax({
+                        type: "post",
+                        data: { LoginName: $("#LoginUser").val(), LoginPwd: $.md5($("#LoginPwd").val()) },
+                        url: url,
+                        async: false,
+                        success: function (result) {
+                            if (result.ResultCode == 0) {
+                                $('#myUserModal').modal('hide');//关闭模态框
+                                document.getElementById("addUserForm").reset();//清空表单
+                            }
+                        }
+                    });
+                } else {
+                    $("#LoginUser").nextAll().remove();
+                    $("#LoginUser").after('<p class="help-block"  style="color:red">用户名已存在</p>');
+                }
+            }
+        });
+    });
+
+    $("#addSysCusForm").submit(function () {
+        var url = "@Url.Action("AddSys_Customer","SysAdmin")";
+        if ($("#ID").val() != "0") {
+            url = "@Url.Action("UpdateSys_Customer", "SysAdmin")";
+        }
+        $.ajaxFileUpload({
+            type: "post",
+            data: {
+                ID: $("#ID").val(), SysCusName: $("#SysCusName").val(), SystemTitle: $("#SystemTitle").val(), LinkMan: $("#LinkMan").val(), Phone: $("#Phone").val(),
+                ServiceTel: $("#ServiceTel").val(), Address: $("#Address").val(), Logo: $("#hidPic").val(), Code: $("#Code").val(), FullName: $("#FullName").val(), Introduce: $("#Introduce").val()
+            },
+            url: url,
+            secureuri: false, //是否需要安全协议，一般设置为false
+            fileElementId: 'file-logo', //文件上传域的ID
+            success: function (responseText) {
+                var data = JSON.parse(responseText.body.innerText);
+                if (data.ResultCode == "0") {
+                    $('#myModal').modal('hide');//关闭模态框
+                    document.getElementById("addSysCusForm").reset();//清空表单
+                    $(".dataTables-example").dataTable().fnDraw();//点搜索重新绘制table。
+                } else {
+                    swal({ title: "提示", text: "添加失败" });
+                }
+            }
+        });
+        return false;
+    });
+
+    function Add() {
+        $("#ID").val("0");
+        document.getElementById("addSysCusForm").reset();
+        $(".modal-title").html("客户添加");
+        $('#myModal').modal('show');
+    }
+
+    function Modify() {
+        var val = $(".dataTables-example input[type='radio']:checked").val();
+        if (val == null) {
+            swal("提示", "请先选择记录.");
+
+            return false;
+        }
+        var url = "@Url.Action("GetSys_Customer", "SysAdmin")";
+        document.getElementById("addSysCusForm").reset();//清空表单
+        $.ajax({
+            type: "post",
+            data: { ID: val },
+            url: url,
+            async: false,
+            success: function (result) {
+                if (result.ResultCode == "0") {
+                    $(".modal-title").html("客户更新");
+                    $("#ID").val(result.Result.ID);
+                    $("#SysCusName").val(result.Result.SysCusName);
+                    $("#FullName").val(result.Result.FullName);
+                    $("#Introduce").val(result.Result.Introduce);
+                    $("#LinkMan").val(result.Result.LinkMan);
+                    $("#Phone").val(result.Result.Phone);
+                    $("#ServiceTel").val(result.Result.ServiceTel);
+                    $("#Address").val(result.Result.Address);
+                    $("#SystemTitle").val(result.Result.SystemTitle);
+                    $("#hidPic").val(result.Result.Logo);
+                    var logourl = "@Url.Content("~")";
+                    if (logourl == "/") {
+                        logourl = getRootPath();
+                    }
+                    $("#logo").attr("src", logourl + "/" + result.Result.Logo);
+                    $("#Code").val(result.Result.Code);
+                    $('#myModal').modal('show');
+                } else {
+                    swal({ title: "提示", text: "获取信息失败", type: "error" });
+                }
+            }
+        });
+    }
+
+    function RightSetting(id) {
+        var url = "@Url.Action("GetCustomerSysRightList", "SysAdmin")";
+        $("#tb").empty();
+        $('#tb').treegridData({
+            id: 'RightID',
+            parentColumn: 'RightParentID',
+            type: "GET", //请求数据的ajax类型
+            url: url,   //请求数据的ajax的url
+            ajaxParams: { cusId: id }, //请求数据的ajax的data属性
+            expandColumn: 1,//在哪一列上面显示展开按钮
+            striped: true,   //是否各行渐变色
+            bordered: true,  //是否显示边框
+            expandAll: false,  //是否全部展开
+            checkbox: true,
+            columns: [{
+                title: '',
+                field: 'RightID'
+            },
+              {
+                  title: '功能名称',
+                  field: 'RightName'
+              },
+                {
+                    title: '系统模块',
+                    field: 'ApplicationName'
+                },
+                {
+                    title: '功能编码',
+                    field: 'RightCode'
+                }
+            ]
+        });
+        $("#myRightModal").modal('show');
+        $("#addSysCusRightID").val(id);
+    }
+
+    function checkUserName(obj) {
+        var url = "@Url.Action("CheckUserName", "SysAdmin")";
+        $.ajax({
+            type: "post",
+            data: { loginName: $("#LoginUser").val() },
+            url: url,
+            async: false,
+            success: function (result) {
+                if (result) {
+                    $(obj).nextAll().remove();
+                } else {
+                    $(obj).nextAll().remove();
+                    $(obj).after('<p class="help-block"  style="color:red">用户名已存在</p>');
+                }
+            }
+        });
+    }
+
+
+    function selectedItem() {
+        var rightIds = "";
+        $('#tb input[type="checkbox"]:checkbox:checked').each(function () {
+            rightIds += $(this).val() + "|"
+        });
+        var cusId = $("#addSysCusRightID").val();
+        var url = "@Url.Action("SetSysCusRight", "SysAdmin")";
+        $.ajax({
+            type: "post",
+            data: { cusId: cusId, rightIds: rightIds },
+            url: url,
+            async: false,
+            success: function (result) {
+                if (result.ResultCode == "0") {
+                    $('#myRightModal').modal('hide');
+                } else {
+                    swal({ title: "提示", text: "设置失败", type: "error" });
+                }
+            }
+        });
+
+    }
+    function getRootPath() {
+        var strFullPath = window.document.location.href;
+        var strPath = window.document.location.pathname;
+        var pos = strFullPath.indexOf(strPath);
+        var prePath = strFullPath.substring(0, pos);
+        return (prePath);
+    }
+
+    $(document).ready(function () {
+        var url = "@Url.Action("GetSys_CustomerList", "SysAdmin")";
+        var img = "@Url.Content("~/Images/placeholder.png")";
+        var logourl = "@Url.Content("~")";
+        if (logourl == "/") {
+            logourl = getRootPath();
+        }
+        $('.dataTables-example').DataTable({
+            bAutoWidth: false,
+            aoColumns: [
+               {
+                   "sClass": "text-center",
+                   "data": "ID",
+                   "render": function (data, type, full, meta) {
+                       return '<input type="radio" name="a"  class="checkchild"  value="' + data + '" />';
+                   },
+                   "bSortable": false
+               },
+                { "sClass": "center", "mDataProp": "Logo", "bSortable": false },
+                { "sClass": "center", "mDataProp": "SysCusName", "bSortable": false },
+                { "sClass": "center", "mDataProp": "LinkMan", "bSortable": false },
+                { "sClass": "center", "mDataProp": "Phone", "bSortable": false },
+                { "sClass": "center", "mDataProp": "ServiceTel", "bSortable": false },
+                { "sClass": "center", "mDataProp": "Address", "bSortable": false },
+                { "sClass": "center", "mDataProp": "SystemTitle", "bSortable": false },
+                { "sClass": "center", "mDataProp": "Code", "bSortable": false },
+                { "sClass": "center", "mDataProp": "ID", "bSortable": false }
+            ],
+            "bServerSide": true,//分页，取数据等等的都放到服务端去
+            "bProcessing": true,//载入数据的时候是否显示“载入中”
+            "aLengthMenu": [30, 50, 100],
+            "bLengthChange": false, //改变每页显示数据数量
+            "bFilter": false, //过滤功能
+            "iDisplayStart": 0,
+            "iDisplayLength": 30,//首次加载的数据条数
+            "bStorable": true,//排序操作在服务端进行，所以可以关了。
+            "sAjaxSource": url,
+            "fnServerData": function (sSource, aoData, fnCallback, bStorable) {
+                var paramList = {
+                    "sEcho": 0,
+                    "iDisplayLength": 0,
+                    "iDisplayStart": 0,
+                    "sSortDir_0": bStorable.aaSorting[0][1],
+                    "iSortCol_0": bStorable.aaSorting[0][0],
+                };
+                if (bStorable.aaSorting[0][0] == 0) {
+                    paramList.isDesc = true;
+                }
+                for (var i = 0; i < aoData.length; i++) {
+                    if (aoData[i].name == "iDisplayStart") {
+                        paramList.iDisplayStart = aoData[i].value;
+                    } else if (aoData[i].name == "iDisplayLength") {
+                        paramList.iDisplayLength = aoData[i].value;
+                    } else
+                        if (aoData[i].name == "sEcho") {
+                            paramList.sEcho = aoData[i].value;
+                        }
+                }
+                $.ajax({
+                    "dataType": 'json',
+                    "type": "POST",
+                    "url": sSource,
+                    "data": paramList,
+                    "success": function (resp) {
+                        fnCallback(resp); //服务器端返回的对象的returnObject部分是要求的格式
+                    }
+                });
+            },
+            "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+                var logo = '<img width="40px;" src="' + logourl + "/" + aData.Logo + '" onerror="this.src=\'' + img + '\'" />';
+                $('td:eq(1)', nRow).html(logo);
+
+                var html = '<a class="btn btn-white btn-sm" href="javascript:RightSetting(\'' + aData.ID + '\')" title="功能分配">功能分配</a>';
+                html += '<button class="btn btn-white btn-sm" data-toggle="modal" data-target="#myUserModal" title="添加管理员">添加管理员</button>';
+                $('td:eq(9)', nRow).html(html);
+
+                $("#btnAdd").hide();
+            },
+            dom: '<"html5buttons"B>lTfgitp',
+            buttons: [
+                { extend: 'copy' },
+                { extend: 'csv' },
+                { extend: 'excel', title: 'ExampleFile' },
+                { extend: 'pdf', title: 'ExampleFile' },
+
+                {
+                    extend: 'print',
+                    customize: function (win) {
+                        $(win.document.body).addClass('white-bg');
+                        $(win.document.body).css('font-size', '10px');
+
+                        $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                    }
+                }
+            ],
+            "oLanguage": {
+                "sLengthMenu": "每页显示 _MENU_ 条记录",
+                "sZeroRecords": "抱歉， 没有找到",
+                "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                "sInfoEmpty": "没有数据",
+                "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "前一页",
+                    "sNext": "后一页",
+                    "sLast": "尾页"
+                },
+                "sZeroRecords": "没有检索到数据",
+                "sProcessing": "<img src='./loading.gif' />"
+            }
+        });
+    });
+
+</script>

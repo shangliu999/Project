@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ImageBrush x:Key="bg" ImageSource="Images/bg2.png"></ImageBrush>
+    <ImageBrush x:Key="bgtable" ImageSource="Images/bg-table.png"></ImageBrush>
+    <ImageBrush x:Key="jinwu" ImageSource="Images/btn-jingwu.png"></ImageBrush>
+    <ImageBrush x:Key="wuwu" ImageSource="Images/btn-wuwu.png"></ImageBrush>
+    <BitmapImage x:Key="logo" UriSource="Images/logo.png"></BitmapImage>
+    <BitmapImage x:Key="zhiwen" UriSource="Images/zhiwen.png"></BitmapImage>
+    <BitmapImage x:Key="hand" UriSource="Images/img-hand.png"></BitmapImage>
+    <BitmapImage x:Key="toudi" UriSource="Images/img-toudi.png"></BitmapImage>
+    <BitmapImage x:Key="qiehuan" UriSource="Images/icon-qiehuan.png"></BitmapImage>
+</ResourceDictionary>

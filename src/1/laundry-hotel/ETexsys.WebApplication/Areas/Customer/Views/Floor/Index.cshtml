@@ -1,0 +1,304 @@
+﻿@{
+    Layout = null;
+}
+
+<div style="margin-bottom:20px;">
+    @*@Html.ToolButton(ViewData["BtnList"] as List<ETexsys.Model.sys_right_button>)*@
+    @{ var btns = ViewData["BtnList"] as List<ETexsys.Model.sys_right_button>;}
+    @foreach (var btn in btns)
+    {
+        var js = "Floor" + btn.BtnScript + "()";
+        <button class='@btn.BtnClass' type='button' onclick='@js' style='margin-right:2px;'><i class='@btn.BtnIcon'></i>&nbsp;@btn.BtnName</button>
+    }
+</div>
+<div class="row wrapper wrapper-content animated fadeInRight" style="padding-top:75px;">
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover dataTables-example">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>楼层</th>
+                    <th>配货方式</th>
+                    <th>联系人</th>
+                    <th>电话</th>
+                    <th>排序</th>
+                    <th>创建时间</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+
+    @RenderPage("Detail.cshtml")
+</div>
+<script>
+    
+    $(document).ready(function () { 
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+        var _url = "@Url.Action("GetFloorList", "Floor")";
+        $('.dataTables-example').DataTable({
+            bAutoWidth: false,
+            aoColumns: [
+               {
+                   "sClass": "text-center",
+                   "data": "ID",
+                   "render": function (data, type, full, meta) {
+                       return '<input type="radio" name="a"  class="checkchild"  value="' + data + '" />';
+                   },
+                   "bSortable": false
+               },
+                { "sClass": "center", "mDataProp": "RegionName", "bSortable": false },
+                { "sClass": "center", "mDataProp": "RegionMode", "bSortable": false },
+                { "sClass": "center", "mDataProp": "LinkMan", "bSortable": false },
+                { "sClass": "center", "mDataProp": "Tel", "bSortable": false },
+                { "sClass": "center", "mDataProp": "Sort", "bSortable": false },
+                {
+                    "sClass": "text-center",
+                    "data": "CreateTime",
+                    "render": function (data, type, full, meta) {
+                        return data_string(data);//date的格
+                    },
+                    "bSortable": false
+                }
+            ],
+            "bServerSide": true,//分页，取数据等等的都放到服务端去
+            "bProcessing": true,//载入数据的时候是否显示“载入中”
+            "aLengthMenu": [30, 50, 100],
+            "bLengthChange": false, //改变每页显示数据数量
+            "bFilter": false, //过滤功能
+            "iDisplayStart": 0,
+            "iDisplayLength": 30,//首次加载的数据条数
+            "bStorable": true,//排序操作在服务端进行，所以可以关了。
+            "sAjaxSource": _url,
+            "fnServerData": function (sSource, aoData, fnCallback, bStorable) {
+                var paramList = {
+                    "sEcho": 0,
+                    "iDisplayLength": 0,
+                    "iDisplayStart": 0,
+                    "sSortDir_0": bStorable.aaSorting[0][1],
+                    "iSortCol_0": bStorable.aaSorting[0][0],
+                    "qCondition1": $("#HotelID").val()
+                };
+                if (bStorable.aaSorting[0][0] == 0) {
+                    paramList.isDesc = true;
+                }
+                for (var i = 0; i < aoData.length; i++) {
+                    if (aoData[i].name == "iDisplayStart") {
+                        paramList.iDisplayStart = aoData[i].value;
+                    } else if (aoData[i].name == "iDisplayLength") {
+                        paramList.iDisplayLength = aoData[i].value;
+                    } else
+                        if (aoData[i].name == "sEcho") {
+                            paramList.sEcho = aoData[i].value;
+                        }
+                }
+                $.ajax({
+                    "dataType": 'json',
+                    "type": "POST",
+                    "url": sSource,
+                    "data": paramList,
+                    "success": function (resp) {
+                        fnCallback(resp); //服务器端返回的对象的returnObject部分是要求的格式
+                    }
+                });
+            },
+            "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+                var html = "";
+                if (aData.RegionMode == 1) {
+                    html = '<span class="label" style="background:#56af45;color:#fff;">污物送洗</span>';
+                } else if (aData.RegionMode == 2) {
+                    html = '<span class="label" style="background:blue;color:#fff;">订单</span>';
+                } else {
+                    html = '<span class="label" style="background:#f00;color:#fff;">污物送洗+订单</span>';
+                }
+                $('td:eq(2)', nRow).html(html);
+            },
+            dom: '<"html5buttons"B>lTfgitp',
+            buttons: [
+                { extend: 'copy' },
+                { extend: 'csv' },
+                { extend: 'excel', title: 'ExampleFile' },
+                { extend: 'pdf', title: 'ExampleFile' },
+
+                {
+                    extend: 'print',
+                    customize: function (win) {
+                        $(win.document.body).addClass('white-bg');
+                        $(win.document.body).css('font-size', '10px');
+
+                        $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                    }
+                }
+            ],
+            "oLanguage": {
+                "sLengthMenu": "每页显示 _MENU_ 条记录",
+                "sZeroRecords": "抱歉， 没有找到",
+                "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                "sInfoEmpty": "没有数据",
+                "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "前一页",
+                    "sNext": "后一页",
+                    "sLast": "尾页"
+                },
+                "sZeroRecords": "没有检索到数据",
+                "sProcessing": "<img src='./loading.gif' />"
+            }
+        });
+
+    });
+
+    function FloorAddModule() {
+        $("#addFloorForm #RegionName").nextAll().remove();
+        $("#addFloorForm #ID").val("0");
+        document.getElementById("addFloorForm").reset();
+        $("#addFloorForm #SendModel").find("[type='radio']:eq(0)").iCheck("check");
+        $(".modal-title").html("楼层添加");
+        $('#myModal').modal('show');
+    }
+
+    function FloorUpdateModule() {
+        $("#addFloorForm #RegionName").nextAll().remove();
+        var val = $(".dataTables-example input[type='radio']:checked").val();
+        if (val == null) {
+            swal("提示", "请先选择记录.");
+
+            return false;
+        }
+        var url = "@Url.Action("GetFloor", "Floor")";
+        document.getElementById("addFloorForm").reset();//清空表单
+        $.ajax({
+            type: "post",
+            data: { floorId: val },
+            url: url,
+            async: false,
+            success: function (result) {
+                if (result.ResultCode == "0") {
+                    $(".modal-title").html("楼层修改");
+                    $("#addFloorForm #ID").val(result.Result.ID);
+                    $("#addFloorForm #RegionName").val(result.Result.RegionName);
+                    $("#addFloorForm #LinkMan").val(result.Result.LinkMan);
+                    $("#addFloorForm #Tel").val(result.Result.Tel);
+                    $("#addFloorForm #Sort").val(result.Result.Sort);
+                    if (result.Result.RegionMode == 1) {
+                        $("#addFloorForm #SendModel").find("[type='radio']:eq(0)").iCheck("check");
+                    } else if (result.Result.RegionMode == 2) {
+                        $("#addFloorForm #SendModel").find("[type='radio']:eq(1)").iCheck("check");
+                    } else {
+                        $("#addFloorForm #SendModel").find("[type='radio']:eq(2)").iCheck("check");
+                    }
+                    $('#myModal').modal('show');
+                } else {
+                    swal({ title: "提示", text: "获取信息失败", type: "error" });
+                }
+            }
+        });
+    }
+
+    function FloorDeleteModule() {
+        var val = $(".dataTables-example input[type='radio']:checked").val();
+        if (val == null) {
+            swal("提示", "请先选择记录.");
+
+            return false;
+        }
+        swal({
+            title: "您确定要删除吗？",
+            text: "您确定要删除这条数据？",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            closeOnConfirm: false
+        }, function () {
+            var url = "@Url.Action("DelFloor", "Floor")";
+            $.ajax({
+                type: "post",
+                data: { floorId: val },
+                url: url,
+                async: false,
+                success: function (result) {
+                    if (result.ResultCode == "0") {
+                        swal("Good!", "删除成功", "success");
+                        $(".dataTables-example").dataTable().fnDraw();//点搜索重新绘制table。
+                    } else {
+                        swal({ title: "提示", text: "删除失败", type: "error" });
+                    }
+                }
+            });
+        });
+    }
+
+    function CheckFloorName(obj) {
+        var url = "@Url.Action("CheckFloorName", "Floor")";
+        $.ajax({
+            type: "post",
+            data: { FloorID: $("#addFloorForm #ID").val(), FloorName: $("#addFloorForm #RegionName").val(), HotelID: $("#HotelID").val() },
+            url: url,
+            async: false,
+            success: function (result) {
+                if (result) {
+                    $(obj).nextAll().remove();
+                } else {
+                    $(obj).nextAll().remove();
+                    $(obj).after('<p class="help-block"  style="color:red">名称已存在</p>');
+                }
+            }
+        });
+    }
+
+    $("#addFloorForm").submit(function () {
+        var _url = "@Url.Action("CheckFloorName", "Floor")";
+        $.ajax({
+            type: "post",
+            data: { FloorID: $("#addFloorForm #ID").val(), FloorName: $("#addFloorForm #RegionName").val(), HotelID: $("#HotelID").val() },
+            url: _url,
+            success: function (result) {
+                if (result) {
+                    $("#addFloorForm #RegionName").nextAll().remove();
+                    var url = "@Url.Action("AddFloor", "Floor")";
+                    if ($("#addFloorForm #ID").val() != "0") {
+                        url = "@Url.Action("UpdateFloor", "Floor")";
+                    }
+                    $.ajax({
+                        type: "post",
+                        data: {
+                            ID: $("#addFloorForm #ID").val(), RegionName: $("#addFloorForm #RegionName").val(), RegionMode: $("#addFloorForm #SendModel").find("[type='radio']:checked").val(),
+                            Tel: $("#addFloorForm #Tel").val(), LinkMan: $("#addFloorForm #LinkMan").val(),
+                            Sort: $("#addFloorForm #Sort").val(), ParentID: $("#HotelID").val()
+                        },
+                        url: url,
+                        async: false,
+                        success: function (result) {
+                            if (result.ResultCode == "0") {
+                                $('#myModal').modal('hide');//关闭模态框
+                                document.getElementById("addFloorForm").reset();//清空表单
+                                $(".dataTables-example").dataTable().fnDraw();//点搜索重新绘制table。
+                            } else {
+                                swal({
+                                    title: "提示",
+                                    text: "添加失败"
+                                });
+                            }
+                        }
+                    });
+
+                    return false;
+                } else {
+                    $("#addFloorForm #RegionName").nextAll().remove();
+                    $("#addFloorForm #RegionName").after('<p class="help-block"  style="color:red">名称已存在</p>');
+                }
+            }
+        });
+        return false;
+    });
+
+</script>

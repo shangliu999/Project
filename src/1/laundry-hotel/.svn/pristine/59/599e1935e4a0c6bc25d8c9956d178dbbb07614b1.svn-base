@@ -1,0 +1,399 @@
+﻿
+@{
+    Layout = null;
+}
+<link href="@Url.Content("~/Content/plugins/daterangepicker/daterangepicker.css")" rel="stylesheet" />
+<link href="@Url.Content("~/Content/plugins/datetimepicker/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+
+<div class="row wrapper wrapper-content animated fadeInRight" style="padding-top:75px;">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+            <div class="form-group" style="margin-right:8px">
+                <label class="col-lg-1 control-label" style="font-weight: bold; font-family: 微软雅黑;">单据类型：</label>
+                <div class="col-lg-2">
+                    <label name="class" class="btn btn-sm active" style="background-color:#e6cf1b; border-bottom:1px red solid">
+                        污物送洗单<input value="1" name="class" checked="checked"
+                                    class="type" type="radio" style="display:none" />
+                    </label>
+                </div>
+            </div>
+            <div class="form-group" style="margin-right:0px">
+                <label class="col-lg-1 control-label" style="font-weight: bold; font-family: 微软雅黑;">酒店：</label>
+                <div class="col-lg-2">
+                    <select id="queryHotelId" class="form-control">
+                        <option value="0" selected="selected">请选择酒店</option>
+                        @{List<ETexsys.Model.region> regionlist = ViewData["regionlist"] as List<ETexsys.Model.region>;}
+                        @foreach (var item in regionlist)
+                        {
+                            <option value="@item.ID">@item.RegionName</option>
+                        }
+                    </select>
+                </div>
+                <label class="col-lg-1 control-label" style="font-weight: bold; font-family: 微软雅黑;">楼层：</label>
+                <div class="col-lg-2">
+                    <div class="col-lg-3">
+                        <select id="queryFloor" class="form-control" style="width:180px">
+                            <option></option>
+                        </select>
+                    </div>
+                </div>
+                <label class="col-lg-1 control-label" style="font-weight: bold; font-family: 微软雅黑;">时间：</label>
+                <div class="col-lg-3">
+                    <div class='input-group date' id='datetimepicker1'>
+                        <input type='text' class="form-control" id='datetime' style="width: 150px; height: 33px;" />
+                        <span class="input-group-addon" style="float: right; width: 50px; height: 33px;">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-1 control-label" style="font-weight: bold; font-family: 微软雅黑;">订单编号：</label>
+                <div class="col-lg-4">
+                    <input id="invno" type="text" class="form-control" name="name" placeholder="请输入订单编号" />
+                </div>
+                <div class="col-lg-1">
+                    <input type="button" id="select" class="form-control" value="查询" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ibox-content" style="margin-top:20px; overflow:hidden;">
+    <table class="table table-striped table-bordered table-hover dataTables-example">
+        <thead>
+            <tr>
+                <th>单据号</th>
+                <th>酒店</th>
+                <th>区域</th>
+                <th>收货人</th>
+                <th>收货时间</th>
+                <th>数量</th>
+            </tr>
+        <thead>
+        <tbody></tbody>
+    </table>
+</div>
+@RenderPage("Detail.cshtml")
+<script src="@Url.Content("~/Scripts/plugins/daterangepicker/moment.js")"></script>
+<script src="@Url.Content("~/Scripts/plugins/daterangepicker/daterangepicker.js")"></script>
+<script src="@Url.Content("~/Scripts/plugins/datetimepicker/bootstrap-datetimepicker.min.js")"></script>
+<script src="@Url.Content("~/Scripts/plugins/datetimepicker/bootstrap-datetimepicker.zh-CN.js")"></script>
+<script src="@Url.Content("~/Scripts/plugins/datetimepicker/moment-with-locales(1).js")"></script>
+<script>
+    var judge = 0;
+
+    $('#datetimepicker1').datetimepicker({
+        language: 'zh-CN',//显示中文
+        format: 'yyyy-mm-dd',//显示格式
+        minView: "month",//设置只显示到月份
+        initialDate: new Date(),
+        autoclose: true,//选中自动关闭
+        todayBtn: true,//显示今日按钮
+        locale: moment.locale('zh-cn')
+    });
+    //默认获取当前日期
+    var today = new Date();
+    var nowdate = (today.getFullYear()) + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+    $("#datetime").val(nowdate);
+
+    var url = "@Url.Action("GetMaintainList", "BillMaintain")";
+    function GetTable() {
+        judge = 1
+        $(".dataTables-example").DataTable({
+            bAutoWidth: false,
+            aoColumns: [
+                { "sClass": "center", "mDataProp": "InvNo", "bSortable": false },
+                { "sClass": "center", "mDataProp": "HotelName", "bSortable": false },
+                { "sClass": "center", "mDataProp": "Floorparam", "bSortable": false },
+                { "sClass": "center", "mDataProp": "CreateUserName", "bSortable": false },
+                {
+                    "sClass": "text-center",
+                    "data": "CreateTime",
+                    "render": function (data, type, full, meta) {
+                        return data_string(data);//date的格
+                    },
+                    "bSortable": false
+                },
+                { "sClass": "center", "mDataProp": "Count", "bSortable": false },
+
+
+            ],
+            "bServerSide": true,//分页，取数据等等的都放到服务端去
+            "bProcessing": true,//载入数据的时候是否显示“载入中”
+            "aLengthMenu": [30, 50, 100],
+            "bLengthChange": false, //改变每页显示数据数量
+            "bFilter": false, //过滤功能
+            "iDisplayStart": 0,
+            "iDisplayLength": 30,//首次加载的数据条数
+            "bStorable": true,//排序操作在服务端进行，所以可以关了。
+            "sAjaxSource": url,
+            "fnServerData": function (sSource, aoData, fnCallback, bStorable) {
+                debugger;
+                var paramList = {
+                    "sEcho": 0,
+                    "iDisplayLength": 0,
+                    "iDisplayStart": 0,
+                    "sSortDir_0": bStorable.aaSorting[0][1],
+                    "iSortCol_0": bStorable.aaSorting[0][0],
+                    "InvType": $("input:radio:checked[name='class']").val(),
+                    "Hotel": $("#queryHotelId option:selected").html(),
+                    "Floor": $("#queryFloor option:selected").html(),
+                    "Time": $("#datetime").val(),
+                    "InvNo": $("#invno").val(),
+                    "HotelId": $("#queryHotelId option:selected").val()
+                };
+                if (bStorable.aaSorting[0][0] == 0) {
+                    paramList.isDesc = true;
+                }
+                for (var i = 0; i < aoData.length; i++) {
+                    if (aoData[i].name == "iDisplayStart") {
+                        paramList.iDisplayStart = aoData[i].value;
+                    } else if (aoData[i].name == "iDisplayLength") {
+                        paramList.iDisplayLength = aoData[i].value;
+                    } else
+                        if (aoData[i].name == "sEcho") {
+                            paramList.sEcho = aoData[i].value;
+                        }
+                }
+                $.ajax({
+                    "dataType": 'json',
+                    "type": "POST",
+                    "url": sSource,
+                    "data": paramList,
+                    "success": function (resp) {
+                        fnCallback(resp); //服务器端返回的对象的returnObject部分是要求的格式
+                    }
+                });
+            },
+            "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+                var html = "<a href=\javascript:GetDetail('" + aData.InvNo + "','" + aData.Floorparam + "')>" + aData.InvNo + "</a>"
+                $('td:eq(0)', nRow).html(html);
+            },
+            dom: '<"html5buttons"B>lTfgitp',
+            buttons: [
+                { extend: 'copy' },
+                { extend: 'csv' },
+                { extend: 'excel', title: 'ExampleFile' },
+                { extend: 'pdf', title: 'ExampleFile' },
+                {
+                    extend: 'print',
+                    customize: function (win) {
+                        $(win.document.body).addClass('white-bg');
+                        $(win.document.body).css('font-size', '10px');
+
+                        $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                    }
+                }
+            ],
+            "oLanguage": {
+                "sLengthMenu": "每页显示 _MENU_ 条记录",
+                "sZeroRecords": "抱歉， 没有找到",
+                "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                "sInfoEmpty": "没有数据",
+                "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "前一页",
+                    "sNext": "后一页",
+                    "sLast": "尾页"
+                },
+                "sZeroRecords": "没有检索到数据",
+                "sProcessing": "<img src='./loading.gif' />"
+            }
+        })
+    }
+
+
+    $("#HotelName").change(function () {
+        var hotelid = $("#HotelName option:selected").val();
+        var _url = "@Url.Action("GetFloor", "BillMaintain")";
+        $.ajax({
+            data: { HotelId: hotelid },
+            type: "post",
+            url: _url,
+            success: function (data) {
+                $("#FloorName").html('');
+                $.each(data, function myfunction(i) {
+                    var content = "<option value='" + data[i].ID + "'>" + data[i].RegionName + "</option>"
+                    $("#FloorName").append(content);
+                })
+            }
+        })
+    })
+
+    $("#queryHotelId").change(function () {
+        var val = $("#queryHotelId option:selected").val();
+        var _url = "@Url.Action("GetFloor", "BillMaintain")";
+        $.ajax({
+            type: "post",
+            data: { HotelId: val },
+            url: "/Customer/BillMaintain/GetFloor",
+            success: function (data) {
+                $("#queryFloor").html("");
+                $.each(data, function (i) {
+                    var content = "<option value=" + data[i].ID + ">" + data[i].RegionName + "</option>"
+                    $("#queryFloor").append(content);
+                })
+            }
+        })
+    })
+
+    $("#select").click(function () {
+        if (judge == 1) {
+            $(".dataTables-example").dataTable().fnDraw();
+        }
+        else {
+            GetTable();
+        }
+    })
+
+    function GetDetail(InvNo, Floor) {
+        var _url = "@Url.Action("GetDetail", "BillMaintain")";
+        $.ajax({
+            type: "post",
+            data: { InvNo: InvNo },
+            url: _url,
+            success: function (data) {
+                if (data.Result.length > 0) {
+                    if (data.OtherResult.HotelId == 0) {
+                        $("#InvNo").html("");
+                        $("#CreatUser").html("");
+                        $("#CreatTime").html("");
+                        $("#HotelName").val("");
+                        $("#FloorName").empty();
+                        $("#InvNo").html(data.OtherResult.InvNo);
+                        $("#CreatUser").html(data.OtherResult.CreateUser);
+                        $("#CreatTime").html(data.OtherResult.CreatTime);
+                    }
+                    else if (data.OtherResult.FloorId == 0) {
+                        $("#InvNo").html("");
+                        $("#CreatUser").html("");
+                        $("#CreatTime").html("");
+                        $("#HotelName").val("");
+                        $("#FloorName").empty();
+                        $("#InvNo").html(data.OtherResult.InvNo);
+                        $("#CreatUser").html(data.OtherResult.CreateUser);
+                        $("#CreatTime").html(data.OtherResult.CreatTime);
+                        $("#HotelName").val(data.OtherResult.HotelId);
+                    }
+                    else {
+                        $("#InvNo").html("");
+                        $("#CreatUser").html("");
+                        $("#CreatTime").html("");
+                        $("#HotelName").val("");
+                        $("#FloorName").empty();
+                        $("#InvNo").html(data.OtherResult.InvNo);
+                        $("#CreatUser").html(data.OtherResult.CreateUser);
+                        $("#CreatTime").html(data.OtherResult.CreatTime);
+                        $("#HotelName").val(data.OtherResult.HotelId);
+                        var _url1 = "@Url.Action("GetDetailFloor", "BillMaintain")";
+                        $.ajax({
+                            data: { HotelId: data.OtherResult.HotelId, FloorId: data.OtherResult.FloorId },
+                            type: "post",
+                            url: _url1,
+                            success: function (data) {
+                                $("#FloorName").html('');
+                                $.each(data, function myfunction(i) {
+                                    var content = "<option value='" + data[i].ID + "'>" + data[i].RegionName + "</option>"
+                                    $("#FloorName").append(content);
+                                })
+                                var a = data[0].Val;
+                                $("#FloorName").val(a);
+                                var _url2 = "@Url.Action("GetDetailTable", "BillMaintain")";
+                                $.ajax({
+                                    data: { InvNo: InvNo },
+                                    type: "post",
+                                    url: _url2,
+                                    success: function (data) {
+                                        $("#maintain-table-detail tbody").empty();
+                                        $.each(data, function (i, item) {
+                                            var tr = $('<tr></tr>');
+                                            var typetd = $('<td></td>');
+                                            $(typetd).html(item.ClassName).appendTo(tr);
+                                            var sizetd = $('<td></td>');
+                                            $(sizetd).html(item.SizeName).appendTo(tr);
+                                            var count = $('<td></td>');
+                                            $(count).html('<input type="text" readonly="readonly" value=' + item.count + ' style="width:150px;border:none;color:#a5a0a0 " />').appendTo(tr);
+                                            var abnormal = $('<td></td>');
+                                            $(abnormal).html('<input type="text" value="0" style="width:150px;border:none" />').appendTo(tr);
+                                            $(tr).appendTo($("#maintain-table-detail tbody"));
+                                        })
+                                    }
+                                })
+                            }
+                        })
+                    }
+                }
+            }
+
+        })
+        var titel = $("input:radio:checked[name='class']").val();
+        titel = titel == 1 ? "污物送洗单" : titel == 2 ? "净物配送单" : titel == 3 ? "入库单" : titel == 4 ? "出库单" : titel == 5 ? "入厂" : titel == 6 ? "订单" : titel == 7 ? "退回" : "工厂反洗";
+        $("#DetailTitel").html(titel);
+        $("#MaintainModel").modal('show');
+    }
+    $("#maintain").submit(function () {
+        debugger;
+        var HotelId = $("#HotelName option:selected").attr("value");
+        var RegionId = $("#FloorName option:selected").attr("value") == undefined ? 0 : $("#FloorName option:selected").attr("value");
+        var HotelName = $("#HotelName option:selected").text();
+        var RegionName = $("#FloorName option:selected").text();
+        var InvNo = $("#InvNo").html();
+        var arr = new Array();
+        $("#maintain-table-detail tr").each(function (i) {
+            if (i == 0) {
+            }
+            else {
+                arr.push({ count: $(this).find('td').eq(3).children().val() });
+            }
+        })
+        var _url = "@Url.Action("Update", "BillMaintain")";
+        $.ajax({
+            type: "post",
+            data: { InvNo: InvNo, HotelId: HotelId, FloorId: RegionId, Arr: arr, length: arr.length },
+            url: _url,
+            success: function (data) {
+                debugger;
+                if (data == "false3") {
+                    swal("提示", "楼层不能为空请先添加楼层");
+                    return false;
+                }
+                else if (data == "false") {
+                    swal("提示", "请在异常数内输入整数");
+                    return false;
+                }
+                else if (data == "true") {
+                    $("#MaintainModel").modal('hide');
+                    document.getElementById("maintain").reset();//清空表单
+                    $(".dataTables-example").dataTable().fnDraw();
+                }
+                else if (data == "false1") {
+                    swal("提示", "异常数输入有误");
+                    return false;
+                }
+                else {
+                    swal("提示", "操作失败");
+                    return false;
+                }
+            }
+        })
+        return false;
+    })
+    $("label[name='class']").click(function () {
+        $(".btn[name='class']").css("border-bottom", "1px #ff6a00 none");
+        var val = $(this).index();
+        $(".btn[name='class']").eq(val - 1).css("border-bottom", "1px #ff6a00 solid");
+        if (judge == 1) {
+            $(".dataTables-example").dataTable().fnDraw();
+        }
+        else {
+            GetTable();
+        }
+    })
+
+</script>

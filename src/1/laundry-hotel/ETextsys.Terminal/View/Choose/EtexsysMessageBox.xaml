@@ -1,0 +1,51 @@
+﻿<Window x:Class="ETextsys.Terminal.View.Choose.EtexsysMessageBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ETextsys.Terminal.View.Choose"
+       WindowStartupLocation="CenterScreen" Background="Transparent"
+        mc:Ignorable="d" Style="{DynamicResource FuncWindow}" AllowsTransparency="True" Topmost="True" ShowInTaskbar="False">
+    <Grid>
+        <StackPanel Width="1024" Height="768" Background="#000" Opacity="0.5"></StackPanel>
+        <Border Background="#FFF" Opacity="1" CornerRadius="6" BorderThickness="2" BorderBrush="#FFF" Width="400" Height="240">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="5" Color="#000" Opacity="0.35"></DropShadowEffect>
+            </Border.Effect>
+            <StackPanel Orientation="Vertical">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"></RowDefinition>
+                        <RowDefinition Height="130"></RowDefinition>
+                        <RowDefinition Height="50"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="" Margin="10,0,0,0" Name="txtTitle" Foreground="#0E9A67" FontSize="24" FontFamily="Microsoft YaHei" FontWeight="Bold" VerticalAlignment="Center"></TextBlock>
+                    <Line Grid.Row="0" X1="0" X2="400" Height="1" Stroke="#000" StrokeThickness="1" VerticalAlignment="Bottom"></Line>
+
+                    <TextBlock Name="txtMessage" Grid.Row="1" TextWrapping="Wrap" FontSize="18" FontFamily="Microsoft YaHei" Foreground="#333" Text="" Margin="10,20,0,0"></TextBlock>
+                    <Image Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Name="imgIcon" Width="68" Height="80" Margin="0,0,10,0"></Image>
+                    <StackPanel Grid.Row="2" Orientation="Horizontal">
+                        <Button Name="leftBtn" Click="leftBtn_Click" Width="360" Height="40" Content="好" FontSize="18" Margin="10,0,10,0" FontFamily="Microsoft YaHei" FontWeight="Bold" Foreground="#FFF">
+                            <Button.Template>
+                                <ControlTemplate>
+                                    <Border Background="{TemplateBinding ContentControl.Background}" CornerRadius="6">
+                                        <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <Button Name="rightBtn" Click="rightBtn_Click" Width="360" Height="40" Content="好" FontSize="18" Margin="10,0,10,0" FontFamily="Microsoft YaHei" FontWeight="Bold" Foreground="#FFF">
+                            <Button.Template>
+                                <ControlTemplate>
+                                    <Border Background="{TemplateBinding ContentControl.Background}" CornerRadius="6">
+                                        <ContentPresenter Content="{TemplateBinding ContentControl.Content}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

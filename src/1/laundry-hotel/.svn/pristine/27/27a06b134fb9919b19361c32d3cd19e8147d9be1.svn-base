@@ -1,0 +1,679 @@
+﻿using ETexsys.RFIDServer.Model;
+using Etextsys.Terminal.Model.Settings;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+using CM = System.Configuration.ConfigurationManager;
+using System.Runtime.InteropServices;
+using ETextsys.Terminal.Model;
+using ETextsys.Terminal.Utilities;
+using ETextsys.Terminal.Model.Settings;
+using ETextsys.Terminal;
+
+namespace Etextsys.Terminal.Domain
+{
+    public class ConfigController
+    {
+        public static readonly string TerminalType = "Desktop";
+        public static string MacCode = "";
+
+        /// <summary>
+        /// 设置配置
+        /// </summary>
+        public static BusinessSettingModel BusinessSettingConfig { get; set; }
+
+        /// <summary>
+        /// 读写器配置
+        /// </summary>
+        public static ReaderModel ReaderConfig { get; set; }
+
+
+        public static SystemSettingModel SystemSettingConfig { get; set; }
+
+        public static void Init()
+        {
+            ReaderConfig = GetReaderConfig();
+            BusinessSettingConfig = GetBusinessConfig();
+            SystemSettingConfig = GetSystemConfig();
+            MacCode = Computer.Instance().GetMacAddress();
+            GetSystemDictionary();
+        }
+
+        private static readonly string path = Directory.GetCurrentDirectory() + "/setting.ini";
+
+        public static ReaderModel GetReaderConfig()
+        {
+            ReaderModel reader = null;
+            try
+            {
+                if (File.Exists(path))
+                {
+                    string[] items = INIOperation.INIGetAllItems(path, "Reader");
+                    if (items.Length == 12)
+                    {
+                        reader = new ReaderModel();
+                        string type = INIOperation.INIGetStringValue(path, "Reader", "Type", "");
+                        switch (type)
+                        {
+                            case "Alien":
+                                reader.Type = ReaderType.Alien;
+                                break;
+                            case "XIPING":
+                                reader.Type = ReaderType.XIPING;
+                                break;
+                            case "CET7":
+                                reader.Type = ReaderType.CET7;
+                                break;
+                            case "IMPINJ":
+                                reader.Type = ReaderType.IMPINJ;
+                                break;
+                            case "Rr2188":
+                                reader.Type = ReaderType.Rr2188;
+                                break;
+                            case "RIU850":
+                                reader.Type = ReaderType.RIU850;
+                                break;
+                            case "EMRK":
+                                reader.Type = ReaderType.EMRK;
+                                break;
+                            default:
+                                break;
+                        }
+                        string connType = INIOperation.INIGetStringValue(path, "Reader", "ConnType", "");
+                        switch (connType)
+                        {
+                            case "TCPIP":
+                                reader.ConnType = ConnectionType.TCPIP;
+                                break;
+                            case "COM":
+                                reader.ConnType = ConnectionType.COM;
+                                break;
+                            case "BLUETOOTH":
+                                reader.ConnType = ConnectionType.BLUETOOTH;
+                                break;
+                            default: break;
+                        }
+                        reader.IPAddress = INIOperation.INIGetStringValue(path, "Reader", "IPAddress", "");
+                        reader.HostIPAddress = INIOperation.INIGetStringValue(path, "Reader", "HostIPAddress", "");
+                        reader.COM = INIOperation.INIGetStringValue(path, "Reader", "COM", "");
+                        reader.AntennaPower = Convert.ToDouble(INIOperation.INIGetStringValue(path, "Reader", "AntennaPower", "0"));
+                        reader.LoginName = INIOperation.INIGetStringValue(path, "Reader", "LoginName", "");
+                        reader.LoginPwd = INIOperation.INIGetStringValue(path, "Reader", "LoginPwd", "");
+                        reader.Frepuency = Convert.ToDouble(INIOperation.INIGetStringValue(path, "Reader", "Frepuency", "0.0"));
+                        reader.ReaderMode = INIOperation.INIGetStringValue(path, "Reader", "ReaderMode", "");
+                        string antenna = INIOperation.INIGetStringValue(path, "Reader", "Antenna", "0");
+                        string[] ant = antenna.Split(',');
+                        List<int> antennaList = new List<int>();
+                        foreach (var a in ant)
+                        {
+                            antennaList.Add(int.Parse(a));
+                        }
+                        reader.Antenna = antennaList;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return reader;
+        }
+
+        public static void SaveReaderConfig(ReaderModel model)
+        {
+            string ant = "";
+            foreach (PropertyInfo p in model.GetType().GetProperties())
+            {
+                if (p.Name == "Antenna")
+                {
+                    for (int i = 0; i < model.Antenna.Count; i++)
+                    {
+                        if (i != model.Antenna.Count - 1)
+                            ant += model.Antenna[i] + ",";
+                        else
+                            ant += model.Antenna[i];
+                    }
+                    INIOperation.INIWriteValue(path, "Reader", p.Name, ant);
+                }
+                else
+                {
+                    INIOperation.INIWriteValue(path, "Reader", p.Name, p.GetValue(model) == null ? "" : p.GetValue(model).ToString());
+                }
+            }
+            ReaderConfig = GetReaderConfig();
+        }
+
+        public static BusinessSettingModel GetBusinessConfig()
+        {
+            BusinessSettingModel model = null;
+
+            try
+            {
+                if (File.Exists(path))
+                {
+                    string[] items = INIOperation.INIGetAllItems(path, "Business");
+                    if (items.Length == 3)
+                    {
+                        model = new BusinessSettingModel();
+                        string temp = string.Empty;
+                        temp = INIOperation.INIGetStringValue(path, "Business", "SendPrintCount", "1");
+                        model.SendPrintCount = int.Parse(temp);
+
+                        temp = INIOperation.INIGetStringValue(path, "Business", "ReveicePrintCount", "1");
+                        model.ReveicePrintCount = int.Parse(temp);
+
+                        temp = INIOperation.INIGetStringValue(path, "Business", "OtherPrintCount", "1");
+                        model.OtherPrintCount = int.Parse(temp);
+
+                        return model;
+                    }
+                }
+
+                if (model == null)
+                {
+                    model = new BusinessSettingModel() { SendPrintCount = 1, ReveicePrintCount = 1, OtherPrintCount = 1 };
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return model;
+        }
+
+        public static void SaveBusinessConfig(BusinessSettingModel model)
+        {
+            INIOperation.INIWriteValue(path, "Business", "SendPrintCount", model.SendPrintCount.ToString());
+            INIOperation.INIWriteValue(path, "Business", "ReveicePrintCount", model.ReveicePrintCount.ToString());
+            INIOperation.INIWriteValue(path, "Business", "OtherPrintCount", model.OtherPrintCount.ToString());
+
+            BusinessSettingConfig = GetBusinessConfig();
+        }
+
+        public static SystemSettingModel GetSystemConfig()
+        {
+            SystemSettingModel model = null;
+
+            try
+            {
+                if (File.Exists(path))
+                {
+                    string[] items = INIOperation.INIGetAllItems(path, "System");
+
+                    model = new SystemSettingModel();
+                    string temp = string.Empty;
+                    temp = INIOperation.INIGetStringValue(path, "System", "PrintPaperType", "2");
+                    model.SelectPrintPaper = Convert.ToInt32(temp);
+
+                    temp = INIOperation.INIGetStringValue(path, "System", "OpenMoveAntenna", "0");
+                    model.OpenMoveAntenna = Convert.ToBoolean(Convert.ToInt32(temp));
+
+                    temp = INIOperation.INIGetStringValue(path, "System", "MoveAntennaCom", "");
+                    model.MoveAntennaCom = Convert.ToString(temp);
+
+                    temp = INIOperation.INIGetStringValue(path, "System", "TruckIsRequired", "");
+                    model.TruckIsRequired = Convert.ToBoolean(Convert.ToInt32(temp));
+
+                    temp = INIOperation.INIGetStringValue(path, "System", "InFactoryPercentage", "");
+                    model.InFactoryPercentage = Convert.ToInt32(temp);
+
+                    return model;
+                }
+
+                if (model == null)
+                {
+                    model = new SystemSettingModel() { PrintPaperType = new System.Collections.ObjectModel.ObservableCollection<PrintPaperModel>(), SelectPrintPaper = 2 };
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return model;
+        }
+
+        public static void SaveSystemConfig(SystemSettingModel model)
+        {
+            INIOperation.INIWriteValue(path, "System", "PrintPaperType", (model.SelectPrintPaper + 1).ToString());
+            INIOperation.INIWriteValue(path, "System", "OpenMoveAntenna", model.OpenMoveAntenna ? "1" : "0");
+            INIOperation.INIWriteValue(path, "System", "MoveAntennaCom", model.MoveAntennaCom);
+            INIOperation.INIWriteValue(path, "System", "TruckIsRequired", model.TruckIsRequired ? "1" : "0");
+            INIOperation.INIWriteValue(path, "System", "InFactoryPercentage", model.InFactoryPercentage.ToString());
+
+            SystemSettingConfig = GetSystemConfig();
+        }
+
+        public static void GetSystemDictionary()
+        {
+            try
+            {
+                if (File.Exists(path))
+                {
+                    string[] items = INIOperation.INIGetAllItems(path, "SystemDictionary");
+
+                    string temp = string.Empty;
+                    temp = INIOperation.INIGetStringValue(path, "SystemDictionary", "HomePageDictionary", "HomeTheme1");
+                    App.HomePageDictionary = temp;
+                    temp = INIOperation.INIGetStringValue(path, "SystemDictionary", "InPageDictionary", "InPageTheme1");
+                    App.InPageDictionary = temp;
+                }
+                else
+                {
+                    App.HomePageDictionary = "";
+                    App.InPageDictionary = "";
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        public static void SaveSystemDictionary(string _homePageDictionary, string _inPageDictionary)
+        {
+            if (_homePageDictionary != null)
+                INIOperation.INIWriteValue(path, "SystemDictionary", "HomePageDictionary", _homePageDictionary);
+            if (_inPageDictionary != null)
+                INIOperation.INIWriteValue(path, "SystemDictionary", "InPageDictionary", _inPageDictionary);
+        }
+
+        public static List<LoginModel> GetLoginModelConfig()
+        {
+            List<LoginModel> list = new List<LoginModel>();
+            try
+            {
+                if (File.Exists(path))
+                {
+                    LoginModel loginmodel = new LoginModel();
+                    string[] items = INIOperation.INIGetAllItems(path, "user");
+                    if (items.Length == 2)
+                    {
+                        string[] splitname = items[0].Split('=');
+                        loginmodel.LoginName = splitname[1];
+                        string[] splitpwd = items[1].Split('=');
+                        loginmodel.LoginPwd = splitpwd[1];
+                    }
+
+                    list.Add(loginmodel);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return list;
+        }
+
+        public static void SaveLoginModelConfig(LoginModel model)
+        {
+            INIOperation.INIWriteValue(path, "user", "uid", model.LoginName);
+            INIOperation.INIWriteValue(path, "user", "pwd", model.Password.Password);
+        }
+
+        public static void ClearLoginModelConfig()
+        {
+            if (File.Exists(path))
+            {
+                INIOperation.INIEmptySection(path, "user");
+            }
+        }
+
+        public static List<string> GetCacheRegTextileBrand()
+        {
+            List<string> list = new List<string>();
+
+            try
+            {
+                if (File.Exists(path))
+                {
+                    string temp = string.Empty;
+                    temp = INIOperation.INIGetStringValue(path, "RegCache", "TextileBrandID", "0");
+                    list.Add(temp);
+                    temp = INIOperation.INIGetStringValue(path, "RegCache", "TextileBrandName", "");
+                    list.Add(temp);
+                }
+            }
+            catch
+            {
+
+            }
+
+            return list;
+        }
+
+        public static void CacheRegTextileBrand(int id, string name)
+        {
+            INIOperation.INIWriteValue(path, "RegCache", "TextileBrandID", id.ToString());
+            INIOperation.INIWriteValue(path, "RegCache", "TextileBrandName", name);
+        }
+    }
+
+    public class INIOperation
+    {
+        #region INI文件操作
+
+        /*
+         * 针对INI文件的API操作方法，其中的节点（Section)、键（KEY）都不区分大小写
+         * 如果指定的INI文件不存在，会自动创建该文件。
+         * 
+         * CharSet定义的时候使用了什么类型，在使用相关方法时必须要使用相应的类型
+         *      例如 GetPrivateProfileSectionNames声明为CharSet.Auto,那么就应该使用 Marshal.PtrToStringAuto来读取相关内容
+         *      如果使用的是CharSet.Ansi，就应该使用Marshal.PtrToStringAnsi来读取内容
+         *      
+         */
+
+        #region API声明
+
+        /// <summary>
+        /// 获取所有节点名称(Section)
+        /// </summary>
+        /// <param name="lpszReturnBuffer">存放节点名称的内存地址,每个节点之间用\0分隔</param>
+        /// <param name="nSize">内存大小(characters)</param>
+        /// <param name="lpFileName">Ini文件</param>
+        /// <returns>内容的实际长度,为0表示没有内容,为nSize-2表示内存大小不够</returns>
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+        private static extern uint GetPrivateProfileSectionNames(IntPtr lpszReturnBuffer, uint nSize, string lpFileName);
+
+        /// <summary>
+        /// 获取某个指定节点(Section)中所有KEY和Value
+        /// </summary>
+        /// <param name="lpAppName">节点名称</param>
+        /// <param name="lpReturnedString">返回值的内存地址,每个之间用\0分隔</param>
+        /// <param name="nSize">内存大小(characters)</param>
+        /// <param name="lpFileName">Ini文件</param>
+        /// <returns>内容的实际长度,为0表示没有内容,为nSize-2表示内存大小不够</returns>
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+        private static extern uint GetPrivateProfileSection(string lpAppName, IntPtr lpReturnedString, uint nSize, string lpFileName);
+
+        /// <summary>
+        /// 读取INI文件中指定的Key的值
+        /// </summary>
+        /// <param name="lpAppName">节点名称。如果为null,则读取INI中所有节点名称,每个节点名称之间用\0分隔</param>
+        /// <param name="lpKeyName">Key名称。如果为null,则读取INI中指定节点中的所有KEY,每个KEY之间用\0分隔</param>
+        /// <param name="lpDefault">读取失败时的默认值</param>
+        /// <param name="lpReturnedString">读取的内容缓冲区，读取之后，多余的地方使用\0填充</param>
+        /// <param name="nSize">内容缓冲区的长度</param>
+        /// <param name="lpFileName">INI文件名</param>
+        /// <returns>实际读取到的长度</returns>
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+        private static extern uint GetPrivateProfileString(string lpAppName, string lpKeyName, string lpDefault, [In, Out] char[] lpReturnedString, uint nSize, string lpFileName);
+
+        //另一种声明方式,使用 StringBuilder 作为缓冲区类型的缺点是不能接受\0字符，会将\0及其后的字符截断,
+        //所以对于lpAppName或lpKeyName为null的情况就不适用
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+        private static extern uint GetPrivateProfileString(string lpAppName, string lpKeyName, string lpDefault, StringBuilder lpReturnedString, uint nSize, string lpFileName);
+
+        //再一种声明，使用string作为缓冲区的类型同char[]
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+        private static extern uint GetPrivateProfileString(string lpAppName, string lpKeyName, string lpDefault, string lpReturnedString, uint nSize, string lpFileName);
+
+        /// <summary>
+        /// 将指定的键值对写到指定的节点，如果已经存在则替换。
+        /// </summary>
+        /// <param name="lpAppName">节点，如果不存在此节点，则创建此节点</param>
+        /// <param name="lpString">Item键值对，多个用\0分隔,形如key1=value1\0key2=value2
+        /// <para>如果为string.Empty，则删除指定节点下的所有内容，保留节点</para>
+        /// <para>如果为null，则删除指定节点下的所有内容，并且删除该节点</para>
+        /// </param>
+        /// <param name="lpFileName">INI文件</param>
+        /// <returns>是否成功写入</returns>
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+        [return: MarshalAs(UnmanagedType.Bool)]     //可以没有此行
+        private static extern bool WritePrivateProfileSection(string lpAppName, string lpString, string lpFileName);
+
+        /// <summary>
+        /// 将指定的键和值写到指定的节点，如果已经存在则替换
+        /// </summary>
+        /// <param name="lpAppName">节点名称</param>
+        /// <param name="lpKeyName">键名称。如果为null，则删除指定的节点及其所有的项目</param>
+        /// <param name="lpString">值内容。如果为null，则删除指定节点中指定的键。</param>
+        /// <param name="lpFileName">INI文件</param>
+        /// <returns>操作是否成功</returns>
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool WritePrivateProfileString(string lpAppName, string lpKeyName, string lpString, string lpFileName);
+
+        #endregion
+
+        #region 封装
+
+        /// <summary>
+        /// 读取INI文件中指定INI文件中的所有节点名称(Section)
+        /// </summary>
+        /// <param name="iniFile">Ini文件</param>
+        /// <returns>所有节点,没有内容返回string[0]</returns>
+        public static string[] INIGetAllSectionNames(string iniFile)
+        {
+            uint MAX_BUFFER = 32767;    //默认为32767
+
+            string[] sections = new string[0];      //返回值
+
+            //申请内存
+            IntPtr pReturnedString = Marshal.AllocCoTaskMem((int)MAX_BUFFER * sizeof(char));
+            uint bytesReturned = INIOperation.GetPrivateProfileSectionNames(pReturnedString, MAX_BUFFER, iniFile);
+            if (bytesReturned != 0)
+            {
+                //读取指定内存的内容
+                string local = Marshal.PtrToStringAuto(pReturnedString, (int)bytesReturned).ToString();
+
+                //每个节点之间用\0分隔,末尾有一个\0
+                sections = local.Split(new char[] { '\0' }, StringSplitOptions.RemoveEmptyEntries);
+            }
+
+            //释放内存
+            Marshal.FreeCoTaskMem(pReturnedString);
+
+            return sections;
+        }
+
+        /// <summary>
+        /// 获取INI文件中指定节点(Section)中的所有条目(key=value形式)
+        /// </summary>
+        /// <param name="iniFile">Ini文件</param>
+        /// <param name="section">节点名称</param>
+        /// <returns>指定节点中的所有项目,没有内容返回string[0]</returns>
+        public static string[] INIGetAllItems(string iniFile, string section)
+        {
+            //返回值形式为 key=value,例如 Color=Red
+            uint MAX_BUFFER = 32767;    //默认为32767
+
+            string[] items = new string[0];      //返回值
+
+            //分配内存
+            IntPtr pReturnedString = Marshal.AllocCoTaskMem((int)MAX_BUFFER * sizeof(char));
+
+            uint bytesReturned = INIOperation.GetPrivateProfileSection(section, pReturnedString, MAX_BUFFER, iniFile);
+
+            if (!(bytesReturned == MAX_BUFFER - 2) || (bytesReturned == 0))
+            {
+
+                string returnedString = Marshal.PtrToStringAuto(pReturnedString, (int)bytesReturned);
+                items = returnedString.Split(new char[] { '\0' }, StringSplitOptions.RemoveEmptyEntries);
+            }
+
+            Marshal.FreeCoTaskMem(pReturnedString);     //释放内存
+
+            return items;
+        }
+
+        /// <summary>
+        /// 获取INI文件中指定节点(Section)中的所有条目的Key列表
+        /// </summary>
+        /// <param name="iniFile">Ini文件</param>
+        /// <param name="section">节点名称</param>
+        /// <returns>如果没有内容,反回string[0]</returns>
+        public static string[] INIGetAllItemKeys(string iniFile, string section)
+        {
+            string[] value = new string[0];
+            const int SIZE = 1024 * 10;
+
+            if (string.IsNullOrEmpty(section))
+            {
+                throw new ArgumentException("必须指定节点名称", "section");
+            }
+
+            char[] chars = new char[SIZE];
+            uint bytesReturned = INIOperation.GetPrivateProfileString(section, null, null, chars, SIZE, iniFile);
+
+            if (bytesReturned != 0)
+            {
+                value = new string(chars).Split(new char[] { '\0' }, StringSplitOptions.RemoveEmptyEntries);
+            }
+            chars = null;
+
+            return value;
+        }
+
+        /// <summary>
+        /// 读取INI文件中指定KEY的字符串型值
+        /// </summary>
+        /// <param name="iniFile">Ini文件</param>
+        /// <param name="section">节点名称</param>
+        /// <param name="key">键名称</param>
+        /// <param name="defaultValue">如果没此KEY所使用的默认值</param>
+        /// <returns>读取到的值</returns>
+        public static string INIGetStringValue(string iniFile, string section, string key, string defaultValue)
+        {
+            string value = defaultValue;
+            const int SIZE = 1024 * 10;
+
+            if (string.IsNullOrEmpty(section))
+            {
+                throw new ArgumentException("必须指定节点名称", "section");
+            }
+
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new ArgumentException("必须指定键名称(key)", "key");
+            }
+
+            StringBuilder sb = new StringBuilder(SIZE);
+            uint bytesReturned = INIOperation.GetPrivateProfileString(section, key, defaultValue, sb, SIZE, iniFile);
+
+            if (bytesReturned != 0)
+            {
+                value = sb.ToString();
+            }
+            sb = null;
+
+            return value;
+        }
+
+        /// <summary>
+        /// 在INI文件中，将指定的键值对写到指定的节点，如果已经存在则替换
+        /// </summary>
+        /// <param name="iniFile">INI文件</param>
+        /// <param name="section">节点，如果不存在此节点，则创建此节点</param>
+        /// <param name="items">键值对，多个用\0分隔,形如key1=value1\0key2=value2</param>
+        /// <returns></returns>
+        public static bool INIWriteItems(string iniFile, string section, string items)
+        {
+            if (string.IsNullOrEmpty(section))
+            {
+                throw new ArgumentException("必须指定节点名称", "section");
+            }
+
+            if (string.IsNullOrEmpty(items))
+            {
+                throw new ArgumentException("必须指定键值对", "items");
+            }
+
+            return INIOperation.WritePrivateProfileSection(section, items, iniFile);
+        }
+
+        /// <summary>
+        /// 在INI文件中，指定节点写入指定的键及值。如果已经存在，则替换。如果没有则创建。
+        /// </summary>
+        /// <param name="iniFile">INI文件</param>
+        /// <param name="section">节点</param>
+        /// <param name="key">键</param>
+        /// <param name="value">值</param>
+        /// <returns>操作是否成功</returns>
+        public static bool INIWriteValue(string iniFile, string section, string key, string value)
+        {
+            if (string.IsNullOrEmpty(section))
+            {
+                throw new ArgumentException("必须指定节点名称", "section");
+            }
+
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new ArgumentException("必须指定键名称", "key");
+            }
+
+            if (value == null)
+            {
+                throw new ArgumentException("值不能为null", "value");
+            }
+
+            return INIOperation.WritePrivateProfileString(section, key, value, iniFile);
+
+        }
+
+        /// <summary>
+        /// 在INI文件中，删除指定节点中的指定的键。
+        /// </summary>
+        /// <param name="iniFile">INI文件</param>
+        /// <param name="section">节点</param>
+        /// <param name="key">键</param>
+        /// <returns>操作是否成功</returns>
+        public static bool INIDeleteKey(string iniFile, string section, string key)
+        {
+            if (string.IsNullOrEmpty(section))
+            {
+                throw new ArgumentException("必须指定节点名称", "section");
+            }
+
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new ArgumentException("必须指定键名称", "key");
+            }
+
+            return INIOperation.WritePrivateProfileString(section, key, null, iniFile);
+        }
+
+        /// <summary>
+        /// 在INI文件中，删除指定的节点。
+        /// </summary>
+        /// <param name="iniFile">INI文件</param>
+        /// <param name="section">节点</param>
+        /// <returns>操作是否成功</returns>
+        public static bool INIDeleteSection(string iniFile, string section)
+        {
+            if (string.IsNullOrEmpty(section))
+            {
+                throw new ArgumentException("必须指定节点名称", "section");
+            }
+
+            return INIOperation.WritePrivateProfileString(section, null, null, iniFile);
+        }
+
+        /// <summary>
+        /// 在INI文件中，删除指定节点中的所有内容。
+        /// </summary>
+        /// <param name="iniFile">INI文件</param>
+        /// <param name="section">节点</param>
+        /// <returns>操作是否成功</returns>
+        public static bool INIEmptySection(string iniFile, string section)
+        {
+            if (string.IsNullOrEmpty(section))
+            {
+                throw new ArgumentException("必须指定节点名称", "section");
+            }
+
+            return INIOperation.WritePrivateProfileSection(section, string.Empty, iniFile);
+        }
+
+        #endregion
+
+        #endregion
+    }
+}

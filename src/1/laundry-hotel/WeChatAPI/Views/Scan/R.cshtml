@@ -1,0 +1,211 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>扫描确认</title>
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/modernizr-2.6.2.js")"></script>
+    <script type="text/javascript" src="https://cdn.goeasy.io/goeasy.js"></script>
+</head>
+<body>
+    <div>
+        <div>
+            <p style="padding-left:1em;">单据列表</p>
+            <br />
+            <br />
+            <div class="form-group">
+                <div class="form-control">
+                    <label class="col-lg-2 control-label">酒店:</label>
+                    <div class="col-lg-10" id="hotel"></div>
+                </div>
+            </div>
+            <br />
+            <br />
+            <div class="container">
+                <table id="invdetails" style="width:96%;"></table>
+            </div>
+            <br />
+            <br />
+            <div class="form-group">
+                <div class="col-sm-4 col-sm-offset-2">
+                    <button class="btn btn-default" id="btncancel" style="padding:2em 4em;">取消</button>
+                    <button class="btn btn-success" id="btnsubmit" style="padding:2em 4em;">确定</button>
+                </div>
+            </div>
+        </div>
+        <br />
+        <br />
+        <div style="padding-left:1em;">
+            <div id="sx" style="display:none;">
+                <p>确认失败</p>
+                <p>当前二维码已失效。</p>
+                <div>如您还未关注此公众号<br />长按下方二维码可快速关注</div>
+            </div>
+            <div id="wq" style="display:none;">
+                <p>确认失败</p>
+                <p>当前账号未分配该楼层的权限。</p>
+                <div>如您还没有权限<br />请联系系统管理员进行权限分配</div>
+            </div>
+            <div id="yg" style="display:none;">
+                <p>当前微信未关联账号，无法登录。</p>
+                <div>如您还未关注此公众号<br />长按下方二维码可快速关注</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="@Url.Content("~/Scripts/jquery-1.10.2.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/ConfigureJs.js")"></script>
+    <script>
+        function GetQueryString(name) {
+            var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) {
+                return unescape(r[2]);
+            }
+            return null;
+        }
+
+        $("#btnsubmit").click(function () {
+            var access_code = GetQueryString('code');
+            var _url = "@Url.Action("RecieveCallback", "Scan")";
+            var guid = "@ViewData["GUID"]".toUpperCase();
+            var code = "@ViewData["Code"]";
+            var id = "@ViewData["ID"]";
+
+            $.ajax({
+                type: 'POST',
+                url: _url,
+                data: { access_code: access_code, code: code, id: id },
+                dataType: 'json',
+                cache: false,
+                success: function (d) {
+                    var goEasy = new GoEasy({
+                        appkey: config.goEasyAppKey
+                    });
+                    //"T": 2单据确认信息
+                    var msg = { "T": 2, Flag: "OK", Result: "" };
+                    if (d.ResultCode == 1) {
+                        msg.Flag = "NO";
+                        $("#yg").show();
+                        goEasy.publish({
+                            channel: "bindingChannel_" + code + "_" + guid,
+                            message: JSON.stringify(msg),
+                        });
+                    } else {
+                        if (d.OtherCode == "1") {
+                            msg.Flag = "NO";
+                            msg.Result = "该微信账号未绑定";
+                            $("#yg").show();
+                            goEasy.publish({
+                                channel: "bindingChannel_" + code + "_" + guid,
+                                message: JSON.stringify(msg),
+                            });
+                        } else if (d.OtherCode == "2") {
+                            msg.Flag = "NO";
+                            msg.Result = "该用户未分配科室的权限";
+                            $("#wq").show();
+                            goEasy.publish({
+                                channel: "bindingChannel_" + code + "_" + guid,
+                                message: JSON.stringify(msg),
+                            });
+                        } else {
+                            msg.Flag = "OK";
+                            msg.Result = d.Result;
+
+                            goEasy.publish({
+                                channel: "bindingChannel_" + code + "_" + guid,
+                                message: JSON.stringify(msg),
+                            });
+                        }
+                    }
+                    $("#btnsubmit").attr("disabled", "disabled");
+                },
+                error: function () {
+                    alert("error!");
+                }
+            });
+        });
+
+        var goEasy = new GoEasy({
+            appkey: config.goEasyAppKey
+        });
+
+        $("#btncancel").click(function () {
+            var guid = "@ViewData["GUID"]".toUpperCase();
+            var code = "@ViewData["Code"]";
+
+            //"T": 2单据确认信息
+            var msg = { "T": 2, Flag: "Cancel", Result: "已取消" };
+            goEasy.publish({
+                channel: "bindingChannel_" + code + "_" + guid,
+                message: JSON.stringify(msg),
+            });
+        });
+
+        $(function () {
+            if ("@ViewData["effective"]" == "0") {
+                $("#sx").show();
+            } else {
+                var access_code = GetQueryString('code');
+                if (access_code == null || access_code == "") {
+                    var fromurl = location.href;
+                    var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + '@ViewData["AppId"]' + '&redirect_uri=' + encodeURIComponent(fromurl) + '&response_type=code&scope=snsapi_base&state=etexsys&connect_redirect=1#wechat_redirect';
+                    location.href = url;
+                }
+                else {
+                    var guid = "@ViewData["GUID"]".toUpperCase();
+                    var code = "@ViewData["Code"]";
+
+                    var msg = { "T": 1, Flag: "Cancel", Result: "" };
+                    goEasy.publish({
+                        channel: "bindingChannel_" + code + "_" + guid,
+                        message: JSON.stringify(msg),
+                    });
+
+                    goEasy.subscribe({
+                        channel: "bindingChannel_" + code + "_" + guid,
+                        onMessage: function (message) {
+                            var msg = JSON.parse(message.content);
+
+                            if (msg.T == 0) {
+                                $("#hotel").html(msg.Header);
+
+                                var tr, th, td, item;
+
+                                tr = $("<tr></tr>");
+                                th = $("<th></th>").html("纺织品名称");
+                                tr.append(th);
+                                th = $("<th></th>").html("尺寸");
+                                tr.append(th);
+                                th = $("<th></th>").html("数量");
+                                tr.append(th);
+                                $("#invdetails").append(tr);
+
+                                for (var i = 0; i < msg.Data.length; i++) {
+                                    item = msg.Data[i];
+
+                                    tr = $("<tr></tr>");
+                                    td = $("<td></td>").html(item.N);
+                                    tr.append(td);
+                                    td = $("<td></td>").html(item.S);
+                                    tr.append(td);
+                                    td = $("<td></td>").html(item.C);
+                                    tr.append(td);
+                                    $("#invdetails").append(tr);
+                                }
+                            } else if (msg.T == 2) {
+                                goEasy.unsubscribe({
+                                    channel: "bindingChannel_" + code + "_" + guid,
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

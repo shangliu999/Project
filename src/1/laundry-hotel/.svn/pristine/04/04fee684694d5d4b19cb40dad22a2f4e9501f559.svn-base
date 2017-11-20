@@ -1,0 +1,32 @@
+﻿using log4net;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
+namespace ETexsys.Common.Log
+{
+    public class Log4NetFile
+    {
+        private ILog logger;
+
+        public Log4NetFile()
+        {
+            logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+            //log4net.Config.XmlConfigurator.Configure(new System.IO.FileInfo("Log4Net.config"));
+        }
+
+        public void Log(string message)
+        {
+            logger.Warn(message);
+        }
+
+        public void Log(Exception ex)
+        {
+            logger.Warn(ex);
+        }
+    }
+}

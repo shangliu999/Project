@@ -1,0 +1,75 @@
+﻿
+/*********单据类型备注**********/
+Invoice表
+InvType
+1：污物送洗单
+2：净物配送单
+3：入库单
+4：出库单
+5：入厂
+6：订单
+7：退回
+8：工厂返洗
+9：签收
+10：盘库
+11：打扎
+
+DataType
+1:RFID数据
+2:手工录入
+
+
+Textile表
+IsFlag
+1：正常
+2：报废
+
+TextileState
+1：污物送洗单
+2：净物配送单
+3：入库单
+4：出库单
+5：入厂
+6：订单
+7：退回
+8：工厂返洗
+9：签收
+10：盘库
+11：打扎
+
+Region表
+RegionType
+1：酒店
+2：楼层
+3：仓库
+
+RegionMode
+RegionType为1时 RegionMode配货方式 1门店 2楼层
+
+RegionType为2时 RegionMode配货方式 1污物送洗 2订单 3污物送洗+订单
+
+RegionType为3时 RegionMode配货方式 1租赁仓库 2周转仓库
+
+BusinessInvoice表
+InvType
+1:需求单
+Stated
+1：待审核
+2：待出库
+3：已出库
+4：完成
+5：终止
+6：审核未通过
+
+invoice表
+当invtype为出入库单时，invsubtype
+配送中心 净物入库（入库） 22
+		 回厂送洗（出库） 21
+洗涤中心 洗涤入库（入库） 24
+		 净物出库（出库） 20
+配送中心 成品出库（出库） 根据出库依据而定
+
+当invtype为入厂单时，invsubtype
+配送中心 污物复核（入厂） 0
+洗涤中心 污物入厂（入厂） 1
+

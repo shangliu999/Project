@@ -1,0 +1,63 @@
+﻿<Window x:Class="ETextsys.Terminal.View.Settings.About"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ETextsys.Terminal.View.Settings" WindowStyle="None" WindowStartupLocation="CenterScreen"  ResizeMode="CanMinimize"
+         mc:Ignorable="d" 
+        Title="About" Height="768" Width="1024">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="126*"></RowDefinition>
+            <RowDefinition Height="76*"></RowDefinition>
+            <RowDefinition Height="50*"></RowDefinition>
+            <RowDefinition Height="337*"></RowDefinition>
+            <RowDefinition Height="41*"></RowDefinition>
+            <RowDefinition Height="36*"></RowDefinition>
+            <RowDefinition Height="94*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Grid.Column="0" Background="{StaticResource bgheader}">
+            <Button Command="{Binding Closewindows}" Style="{StaticResource BackBtn}" HorizontalAlignment="Right" Margin="0,18,30,54" Width="126"/>
+            <Label Content="关于" Style="{StaticResource titel}" Margin="500,29,447,47" Height="50" Width="70"></Label>
+        </Grid>
+        <Grid Grid.Row="1">
+            <StackPanel>
+                <Image Source="{StaticResource Logo}" Width="268" Height="76"></Image>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="2">
+            <TextBlock FontFamily="微软雅黑" FontSize="24" Foreground="#288DFF" Margin="20,20,0,0">版本号 :V1.0.0.2</TextBlock>
+        </Grid>
+        <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50*"></RowDefinition>
+                <RowDefinition Height="33*"></RowDefinition>
+                <RowDefinition Height="36*"></RowDefinition>
+                <RowDefinition Height="36*"></RowDefinition>
+                <RowDefinition Height="35*"></RowDefinition>
+                <RowDefinition Height="67*"></RowDefinition>
+                <RowDefinition Height="35*"></RowDefinition>
+                <RowDefinition Height="67*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBlock FontFamily="微软雅黑" FontSize="24" Foreground="#288DFF" Margin="20,20,0,0">公司简介 :</TextBlock>
+            <Canvas>
+            <TextBlock Grid.Row="1" FontFamily="微软雅黑" FontSize="20" Foreground="#666666" Canvas.Left="60" Canvas.Top="57">上海诣泰物联科技有限公司是一家致力于公用纺织品洗涤租赁管理解决方案的供应商。产品方案引入当</TextBlock>
+            </Canvas>
+            <TextBlock Grid.Row="2" FontFamily="微软雅黑" FontSize="20" Foreground="#666666" Margin="20,10,0,0">前最先进的RFID技术、云计算服务、移动互联网、自动化等技术。</TextBlock>
+            <TextBlock Grid.Row="3" FontFamily="微软雅黑" FontSize="20" Foreground="#666666" Margin="60,10,0,0">公司旗下的软件集成与系统解决方案在行业中处于领先水平，专注于为洗涤企业、医疗单位、酒店企业</TextBlock>
+            <TextBlock Grid.Row="4" FontFamily="微软雅黑" FontSize="20" Foreground="#666666" Margin="20,10,0,0">提供纺织品一站式管理解决方案，助力企业“互联网+”进程。</TextBlock>
+            <TextBlock Grid.Row="5" FontFamily="微软雅黑" FontSize="24" Foreground="#288DFF" Margin="20,36,0,0">版权信息 :</TextBlock>
+            <TextBlock Grid.Row="6" FontFamily="微软雅黑" FontSize="20" Foreground="#666666" Margin="60,10,0,0">本计算机程序受著作权法和国际条约保护。如未经授权而擅自复制或传播本程序（或其中任何部分），</TextBlock>
+            <TextBlock Grid.Row="7" FontFamily="微软雅黑" FontSize="20" Foreground="#666666" Margin="20,10,0,0">将受到严厉的民事和刑事制裁，并将在法律许可的最大额度内受到起诉。
+            </TextBlock>
+        </Grid>
+        <Canvas>
+            <Image Source="{StaticResource wangzhan}" Grid.Row="4" Width="36" Height="36" HorizontalAlignment="Left" Canvas.Left="18" Canvas.Top="604"/>
+            <Image Source="{StaticResource dianhua}" Grid.Row="4" Width="36" Height="36" HorizontalAlignment="Left" Canvas.Left="18" Canvas.Top="641"/>
+            <Image Source="{StaticResource youxiang}" Grid.Row="4" Width="36" Height="36" HorizontalAlignment="Left" Canvas.Left="18" Canvas.Top="680"/>
+        </Canvas>
+        <TextBlock  Grid.Row="4" Margin="60,12,0,0" FontFamily="微软雅黑" FontSize="20" Foreground="#288DFF">网站 : http//www.etexsys.com</TextBlock>
+        <TextBlock  Grid.Row="5" Margin="60,10,0,0" FontFamily="微软雅黑" FontSize="20" Foreground="#288DFF">电话 : 021-20403212</TextBlock>
+        <TextBlock  Grid.Row="6" Margin="60,10,0,0" FontFamily="微软雅黑" FontSize="20" Foreground="#288DFF">邮箱 : market@etexsys.com</TextBlock>
+    </Grid>
+</Window>

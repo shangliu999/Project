@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RFID洗涤管理系统</title>
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/font-awesome.css")" rel="stylesheet">
+
+    <link href="@Url.Content("~/Content/animate.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/style.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/plugins/dataTables/datatables.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/plugins/iCheck/custom.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/plugins/sweetalert/sweetalert.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/fakeLoader.css")" rel="stylesheet" />
+    <script type="text/javascript" src="https://cdn.goeasy.io/goeasy.js"></script>
+</head>
+<body class="fixed-sidebar">
+    <div class="fakeloader"></div>
+    <div class="navbar navbar-default navbar-fixed-top">
+        <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0;background-color:#008de7">
+            <div class="nav navbar-header">
+                <img alt="image" style="margin-top:10px; margin-left:10px;" src="@Url.Content("~/Images/logo1.png")" />
+            </div>
+
+            <ul class="nav navbar-top-links navbar-right">
+                <li>
+                    <span class="m-r-sm welcome-message" style="color:#FFFFFF">欢迎使用系统</span>
+                </li>
+                <li>
+                    <label style="color:#FFFFFF;font-weight:500">
+                        @ViewData["username"]
+                    </label>
+                </li>
+                <li>
+                    <div>
+                        <a style="color:#FFFFFF;font-weight:500" href="#" onclick="ShowModel()">
+                            &nbsp; &nbsp;
+                            <img src="@Url.Content("~/Images/icon-xiugaimima.png")" style="align-content:center" />
+                            修改密码
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <a style="color:#FFFFFF;font-weight:500;margin:20px,0,0,0" href="@Url.Action("LogoutLogin", "Home")">
+                        &nbsp; &nbsp;
+                        <img src="@Url.Content("~/Images/icon-zhuxiao.png")" align-content:center" />
+                        注销
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    @model List<ETexsys.Model.sys_right>
+    <div id="wrapper" style="padding-top:61px;">
+        @Html.Partial("_LayoutLeftMenu", Model)
+
+        <!-- Mainly scripts -->
+        <script src="@Url.Content("~/Scripts/jquery-1.10.2.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/plugins/metisMenu/jquery.metisMenu.js")"></script>
+        <script src="@Url.Content("~/Scripts/plugins/slimscroll/jquery.slimscroll.min.js")"></script>
+
+        <script src="@Url.Content("~/Scripts/inspinia.js")"></script>
+        <script src="@Url.Content("~/Scripts/plugins/pace/pace.min.js")"></script>
+
+        <script src="@Url.Content("~/Scripts/plugins/dataTables/datatables.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/plugins/iCheck/icheck.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/plugins/sweetalert/sweetalert.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/DataFormat.js")"></script>
+
+        <script src="@Url.Content("~/Scripts/fakeLoader.js")"></script>
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+
+            <div class="row wrapper border-bottom white-bg page-heading" style="position: fixed;z-index:2030;width:100%;">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                    <form role="search" class="navbar-form-custom" style="width:auto;">
+                        <div class="form-group">
+                            <h2 id="htitle"></h2>
+                            <ol id="barNav" class="breadcrumb"></ol>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div id="divBody">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <script>
+        //左侧菜单
+        function ClickFunc(url, obj, funcId) {
+            $(document.body).css({
+                "overflow-y": "auto"
+            });
+            if (url == "") {
+                swal("提示", "无法访问.");
+                return false;
+            }
+            $(".fakeloader").show().fakeLoader({
+                timeToHide: 13000, //加载效果的持续时间
+                zIndex: "9999",//
+                spinner: "spinner2",//可选值 'spinner1', 'spinner2', 'spinner3', 'spinner4', 'spinner5', 'spinner6', 'spinner7' 对应有7种效果
+                bgColor: "#000"//加载时的背景颜色
+                //imagePath: "yourPath/customizedImage.gif" //自定义的加载图片，见demo8.html
+            });
+            $('.fakeloader').css('opacity', '0.5');
+
+            if (url.indexOf("?") > 0) {
+                url = url + "&funcId=" + funcId + "&d=" + (new Date()).getTime();
+            }
+            else {
+                url = url + "?d=" + (new Date()).getTime() + "&funcId=" + funcId;
+            }
+            var twoText = $(obj).parent().parent().prev().text();
+            var oneText = $(obj).parent().parent().parent().parent().prev().text();
+            var _url = "@Url.Action("Index","Home")";
+            var html = '<li><a href="' + _url + '">主页</a></li>';
+            if (oneText.length > 0) {
+                html += '<li><a>' + oneText + '</a></li>';
+            }
+            if (twoText.length > 0) {
+                html += '<li><a>' + twoText + '</a></li>';
+            }
+            html += '<li class="active"><strong id="stitle">' + $(obj).text() + '</strong></li>';
+            $("#side-menu li").removeClass("active");
+            $(obj).parent().addClass("active");
+            $(obj).parent().parent().parent().addClass("active");
+            $("#barNav").empty();
+            $("#barNav").append(html);
+            $("#divBody").children().remove();
+            $("#divBody").load(url, function (e) {
+                //console.log("e:" + e);
+                if (e.indexOf("<title>登录</title>") > 0) {
+                    var url = "@Url.Action("Index", "Login")";
+                    location.href = url;
+                } else {
+                    setTimeout(function () { $('.fakeloader').hide().empty() }, 500);
+                }
+            });
+        }
+
+        ///子集页面更改路径
+        function SubClickFunc(url, funcId) {
+            $(".fakeloader").show().fakeLoader({
+                timeToHide: 13000, //加载效果的持续时间
+                zIndex: "9999",//
+                spinner: "spinner2",//可选值 'spinner1', 'spinner2', 'spinner3', 'spinner4', 'spinner5', 'spinner6', 'spinner7' 对应有7种效果
+                bgColor: "#000"//加载时的背景颜色
+                //imagePath: "yourPath/customizedImage.gif" //自定义的加载图片，见demo8.html
+            });
+            $('.fakeloader').css('opacity', '0.5');
+            if (url.indexOf("?") > 0) {
+                url = url + "&funcId=" + funcId + "&d=" + (new Date()).getTime();
+            }
+            else {
+                url = url + "?d=" + (new Date()).getTime() + "&funcId=" + funcId;
+            }
+            $("#divBody").children().remove();
+            $("#divBody").load(url, function (e) {
+                if (e.indexOf("<title>登录</title>") > 0) {
+                    var url = "@Url.Action("Index", "Login")";
+                    location.href = url;
+                } else {
+                    setTimeout(function () { $('.fakeloader').hide().empty() }, 500);
+                }
+            });
+        }
+
+        function ShowModel() {
+            var url = "@Url.Action("ViewPassword", "Login")";
+            SubClickFunc(url, 1);
+        }
+    </script>
+</body>
+</html>

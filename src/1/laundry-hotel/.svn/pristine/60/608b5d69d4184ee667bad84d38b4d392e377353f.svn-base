@@ -1,0 +1,231 @@
+﻿@{
+    Layout = null;
+}
+<link href="@Url.Content("~/Content/ReportStyle.css")" rel="stylesheet" />
+<link media="print" href="@Url.Content("~/Content/ReportStyle.css")" rel="stylesheet" />
+<link href="@Url.Content("~/Content/plugins/daterangepicker/daterangepicker.css")" rel="stylesheet" />
+
+<div style="top:130px;margin-left:-15px; padding-left:0;padding-right:0;width:100%; position:fixed;z-index:2030;">
+    <div style="width:100%;padding: 2px;background: #f7f7f7;z-index: 1;border: 1px solid #dadada;display: table;clear: both;content:''">
+        <div onclick="conditonChange()" style="float: left;border-left: 1px solid #dedcdc;margin-right: 8px;margin-left: 8px;">
+                <div role="button" title="过滤" style="border-color:#ccc;border-radius:2px;cursor:pointer;line-height:36px;margin:0 1px;min-width:30px;padding:0 6px;position:relative;user-select:none;text-align:center;">
+                    <span class="fa fa-filter" style="font-size:16px;margin-top:1px;opacity:0.8;"></span>
+                </div>
+            </div>
+        <div style="float: left;border-left: 1px solid #dedcdc;margin-right: 8px;margin-left: 8px;">
+            <div role="button" onclick="myPrint()" title="打印" data-state="" style="border-color:#ccc;border-radius:2px;display:inline-block;cursor:pointer;line-height:36px;margin:0 1px;min-width:30px;padding:0 6px;position:relative;user-select:none;text-align:center;">
+                <span class="fa fa-print" style="font-size:16px;margin-top:1px;opacity:0.8;"></span>
+            </div>
+            <div style="display:inline-block;position:relative;">
+                <form id="formExport" action="@Url.Action("SingleExportExcel","Summary")" method="post">
+                    <div disabled="disabled" id="btnExportExcel" title="导出" data-state="" style="border-color:#ccc;border-radius:2px;display:inline-block;cursor:pointer;line-height:36px;margin:0 1px;min-width:30px;padding:0 6px;position:relative;user-select:none;text-align:center;">
+                        <span class="fa fa-floppy-o" style="font-size:16px;margin-top:1px;opacity:0.8;"></span>
+                    </div>
+                    <input type="hidden" id="hddTitle" name="hddTitle" value="" />
+                    <input type="hidden" id="hddData" name="hddData" value="" />
+                    <input type="hidden" id="hddCondition" name="hddCondition" value="" />
+                    <input type="hidden" id="hddpx" name="hddpx" value="2" />
+                </form>
+            </div>
+            <div role="button" title="分享" data-state="" style="border-color:#ccc;border-radius:2px;display:inline-block;cursor:pointer;line-height:36px;margin:0 1px;min-width:30px;padding:0 6px;position:relative;user-select:none;text-align:center;">
+                <span class="fa fa-share-alt"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="conditonPanel" style="position: fixed;top: 172px;float:left;width:250px;background-color:#F1F1F1;height:100%;margin-left:-15px;">
+    <div style="padding:20px 10px;">
+
+        <div class="form-group">
+            <span class="conditionTitle">流通品牌：</span>
+        </div>
+        <div class="form-group">
+            <select class="form-control" id="brandId">
+                @{
+                    var brandList = ViewData["BrandList"] as List<ETexsys.Model.brandtype>;
+                    if (brandList.Count > 0)
+                    {
+                        <option value="0">所有</option>
+                    }
+                    foreach (var item in brandList)
+                    {
+                        <option value="@item.ID">@item.BrandName</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <span class="conditionTitle">时间：</span>
+        </div>
+        <div class="form-group">
+            <div class="input-group" style="width: 230px;">
+                <input type="text" class="form-control date-picker" id="dateTimeRange" value="" />
+                <span class="input-group-addon">
+                    <i class="fa fa-calendar bigger-110"></i>
+                </span>
+                <input type="hidden" name="beginTime" id="beginTime" />
+                <input type="hidden" name="endTime" id="endTime" />
+            </div>
+        </div>
+        <div class="form-group">
+            <button id="btnSearch" type="button" class="btn btn-success" style="width:230px;height:35px;"><i class="fa fa-search"></i>查询</button>
+        </div>
+    </div>
+</div>
+<div id="dc" class="row wrapper animated fadeInRight" style="background: #FFF;padding-left:0;padding-right:0;height:100%;width:calc(100% - 220px);float:right;margin-top:110px;">
+    <div id="print">
+        <span id="title" style="font-size:24px;font-family:'Microsoft YaHei';font-weight:bold;margin:20px 0px 0 0; display:inline-block;">报废汇总表</span>
+        <div id="condition" style="margin-left:20px;">
+            <div id="leftConditon" style="float:left;"></div>
+            <div id="rightConditon" style="float:right;"></div>
+        </div>
+        <table id="dataReport" style="border-collapse: collapse;font-size:14px;font-family:'Microsoft YaHei';color:#333;margin:20px;" cellpadding="0" cellspacing="0"></table>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/plugins/daterangepicker/moment.js")"></script>
+<script src="@Url.Content("~/Scripts/plugins/daterangepicker/daterangepicker.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery-migrate-1.2.1.min.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery.jqprint-0.3.js")"></script>
+<script>
+    function conditonChange() {
+        if ($("#conditonPanel").is(":hidden")) {
+            $("#dc").css("width", "calc(100% - 220px)");
+            $("#conditonPanel").show();
+        } else {
+            $("#dc").css("width", "100%");
+            $("#conditonPanel").hide();
+        }
+    }
+
+    $(document).ready(function () {
+
+        $('#dateTimeRange').daterangepicker({
+            applyClass: 'btn-sm btn-success',
+            cancelClass: 'btn-sm btn-default',
+            locale: {
+                applyLabel: '确认',
+                cancelLabel: '取消',
+                fromLabel: '起始时间',
+                toLabel: '结束时间',
+                customRangeLabel: '自定义',
+                firstDay: 1
+            },
+            ranges: {
+                '今日': [moment().startOf('day'), moment()],
+                '昨日': [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')],
+                '最近7日': [moment().subtract('days', 6), moment()],
+                '最近30日': [moment().subtract('days', 29), moment()],
+                '本月': [moment().startOf("month"), moment().endOf("month")],
+                '上个月': [moment().subtract(1, "month").startOf("month"), moment().subtract(1, "month").endOf("month")]
+            },
+            startDate: moment().startOf("month"),
+            endDate: moment().endOf("month"),
+            opens: 'right',    // 日期选择框的弹出位置
+            separator: ' 至 ',
+            showWeekNumbers: false,     // 是否显示第几周
+            locale: {
+                applyLabel: '确定',
+                cancelLabel: '取消',
+                fromLabel: '起始时间',
+                toLabel: '结束时间',
+                customRangeLabel: '自定义',
+                daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                monthNames: ['一月', '二月', '三月', '四月', '五月', '六月',
+                        '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                firstDay: 1
+            },
+
+            format: 'YYYY/MM/DD'
+
+        }, function (start, end, label) { // 格式化日期显示框
+            $('#beginTime').val(start.format('YYYY-MM-DD'));
+            $('#endTime').val(end.format('YYYY-MM-DD'));
+        })
+       .next().on('click', function () {
+           $(this).prev().focus();
+       });
+    });
+
+    $("#btnSearch").on("click", function () {
+        var _url = "@Url.Action("ScrapQuery", "Summary")";
+        $.ajax({
+            type: "post",
+            data: {
+                brandId: $("#brandId").val(), startDate: $("#beginTime").val(), endDate: $("#endTime").val()
+            },
+            url: _url,
+            success: function (result) {
+                var data = JSON.parse(result);
+                var bodyHtml = "<tbody>";
+                var headerHtml = '<thead><tr style="height:34px;background-color:#E8F7FE;color:#0294DD;">';
+                var isAppendHeader = false;
+                $.each(data, function (i, item) {
+                    if (i % 2 == 0) {
+                        bodyHtml += ' <tr class="eventr">';
+                    } else {
+                        bodyHtml += ' <tr class="oddtr">'
+                    }
+                    var k = 0;
+                    $.each(item, function (j, val) {
+                        if (k < 2) {
+                            bodyHtml += '<td class="lefttxt">' + val + '</td>';
+                        } else if (k == 2) {
+                            bodyHtml += '<td class="righttxt" style="font-weight:bold;">' + (val == 0 ? "" : val) + '</td>';
+                        } else {
+                            bodyHtml += '<td class="righttxt">' + (val == 0 ? "" : val) + '</td>';
+                        }
+                        if (!isAppendHeader) {
+                            if (k < 2) {
+                                headerHtml += '<td class="lefttxt" style="width:150px;border:1px solid #CCC;" rowspan="2">' + j + '</td>';
+                            } else {
+                                if (k == 3) {
+                                    headerHtml += "<td style='text-align:center;border:1px solid #CCC;' colspan='" + (Object.getOwnPropertyNames(item).length - 3).toString() + "'>数量</td></tr><tr>";
+                                }
+                                if (k == 2) {
+                                    headerHtml += '<td class="righttxt" style="width:80px;border:1px solid #CCC;color:#0294DD;" rowspan="2">' + j + '</td>';
+                                } else {
+                                    headerHtml += '<td class="righttxt" style="width:80px;height:34px;background-color:#E8F7FE;;border:1px solid #CCC;color:#0294DD;">' + j + '</td>';
+                                }
+                            }
+
+                        }
+                        k++;
+                    });
+                    isAppendHeader = true;
+                    bodyHtml += "</tr>"
+                });
+                bodyHtml += "</tbody>";
+                headerHtml += "</tr></thead>";
+
+                $("#dataReport").children().remove();
+                $("#dataReport").append(headerHtml + bodyHtml);
+
+                var totalwidth = $("#dataReport").width();
+                var dtWidth = totalwidth < 500 ? 500 : totalwidth;
+                $("#title").css("margin-left", ((dtWidth - 130) / 2).toString() + "px");
+                $("#dataReport").css("width", dtWidth);
+                $("#condition").css("width", dtWidth);
+                $("#leftConditon").html("流通品牌：" + $("#brandId").find("option:selected").text());
+                $("#rightConditon").html("时间：" + $("#dateTimeRange").val());
+
+                $("#hddCondition").val($("#leftConditon").text() + "|" + $("#rightConditon").text());
+                $("#hddTitle").val("报废汇总表");
+                $("#hddData").val(result);
+
+                $("#btnExportExcel").removeAttr("disabled");
+            }
+        })
+    });
+
+    $("#btnSearch").click();
+
+    $("#btnExportExcel").on("click", function () {
+        document.getElementById("formExport").submit();
+    });
+
+    function myPrint(obj) {
+        $("#print").jqprint({
+        });
+    }
+</script>

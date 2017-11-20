@@ -1,0 +1,391 @@
+﻿@{
+    Layout = null;
+}
+
+<link href="@Url.Content("~/Content/plugins/treegrid/jquery.treegrid.css")" rel="stylesheet" />
+<script src="@Url.Content("~/Scripts/plugins/treegrid/jquery.treegrid.min.js")"></script>
+<script src="@Url.Content("~/Scripts/plugins/treegrid/jquery.treegrid.bootstrap3.js")"></script>
+<script src="@Url.Content("~/Scripts/plugins/treegrid/jquery.treegrid.extension.js")"></script>
+<div class="row wrapper wrapper-content animated fadeInRight" style="padding-top:75px;">
+    <div class="ibox-content">
+        <div style="margin-bottom:20px;">
+            @Html.ToolButton(ViewData["BtnList"] as List<ETexsys.Model.sys_right_button>)
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover dataTables-example">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>角色名称</th>
+                        <th>描述</th>
+                        <th>创建人</th>
+                        <th>创建时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">角色添加</h4>
+                </div>
+                <form class="form-horizontal" id="addRoleForm">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="hidden" id="RoleID" value="0" />
+                            <label class="col-lg-2 control-label">角色名</label>
+                            <div class="col-lg-10"><input type="text" id="RoleName" class="form-control" required="" onblur="checkRoleName(this)" /></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">角色描述</label>
+                            <div class="col-lg-10"><input type="text" id="RoleDesc" class="form-control" /></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary">保存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal inmodal" id="myRightModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" style="width:900px;">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">用户权限</h4>
+                </div>
+                <form class="form-horizontal" id="addRoleRightForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="addRoleID" />
+                        <table id="tb"></table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" onclick="selectedItem()">保存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        var url = "@Url.Action("GetSys_RoleList", "Sys_Role")";
+        $('.dataTables-example').DataTable({
+            bAutoWidth: false,
+            aoColumns: [
+               {
+                   "sClass": "text-center",
+                   "data": "RoleID",
+                   "render": function (data, type, full, meta) {
+                       return '<input type="radio" name="a"  class="checkchild"  value="' + data + '" />';
+                   },
+                   "bSortable": false
+               },
+                { "sClass": "center", "mDataProp": "RoleName", "bSortable": false },
+                { "sClass": "center", "mDataProp": "RoleDesc", "bSortable": false },
+                { "sClass": "center", "mDataProp": "UName", "bSortable": false },
+                {
+                    "sClass": "text-center",
+                    "data": "CreateTime",
+                    "render": function (data, type, full, meta) {
+                        return data_string(data);//date的格
+                    },
+                    "bSortable": false
+                }, { "sClass": "center", "mDataProp": "RoleID", "bSortable": false }
+            ],
+            "bServerSide": true,//分页，取数据等等的都放到服务端去
+            "bProcessing": true,//载入数据的时候是否显示“载入中”
+            "aLengthMenu": [30, 50, 100],
+            "bLengthChange": false, //改变每页显示数据数量
+            "bFilter": false, //过滤功能
+            "iDisplayStart": 0,
+            "iDisplayLength": 30,//首次加载的数据条数
+            "bStorable": true,//排序操作在服务端进行，所以可以关了。
+            "sAjaxSource": url,
+            "fnServerData": function (sSource, aoData, fnCallback, bStorable) {
+                var paramList = {
+                    "sEcho": 0,
+                    "iDisplayLength": 0,
+                    "iDisplayStart": 0,
+                    "sSortDir_0": bStorable.aaSorting[0][1],
+                    "iSortCol_0": bStorable.aaSorting[0][0],
+                };
+                if (bStorable.aaSorting[0][0] == 0) {
+                    paramList.isDesc = true;
+                }
+                for (var i = 0; i < aoData.length; i++) {
+                    if (aoData[i].name == "iDisplayStart") {
+                        paramList.iDisplayStart = aoData[i].value;
+                    } else if (aoData[i].name == "iDisplayLength") {
+                        paramList.iDisplayLength = aoData[i].value;
+                    } else
+                        if (aoData[i].name == "sEcho") {
+                            paramList.sEcho = aoData[i].value;
+                        }
+                }
+                $.ajax({
+                    "dataType": 'json',
+                    "type": "POST",
+                    "url": sSource,
+                    "data": paramList,
+                    "success": function (resp) {
+                        fnCallback(resp); //服务器端返回的对象的returnObject部分是要求的格式
+                    }
+                });
+            },
+            "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+                var html = '<a class="btn btn-white btn-sm" style="margin-right:2px;" href="javascript:RightSetting(\'' + aData.RoleID + '\')" title="权限"><i class="fa fa-gears"></i>&nbsp;权限</a>'
+                $('td:eq(5)', nRow).html(html);
+            },
+            dom: '<"html5buttons"B>lTfgitp',
+            buttons: [
+                { extend: 'copy' },
+                { extend: 'csv' },
+                { extend: 'excel', title: 'ExampleFile' },
+                { extend: 'pdf', title: 'ExampleFile' },
+
+                {
+                    extend: 'print',
+                    customize: function (win) {
+                        $(win.document.body).addClass('white-bg');
+                        $(win.document.body).css('font-size', '10px');
+
+                        $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                    }
+                }
+            ],
+            "oLanguage": {
+                "sLengthMenu": "每页显示 _MENU_ 条记录",
+                "sZeroRecords": "抱歉， 没有找到",
+                "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                "sInfoEmpty": "没有数据",
+                "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "前一页",
+                    "sNext": "后一页",
+                    "sLast": "尾页"
+                },
+                "sZeroRecords": "没有检索到数据",
+                "sProcessing": "<img src='./loading.gif' />"
+            }
+        });
+
+    });
+
+    function RightSetting(id) {
+        var url = "@Url.Action("GetRoleRightList", "Sys_Role")";
+        $("#tb").empty();
+        $('#tb').treegridData({
+            id: 'RightID',
+            parentColumn: 'RightParentID',
+            type: "GET", //请求数据的ajax类型
+            url: url,   //请求数据的ajax的url
+            ajaxParams: { RoleID: id }, //请求数据的ajax的data属性
+            expandColumn: 1,//在哪一列上面显示展开按钮
+            striped: true,   //是否各行渐变色
+            bordered: true,  //是否显示边框
+            expandAll: false,  //是否全部展开
+            checkbox: true,
+            columns: [{
+                title: '',
+                field: 'RightID'
+            },
+              {
+                  title: '功能名称',
+                  field: 'RightName'
+              },
+                {
+                    title: '系统模块',
+                    field: 'ApplicationName'
+                },
+                {
+                    title: '功能编码',
+                    field: 'RightCode'
+                },
+                {
+                    title: '操作',
+                    field: 'RightBtn'
+                }
+            ]
+        });
+        $("#myRightModal").modal('show');
+        $("#addRoleID").val(id);
+    }
+
+    function AddModule() {
+        $("#RoleName").nextAll().remove();
+        $("#RoleID").val("0");
+        document.getElementById("addRoleForm").reset();
+        $(".modal-title").html("角色添加");
+        $('#myModal').modal('show');
+    }
+
+    function UpdateModule() {
+        $("#RoleName").nextAll().remove();
+        var val = $(".dataTables-example input[type='radio']:checked").val();
+        if (val == null) {
+            swal("提示", "请先选择记录.");
+
+            return false;
+        }
+        var url = "@Url.Action("GetRole", "Sys_Role")";
+        document.getElementById("addRoleForm").reset();//清空表单
+        $.ajax({
+            type: "post",
+            data: { RoleID: val },
+            url: url,
+            async: false,
+            success: function (result) {
+                if (result.ResultCode == "0") {
+                    $(".modal-title").html("角色修改");
+                    $("#RoleID").val(result.Result.RoleID);
+                    $("#RoleName").val(result.Result.RoleName);
+                    $("#RoleDesc").val(result.Result.RoleDesc);
+
+                    $('#myModal').modal('show');
+                } else {
+                    swal({ title: "提示", text: "获取信息失败", type: "error" });
+                }
+            }
+        });
+    }
+
+    function DeleteModule() {
+        var val = $(".dataTables-example input[type='radio']:checked").val();
+        if (val == null) {
+            swal("提示", "请先选择记录.");
+
+            return false;
+        }
+        swal({
+            title: "您确定要删除吗？",
+            text: "您确定要删除这条数据？",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            closeOnConfirm: false
+        }, function () {
+            var url = "@Url.Action("DelSys_Role","Sys_Role")";
+            $.ajax({
+                type: "post",
+                data: { RoleID: val },
+                url: url,
+                async: false,
+                success: function (result) {
+                    if (result.ResultCode == "0") {
+                        swal("Good!", "删除成功", "success");
+                        $(".dataTables-example").dataTable().fnDraw();//点搜索重新绘制table。
+                    } else {
+                        swal({ title: "提示", text: "删除失败", type: "error" });
+                    }
+                }
+            });
+        });
+    }
+
+    function checkRoleName(obj) {
+        var url = "@Url.Action("CheckRoleName", "Sys_Role")";
+        $.ajax({
+            type: "post",
+            data: { RoleID: $("#RoleID").val(), RoleName: $("#RoleName").val() },
+            url: url,
+            async: false,
+            success: function (result) {
+                if (result) {
+                    $(obj).nextAll().remove();
+                } else {
+                    $(obj).nextAll().remove();
+                    $(obj).after('<p class="help-block"  style="color:red">名称已存在</p>');
+                }
+            }
+        });
+    }
+
+    $("#addRoleForm").submit(function () {
+        var _url = "@Url.Action("CheckRoleName", "Sys_Role")";
+        $.ajax({
+            type: "post",
+            data: { RoleID: $("#RoleID").val(), RoleName: $("#RoleName").val() },
+            url: _url,
+            success: function (result) {
+                if (result) {
+                    $("#RoleName").nextAll().remove();
+                    var url = "@Url.Action("AddSys_Role","Sys_Role")";
+                    if ($("#RoleID").val() != "0") {
+                        url = "@Url.Action("UpdateSys_Role", "Sys_Role")";
+                    }
+                    $.ajax({
+                        type: "post",
+                        data: { RoleID: $("#RoleID").val(), RoleName: $("#RoleName").val(), RoleDesc: $("#RoleDesc").val() },
+                        url: url,
+                        async: false,
+                        success: function (result) {
+                            if (result.ResultCode == "0") {
+                                $('#myModal').modal('hide');//关闭模态框
+                                document.getElementById("addRoleForm").reset();//清空表单
+                                $(".dataTables-example").dataTable().fnDraw();//点搜索重新绘制table。
+                            } else {
+                                swal({
+                                    title: "提示",
+                                    text: "添加失败"
+                                });
+                            }
+                        }
+                    });
+                } else {
+                    $("#RoleName").nextAll().remove();
+                    $("#RoleName").after('<p class="help-block"  style="color:red">名称已存在</p>');
+                }
+            }
+        });
+        return false;
+    });
+
+    function selectedItem() {
+        var rightIds = "";
+        $('#tb input[type="checkbox"][data-type="1"]:checkbox:checked').each(function () {
+            rightIds += $(this).val() + "|"
+        });
+        var rightBtns = "";
+        $('#tb input[type="checkbox"][data-type="2"]:checkbox:checked').each(function () {
+            rightBtns += $(this).val() + "|"
+        });
+        var roleId = $("#addRoleID").val();
+        var _url = "@Url.Action("SetRoleRight", "Sys_Role")";
+        $.ajax({
+            type: "post",
+            data: { roleId: roleId, rightIds: rightIds, rightBtns: rightBtns },
+            url: _url,
+            async: false,
+            success: function (result) {
+                if (result.ResultCode == "0") {
+                    $('#myRightModal').modal('hide');
+                } else {
+                    swal({ title: "提示", text: "设置失败", type: "error" });
+                }
+            }
+        });
+
+    }
+</script>

@@ -1,0 +1,343 @@
+﻿
+@{
+    Layout = null;
+}
+<link href="@Url.Content("~/Content/plugins/bootstrap-switch/bootstrap-switch.min.css")" rel="stylesheet" />
+<link href="@Url.Content("~/Content/plugins/fileinput/fileinput.min.css")" rel="stylesheet" />
+<div class="row wrapper wrapper-content animated fadeInRight" style="padding-top:75px;">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-lg-1 control-label" style="font-weight: bold; font-family: 微软雅黑;">分类</label>
+                <div class="col-lg-2">
+                    <select id="queryCateId" class="form-control">
+                        <option value="0" selected="selected">所有</option>
+                        @{ var list = ViewData["CateList"] as List<ETexsys.Model.goodscate>;}
+                        @foreach (var item in list)
+                        {
+                            <option value="@item.ID">@item.CateName</option>
+                        }
+                    </select>
+                </div>
+                <label class="col-lg-1 control-label" style="font-weight: bold; font-family: 微软雅黑;">状态</label>
+                <div class="col-lg-2">
+                    <select id="queryState" class="form-control">
+                        <option value="-1" selected="selected">所有</option>
+                        <option value="1">已上架</option>
+                        <option value="0">未上架</option>
+                    </select>
+                </div>
+                <button class="btn btn-success" onclick="Search()"><i class="fa fa-search"></i>搜索</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="ibox-content">
+        <div style="margin-bottom:20px;">
+            @Html.ToolButton(ViewData["BtnList"] as List<ETexsys.Model.sys_right_button>)
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover dataTables-example">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>名称</th>
+                        <th>分类</th>
+                        <th>市场价</th>
+                        <th>商城价</th>
+                        <th>单位</th>
+                        <th>上架</th>
+                        <th>排序</th>
+                        <th>人气值</th>
+                        <th>添加时间</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+    </div>
+    @RenderPage("Detail.cshtml")
+</div>
+<script src="@Url.Content("~/Scripts/plugins/bootstrap-switch/bootstrap-switch.min.js")"></script>
+<script src="@Url.Content("~/Scripts/ajaxfileupload.js")"></script>
+<script src="@Url.Content("~/Scripts/plugins/fileinput/fileinput.min.js")"></script>
+<script src="@Url.Content("~/Scripts/plugins/fileinput/zh.js")"></script>
+<script>
+    $('input[type="checkbox"], input[type="radio"]').not('[data-switch-no-init]').bootstrapSwitch();
+
+    $(document).ready(function () {
+        var _url = "@Url.Action("GetList", "Goods")";
+        $('.dataTables-example').DataTable({
+            bAutoWidth: false,
+            aoColumns: [
+               {
+                   "sClass": "text-center",
+                   "data": "ID",
+                   "render": function (data, type, full, meta) {
+                       return '<input type="radio" name="a"  class="checkchild"  value="' + data + '" />';
+                   },
+                   "bSortable": false
+               },
+                { "sClass": "center", "mDataProp": "GoodsName", "bSortable": false },
+                { "sClass": "center", "mDataProp": "CateName", "bSortable": false },
+                { "sClass": "center", "mDataProp": "CostPrice", "bSortable": false },
+                { "sClass": "center", "mDataProp": "GoodsMoney", "bSortable": false },
+                { "sClass": "center", "mDataProp": "UnitName", "bSortable": false },
+                { "sClass": "center", "mDataProp": "Grounding", "bSortable": false },
+                { "sClass": "center", "mDataProp": "Sort", "bSortable": false },
+                { "sClass": "center", "mDataProp": "Hoting", "bSortable": false },
+                {
+                    "sClass": "text-center",
+                    "data": "CreateTime",
+                    "render": function (data, type, full, meta) {
+                        return data_string(data);//date的格
+                    },
+                    "bSortable": false
+                }
+            ],
+            "bServerSide": true,//分页，取数据等等的都放到服务端去
+            "bProcessing": true,//载入数据的时候是否显示“载入中”
+            "aLengthMenu": [30, 50, 100],
+            "bLengthChange": false, //改变每页显示数据数量
+            "bFilter": false, //过滤功能
+            "iDisplayStart": 0,
+            "iDisplayLength": 30,//首次加载的数据条数
+            "bStorable": true,//排序操作在服务端进行，所以可以关了。
+            "sAjaxSource": _url,
+            "fnServerData": function (sSource, aoData, fnCallback, bStorable) {
+                var paramList = {
+                    "sEcho": 0,
+                    "iDisplayLength": 0,
+                    "iDisplayStart": 0,
+                    "sSortDir_0": bStorable.aaSorting[0][1],
+                    "iSortCol_0": bStorable.aaSorting[0][0],
+                    "qCondition1": $("#queryCateId").val(),
+                    "qCondition2": $("#queryState").val(),
+                };
+                if (bStorable.aaSorting[0][0] == 0) {
+                    paramList.isDesc = true;
+                }
+                for (var i = 0; i < aoData.length; i++) {
+                    if (aoData[i].name == "iDisplayStart") {
+                        paramList.iDisplayStart = aoData[i].value;
+                    } else if (aoData[i].name == "iDisplayLength") {
+                        paramList.iDisplayLength = aoData[i].value;
+                    } else
+                        if (aoData[i].name == "sEcho") {
+                            paramList.sEcho = aoData[i].value;
+                        }
+                }
+                $.ajax({
+                    "dataType": 'json',
+                    "type": "POST",
+                    "url": sSource,
+                    "data": paramList,
+                    "success": function (resp) {
+                        fnCallback(resp); //服务器端返回的对象的returnObject部分是要求的格式
+                    }
+                });
+            },
+            "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+                var state = "";
+                if (aData.Grounding) {
+                    state = '<span class="label label-primary">已上架</span>';
+                } else {
+                    state = '<span class="label label-danger" >未上架</span>';
+                }
+                $('td:eq(6)', nRow).html(state);
+            },
+            dom: '<"html5buttons"B>lTfgitp',
+            buttons: [
+                { extend: 'copy' },
+                { extend: 'csv' },
+                { extend: 'excel', title: 'ExampleFile' },
+                { extend: 'pdf', title: 'ExampleFile' },
+
+                {
+                    extend: 'print',
+                    customize: function (win) {
+                        $(win.document.body).addClass('white-bg');
+                        $(win.document.body).css('font-size', '10px');
+
+                        $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                    }
+                }
+            ],
+            "oLanguage": {
+                "sLengthMenu": "每页显示 _MENU_ 条记录",
+                "sZeroRecords": "抱歉， 没有找到",
+                "sInfo": "从 _START_ 到 _END_ /共 _TOTAL_ 条数据",
+                "sInfoEmpty": "没有数据",
+                "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "前一页",
+                    "sNext": "后一页",
+                    "sLast": "尾页"
+                },
+                "sZeroRecords": "没有检索到数据",
+                "sProcessing": "<img src='./loading.gif' />"
+            }
+        });
+
+    });
+
+    function Search() {
+        $('.dataTables-example').dataTable().fnDraw();//点查询重新绘制table。
+    }
+
+    function AddModule() {
+        $("#GoodsName").nextAll().remove();
+        $("#ID").val("0");
+        document.getElementById("addGoodsForm").reset();
+        $("#logo").attr("src", "");
+        $("#logo").hide();
+        $(".modal-title").html("产品添加");
+        $('#myModal').modal('show');
+    }
+
+    function UpdateModule() {
+        $("#GoodsName").nextAll().remove();
+        var val = $(".dataTables-example input[type='radio']:checked").val();
+        if (val == null) {
+            swal("提示", "请先选择记录.");
+
+            return false;
+        }
+        var url = "@Url.Action("GetModel", "Goods")";
+        document.getElementById("addGoodsForm").reset();//清空表单
+        $.ajax({
+            type: "post",
+            data: { Id: val },
+            url: url,
+            async: false,
+            success: function (result) {
+                if (result.ResultCode == "0") {
+                    $(".modal-title").html("产品修改");
+                    $("#ID").val(result.Result.ID);
+                    $("#GoodsName").val(result.Result.GoodsName);
+                    $("#CateID").val(result.Result.CateID);
+                    $("#CostPrice").val(result.Result.CostPrice);
+                    $("#GoodsMoney").val(result.Result.GoodsMoney);
+                    $("#UnitName").val(result.Result.UnitName);
+                    $("#Remarks").val(result.Result.Remarks);
+                    $("#Grounding").bootstrapSwitch('state', result.Result.Grounding, true);
+                    $("#Sort").val(result.Result.Sort);
+                    $("#logo").show();
+                    $("#logo").attr("src", result.Result.GoodsLogo);
+                    $('#myModal').modal('show');
+                } else {
+                    swal({ title: "提示", text: "获取信息失败", type: "error" });
+                }
+            }
+        });
+    }
+
+    function DeleteModule() {
+        var val = $(".dataTables-example input[type='radio']:checked").val();
+        if (val == null) {
+            swal("提示", "请先选择记录.");
+
+            return false;
+        }
+        swal({
+            title: "您确定要删除吗？",
+            text: "您确定要删除这条数据？",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            closeOnConfirm: false
+        }, function () {
+            var url = "@Url.Action("Delete", "Goods")";
+            $.ajax({
+                type: "post",
+                data: { Id: val },
+                url: url,
+                async: false,
+                success: function (result) {
+                    if (result.ResultCode == "0") {
+                        swal("Good!", "删除成功", "success");
+                        $(".dataTables-example").dataTable().fnDraw();//点搜索重新绘制table。
+                    } else {
+                        swal({ title: "提示", text: "删除失败", type: "error" });
+                    }
+                }
+            });
+        });
+    }
+
+    function CheckGoodsName(obj) {
+        var url = "@Url.Action("CheckGoodsName", "Goods")";
+        $.ajax({
+            type: "post",
+            data: { ID: $("#ID").val(), GoodsName: $("#GoodsName").val() },
+            url: url,
+            async: false,
+            success: function (result) {
+                if (result) {
+                    $(obj).nextAll().remove();
+                } else {
+                    $(obj).nextAll().remove();
+                    $(obj).after('<p class="help-block"  style="color:red">名称已存在</p>');
+                }
+            }
+        });
+    }
+
+    $("#addGoodsForm").submit(function () {
+        var _url = "@Url.Action("CheckGoodsName", "Goods")";
+        $.ajax({
+            type: "post",
+            data: { ID: $("#ID").val(), GoodsName: $("#GoodsName").val() },
+            url: _url,
+            success: function (result) {
+                if (result) {
+                    $("#GoodsName").nextAll().remove();
+                    var url = "@Url.Action("AddGoods", "Goods")";
+                    if ($("#ID").val() != "0") {
+                        url = "@Url.Action("UpdateGoods", "Goods")";
+                    }
+                    $.ajaxFileUpload({
+                        type: "post",
+                        data: {
+                            ID: $("#ID").val(), GoodsName: $("#GoodsName").val(), CateID: $("#CateID").val(), CostPrice: $("#CostPrice").val(),
+                            GoodsMoney: $("#GoodsMoney").val(), UnitName: $("#UnitName").val(), Remarks: $("#Remarks").val(),
+                            Grounding: $("#Grounding").bootstrapSwitch("state"), Sort: $("#Sort").val()
+                        },
+                        url: url,
+                        async: false,
+                        secureuri: false, //是否需要安全协议，一般设置为false
+                        fileElementId: 'file-logo', //文件上传域的ID
+                        success: function (responseText) {
+                            var data = JSON.parse(responseText.body.innerText);
+                            if (data.ResultCode == "0") {
+                                $('#myModal').modal('hide');//关闭模态框
+                                document.getElementById("addGoodsForm").reset();//清空表单
+                                $("#file-logo").val('');
+                                $(".dataTables-example").dataTable().fnDraw();//点搜索重新绘制table。
+
+                                var u = "@Url.Content("~/Dictionary/Goods/Index")";
+                                var rightId = "@ViewData["RightID"]";
+                                SubClickFunc(u, rightId);
+                            } else {
+                                swal({ title: "提示", text: "添加失败" });
+                            }
+                        }
+                    });
+                } else {
+                    $("#GoodsName").nextAll().remove();
+                    $("#GoodsName").after('<p class="help-block"  style="color:red">名称已存在</p>');
+                }
+            }
+        });
+        return false;
+    });
+
+</script>
+

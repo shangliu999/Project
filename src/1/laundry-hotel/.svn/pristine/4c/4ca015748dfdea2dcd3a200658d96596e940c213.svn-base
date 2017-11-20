@@ -1,0 +1,313 @@
+﻿@{
+    Layout = null;
+}
+@model ETexsys.Model.region
+
+<script src="@Url.Content("~/Scripts/ajaxfileupload.js")"></script>
+<div class="row wrapper wrapper-content animated fadeInRight" style="padding-top:75px;">
+    <div class="ibox-content">
+        <div class="page-header" style="margin:20px 0 20px">
+            <h1 id="lblCusTitle">@Model.RegionName</h1>
+            <input id="HotelID" type="hidden" value="@Model.ID" />
+        </div>
+        <div class="tabs-container">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#htab1"><span>基本信息</span>&nbsp;<i class="fa fa-laptop"></i></a></li>
+                @{ var rightList = ViewData["RightList"] as List<ETexsys.Model.sys_right>;}
+                @for (int i = 0; i < rightList.Count; i++)
+                {
+                    var item = rightList[i];
+                    var name = "#htab" + (i + 2).ToString();
+                    string u = "";
+                    if (item.RightUrl != null && item.RightUrl != "")
+                    {
+                        u = Url.Content("~" + item.RightUrl);
+                    }
+                    <li class="" onclick="TabClick('@name','@u',@item.RightID)">
+                        <a data-toggle="tab" href="@name">
+                            <span>@item.RightName</span>&nbsp;
+                            @*<i class="@item.RightIcon"></i>*@
+                        </a>
+                    </li>
+                }
+            </ul>
+            <div class="tab-content">
+                <div id="htab1" class="tab-pane active">
+                    <div class="panel-body" style="border:none;">
+                        <form class="form-horizontal" id="hotelForm">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    @Html.HiddenFor(m => m.ID)
+                                    <label class="col-lg-2 control-label">简称</label>
+                                    <div class="col-lg-4">
+                                        @Html.TextBoxFor(m => m.RegionName, new { @class = "form-control", @required = "", @onblur = "CheckHotelName(this)", @disabled = "disabled" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">全称</label>
+                                    <div class="col-lg-4">
+                                        @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", @required = "", @disabled = "disabled" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">流通</label>
+                                    <div class="col-lg-4">
+                                        <select class="form-control" required="" id="BrandID" disabled="disabled">
+                                            @{ var brandList1 = ViewData["BrandList"] as List<ETexsys.Model.brandtype>;}
+                                            @foreach (var item in brandList1)
+                                            {
+                                                if (Model.BrandID == item.ID)
+                                                {
+                                                    <option value="@item.ID" selected="selected">@item.BrandName</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@item.ID">@item.BrandName</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">配货方式</label>
+                                    <div class="col-lg-4" id="SendModel">
+                                        <div class="i-checks" style="float:left;"><label> <input type="radio" value="1" name="a" disabled="disabled"> <i></i>门店</label></div>
+                                        <div class="i-checks" style="float:left; margin-left:5px;"><label> <input type="radio" checked="" value="2" name="a" disabled="disabled"> <i></i>楼层</label></div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">收货扫描确认</label>
+                                    <div class="col-lg-4" id="HandConfirm">
+                                        <div class="i-checks"><label><input type="checkbox" value="1" name="HandComfirm" disabled="disabled"> <i></i>是</label></div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">联系人</label>
+                                    <div class="col-lg-4">
+                                        @Html.TextBoxFor(m => m.LinkMan, new { @class = "form-control", @disabled = "disabled" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">电话</label>
+                                    <div class="col-lg-4">
+                                        @Html.TextBoxFor(m => m.Tel, new { @class = "form-control", @disabled = "disabled" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">地址</label>
+                                    <div class="col-lg-4">
+                                        @Html.TextBoxFor(m => m.Address, new { @class = "form-control", @disabled = "disabled" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">经度</label>
+                                    <div class="col-lg-1">
+                                        @Html.TextBoxFor(m => m.Lng, new { @class = "form-control", @disabled = "disabled" })
+                                    </div>
+                                    <label class="col-lg-2 control-label">纬度</label>
+                                    <div class="col-lg-1">
+                                        @Html.TextBoxFor(m => m.Lat, new { @class = "form-control", @disabled = "disabled" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">Logo</label>
+                                    @Html.HiddenFor(m => m.LogoUrl)
+                                    <div class="col-lg-4" id="preview" onclick="ClickLogo()">
+                                        @if (Model != null && Model.LogoUrl != null && Model.LogoUrl != "")
+                                        {
+                                            <img id="imgaddhead" src="@Url.Content(Model.LogoUrl)" alt="LOGO" style="max-width: 150px; max-height: 80px;" />
+                                        }
+                                        else
+                                        {
+                                            <img id="imgaddhead" src="@Url.Content("~/Images/placeholder.png")" alt="LOGO" style="max-width: 150px; max-height: 80px;" />
+                                        }
+                                    </div>
+                                </div>
+
+                                <input type="file" id="flogo" name="flogo" style="display: none;" disabled="disabled" accept=".jpg,.png,.png,.jpeg" onchange="previewImage(this)" />
+
+                            </div>
+                            <div class="modal-footer" style="text-align:left;">
+
+                                @if ((ViewData["BtnList"] as List<ETexsys.Model.sys_right_button>).Where(v => v.BtnCode == "Update").Count() == 1)
+                                {
+                                    <button class="btn btn-warning " type="button" onclick="HotelUpdateModule()" style="margin-right:2px;"><i class="fa fa-pencil"></i>&nbsp;修改</button>
+
+                                }
+                                <button type="submit" class="btn btn-primary" disabled="disabled">保存</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                @for (int i = 0; i < rightList.Count; i++)
+            {
+                var name = "htab" + (i + 2).ToString();
+                    <div id="@name" class="tab-pane">
+                        <div class="panel-body" style="border:none;">
+
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+        var model = "@Model.RegionMode";
+        if (model == "1") {
+            $("#hotelForm #SendModel").find("[type='radio']:eq(0)").iCheck("check");
+        } else {
+            $("#hotelForm #SendModel").find("[type='radio']:eq(1)").iCheck("check");
+        }
+        model = "@Model.HandConfirm";
+
+        console.log("isok:" + (model.toString() == "True"));
+
+        if (model != null && model.toString() == "True") {
+            $("#hotelForm #HandConfirm input").iCheck("check");
+        }
+    });
+    function TabClick(id, url, funcId) {
+
+        if ($("" + id + ">div>div").length == 0) {
+            if (url.indexOf("?") > 0) {
+                url = url + "&funcId=" + funcId + "&d=" + (new Date()).getTime() + "&hotelId=" + $("#HotelID").val();
+            }
+            else {
+                url = url + "?d=" + (new Date()).getTime() + "&funcId=" + funcId + "&hotelId=" + $("#HotelID").val();
+            }
+            $("" + id + " div").load(url);
+        }
+    }
+
+    function HotelUpdateModule() {
+        $("#hotelForm input").removeAttr("disabled");
+        $("#hotelForm select").removeAttr("disabled");
+        $("#hotelForm button").removeAttr("disabled");
+        $("#hotelForm .i-checks div").removeClass("disabled");
+    }
+
+
+    function CheckHotelName(obj) {
+        var url = "@Url.Action("CheckHotelName", "Hotel")";
+        $.ajax({
+            type: "post",
+            data: { HotelID: $("#hotelForm #ID").val(), HotelName: $("#hotelForm #RegionName").val() },
+            url: url,
+            async: false,
+            success: function (result) {
+                if (result) {
+                    $(obj).nextAll().remove();
+                } else {
+                    $(obj).nextAll().remove();
+                    $(obj).after('<p class="help-block"  style="color:red">名称已存在</p>');
+                }
+            }
+        });
+    }
+
+    $("#hotelForm").submit(function () {
+        var _url = "@Url.Action("CheckHotelName", "Hotel")";
+        $.ajax({
+            type: "post",
+            data: { HotelID: $("#hotelForm #ID").val(), HotelName: $("#hotelForm #RegionName").val() },
+            url: _url,
+            success: function (result) {
+                if (result) {
+                    $("#hotelForm #RegionName").nextAll().remove();
+
+                    var url = "@Url.Action("UpdateHotel", "Hotel")";
+
+                    var handcomfirm = $("#HandConfirm input:checked").length > 0 ? true : false;
+                    $.ajaxFileUpload({
+                        type: "post",
+                        data: {
+                            ID: $("#hotelForm #ID").val(), RegionName: $("#hotelForm #RegionName").val(), FullName: $("#hotelForm #FullName").val(), RegionMode: $("#hotelForm #SendModel").find("[type='radio']:checked").val(),
+                            BrandID: $("#hotelForm #BrandID").val(), Tel: $("#hotelForm #Tel").val(), LinkMan: $("#hotelForm #LinkMan").val(), Address: $("#hotelForm #Address").val(),
+                            Lng: $("#hotelForm #Lng").val(), Lat: $("#hotelForm #Lat").val(), LogoUrl: $("#hotelForm #LogoUrl").val(), HandConfirm: handcomfirm
+                        },
+                        url: url,
+                        async: false,
+                        secureuri: false, //是否需要安全协议，一般设置为false
+                        fileElementId: 'flogo', //文件上传域的ID
+                        success: function (responseText) {
+                            var data = JSON.parse(responseText.body.innerText);
+                            if (data.ResultCode == "0") {
+                                $("#hotelForm input").attr("disabled", "disabled");
+                                $("#hotelForm select").attr("disabled", "disabled");
+                                $("#hotelForm button[type='submit']").attr("disabled", "disabled");
+                                $("#lblCusTitle").html($("#RegionName").val());
+                            } else {
+                                swal({ title: "提示", text: "修改失败" });
+                            }
+                        }
+                    });
+                } else {
+                    $("#hotelForm #RegionName").nextAll().remove();
+                    $("#hotelForm #RegionName").after('<p class="help-block"  style="color:red">名称已存在</p>');
+                }
+            }
+        });
+        return false;
+    });
+
+    function ClickLogo() {
+        $("#flogo").click();
+    }
+    function previewImage(file) {
+        var MAXWIDTH = 100;
+        var MAXHEIGHT = 100;
+        var div = document.getElementById('preview');
+        if (file.files && file.files[0]) {
+            div.innerHTML = '<img id=imgaddhead>';
+            var img = document.getElementById('imgaddhead');
+            img.onload = function () {
+                var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+                img.width = rect.width;
+                img.height = rect.height;
+                img.style.marginLeft = rect.left + 'px';
+                img.style.marginTop = rect.top + 'px';
+            }
+            var reader = new FileReader();
+            reader.onload = function (evt) { img.src = evt.target.result; }
+            reader.readAsDataURL(file.files[0]);
+        }
+        else {
+            var sFilter = 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+            file.select();
+            var src = document.selection.createRange().text;
+            div.innerHTML = '<img id=imgaddhead>';
+            var img = document.getElementById('imgaddhead');
+            img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+            var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+            status = ('rect:' + rect.top + ',' + rect.left + ',' + rect.width + ',' + rect.height);
+            div.innerHTML = "<div id=divhead style='width:" + rect.width + "px;height:" + rect.height + "px;margin-top:" + rect.top + "px;margin-left:" + rect.left + "px;" + sFilter + src + "\"'></div>";
+        }
+    }
+
+    function clacImgZoomParam(maxWidth, maxHeight, width, height) {
+        var param = { top: 0, left: 0, width: width, height: height };
+        if (width > maxWidth || height > maxHeight) {
+            rateWidth = width / maxWidth;
+            rateHeight = height / maxHeight;
+
+            if (rateWidth > rateHeight) {
+                param.width = maxWidth;
+                param.height = Math.round(height / rateWidth);
+            } else {
+                param.width = Math.round(width / rateHeight);
+                param.height = maxHeight;
+            }
+        }
+
+        param.left = Math.round((maxWidth - param.width) / 2);
+        param.top = Math.round((maxHeight - param.height) / 2);
+        return param;
+    }
+</script>

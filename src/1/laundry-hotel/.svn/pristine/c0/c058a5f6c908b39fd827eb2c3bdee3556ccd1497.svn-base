@@ -1,0 +1,34 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <BitmapImage x:Key="IconRFID_White" UriSource="Images\icon_form_xinpianma.png"></BitmapImage>
+    <BitmapImage x:Key="IconRFID_Blue" UriSource="Images\icon_form_xinpianma_blue.png"></BitmapImage>
+    <BitmapImage x:Key="IconWashingCount_White" UriSource="Images\icon_form_xidicishu.png"></BitmapImage>
+    <BitmapImage x:Key="IconWashingCount_Blue" UriSource="Images\icon_form_xidicishu_blue.png"></BitmapImage>
+    <BitmapImage x:Key="IconClass" UriSource="Images\icon_form_fangzhipinmingcheng.png"></BitmapImage>
+    <BitmapImage x:Key="IconTextileCount" UriSource="Images\icon_form_shulaing1.png"></BitmapImage>
+    <BitmapImage x:Key="IconUnRegister" UriSource="Images\icon_weidengji.png"></BitmapImage>
+    <BitmapImage x:Key="IconRegisted" UriSource="Images\icon_yidengji.png"></BitmapImage>
+    <BitmapImage x:Key="IconTotal" UriSource="Images\icon_heji.png"></BitmapImage>
+    <BitmapImage x:Key="IconBrand" UriSource="Images\icon_form_liutongleibei.png"></BitmapImage>
+    <BitmapImage x:Key="IconSize" UriSource="Images\icon_form_chicun.png"></BitmapImage>
+
+    <BitmapImage x:Key="IconOrder" UriSource="Images\icon_form_dingdanshu.png"></BitmapImage>
+    <BitmapImage x:Key="IconBack" UriSource="Images\icon_form_fanxishu.png"></BitmapImage>
+    <BitmapImage x:Key="IconActual" UriSource="Images\icon_form_shifashu.png"></BitmapImage>
+    <BitmapImage x:Key="IconDiff" UriSource="Images\icon_form_chayi.png"></BitmapImage>
+    <BitmapImage x:Key="IconTime" UriSource="Images\icon_form_tourushijian.png"></BitmapImage>
+    <BitmapImage x:Key="IconRegion" UriSource="Images\icon_form_zuihoudadadi.png"></BitmapImage>
+    <BitmapImage x:Key="IconUnDo" UriSource="Images\icon_form_chexiaoshu.png"></BitmapImage>
+    <BitmapImage x:Key="IconChoose" UriSource="Images\img-choice.png"></BitmapImage>
+
+    <BitmapImage x:Key="QRCodeRFIDBG" UriSource="Images\pingtai.png"></BitmapImage>
+    <BitmapImage x:Key="BindingIcon" UriSource="Images\img-bangdingzhong.png"></BitmapImage>
+    <BitmapImage x:Key="BindingFailIcon" UriSource="Images\img-bangdingshibai.png"></BitmapImage>
+    <BitmapImage x:Key="BindingSuccessIcon" UriSource="Images\img-bangdingchenggong.png"></BitmapImage>
+    <BitmapImage x:Key="QRCodeFailIcon" UriSource="Images\icon-bangdingshibai.png"></BitmapImage>
+    <BitmapImage x:Key="QRCodeSuccessIcon" UriSource="Images\icon-bangdingchenggong.png"></BitmapImage>
+    <ImageBrush x:Key="ReplaceBG" ImageSource="Images\img-xinxi.png"></ImageBrush>
+    <BitmapImage x:Key="ReplaceSreach" UriSource="Images\icon-shoudongshuru.png"></BitmapImage>
+    <BitmapImage x:Key="SRightIcon" UriSource="Images\img-right.png"></BitmapImage>
+</ResourceDictionary>
